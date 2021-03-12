@@ -55,7 +55,7 @@ public class GameLogic {
         shipSize2LeftAmountLabel.setText("Jäljellä: 1");
         shipSize1LeftAmountLabel.setText("Jäljellä: 1");
         placeShip(button);
-        hb.getChildren().add(button);
+        hb.getChildren().addAll(button);
         hb.getChildren().add(buttonShip3);
         hb.getChildren().add(shipSize3LeftAmountLabel);
         hb.getChildren().add(buttonShip2);
