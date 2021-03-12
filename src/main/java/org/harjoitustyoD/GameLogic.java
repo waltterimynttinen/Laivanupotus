@@ -33,7 +33,7 @@ public class GameLogic {
      * A method used for switching scenes
      * so that it doesn't have to be done manually
      *
-     * @param fxmlFile is used for the fxml file, if 'vanilla javafx' is used,
+     * @param fxmlFile is used for retrieving fxml file, if 'vanilla javafx' is used,
      *                 this fxml filename is replaced with a String containing --
      * @throws IOException
      */
@@ -58,7 +58,6 @@ public class GameLogic {
      *
      * @param size
      */
-
     public void createBoard1(int size) {
         b1.setBoardSize(size);
         ap = b1.buildBoard();

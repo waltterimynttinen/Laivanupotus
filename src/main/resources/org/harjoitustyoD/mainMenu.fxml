@@ -32,16 +32,16 @@
       <Label layoutX="613.0" layoutY="550.0" text="Lisää pelilaudan koko" />
       <ChoiceBox fx:id="boardSizeList" layoutX="740.0" layoutY="546.0" prefWidth="150.0" />
       <Label fx:id="boardSizeLabel" layoutX="905.0" layoutY="490.0" opacity="0.0" text="5x5" />
-      <TextField fx:id="lentotukialusAmountTextField" layoutX="741.0" layoutY="351.0" prefHeight="25.0" prefWidth="32.0" />
+      <TextField fx:id="lentotukialusAmountTextField" layoutX="741.0" layoutY="351.0" prefHeight="25.0" prefWidth="32.0" text="1" />
       <Label layoutX="640.0" layoutY="355.0" text="Lentotukialuksia:" />
       <Label layoutX="652.0" layoutY="392.0" text="Taistelulaivoja:" />
-      <TextField fx:id="taistelulaivaAmountTextField" layoutX="741.0" layoutY="388.0" prefHeight="25.0" prefWidth="32.0" />
+      <TextField fx:id="taistelulaivaAmountTextField" layoutX="741.0" layoutY="388.0" prefHeight="25.0" prefWidth="32.0" text="1" />
       <Label layoutX="669.0" layoutY="426.0" text="Risteilijöitä:" />
-      <TextField fx:id="havittajaAmountTextField" layoutX="741.0" layoutY="422.0" prefHeight="25.0" prefWidth="32.0" />
+      <TextField fx:id="risteilijaAmountTextField" layoutX="741.0" layoutY="422.0" prefHeight="25.0" prefWidth="32.0" text="1" />
       <Label layoutX="645.0" layoutY="462.0" text="Sukellusveneitä:" />
-      <TextField layoutX="741.0" layoutY="458.0" prefHeight="25.0" prefWidth="31.0" />
+      <TextField fx:id="sukellusveneAmountTextField" layoutX="741.0" layoutY="458.0" prefHeight="25.0" prefWidth="31.0" text="1" />
       <Label layoutX="677.0" layoutY="495.0" text="Hävittäjiä:" />
-      <TextField layoutX="741.0" layoutY="491.0" prefHeight="25.0" prefWidth="31.0" />
+      <TextField fx:id="havittajaAmountTextField" layoutX="741.0" layoutY="491.0" prefHeight="25.0" prefWidth="31.0" text="1" />
 
    </children>
 </AnchorPane>

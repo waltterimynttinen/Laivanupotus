@@ -56,14 +56,10 @@ public class Controller {
     protected void onStartButtonAction(ActionEvent event) throws IOException {
         String s = "" + boardSizeLabel.getText().charAt(0);
         int laudanKoko = Integer.parseInt(s);
+        playerTwo = playerTwoTextField.getText();
+        playerOne = playerOneTextField.getText();
 
-        if(true || (areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko))) {
-            playerTwo = playerTwoTextField.getText();
-            playerOne = playerOneTextField.getText();
-            lentotukialusAmount = (lentotukialusAmountTextField.getText());
-
-            System.out.println(playerOne);
-            System.out.println(playerTwo);
+        if(areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko)) {
 
             if (laudanKoko == 1) {
                 gl.createBoard1(10);
@@ -104,21 +100,39 @@ public class Controller {
         int sv = Integer.parseInt(sukellusveneAmountTextField.getText());
         int hv =  Integer.parseInt(havittajaAmountTextField.getText());
 
-        if(koko == 1) {
-            return gl.areShipsAllowed(10, lta, tl, ris, sv, hv);
-        }
-        else{
-            return gl.areShipsAllowed(koko, lta, tl, ris, sv, hv);
+        System.out.println(lta);
+
+        int kok = lta+tl+ris+sv+hv;
+
+        if(kok == 0){
+            System.out.println("Väärä määrä laivoja");
+            return false;
+        }else{
+            if(koko == 1) {
+                return gl.areShipsAllowed(10, lta, tl, ris, sv, hv);
+            }else{
+                return gl.areShipsAllowed(koko, lta, tl, ris, sv, hv);
+            }
         }
     }
+
+    /**
+     * Checks whether or not the names are
+     * null input by the user
+     * @param p1
+     * @param p2
+     */
+
     protected boolean areNamesValid(String p1, String p2){
+
         if(p1.isEmpty() || p2.isEmpty()){
-            System.out.println("Valitse nimet pelaajille!!!!!!!");
+            System.out.println("seis");
             return false;
         }
         else{
             return true;
         }
+
     }
 
 }
