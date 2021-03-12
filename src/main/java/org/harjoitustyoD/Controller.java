@@ -127,4 +127,5 @@ public class Controller {
             return gl.areShipsAllowed(koko, 1, 2, 3, 4, 5);
         }
     }
+    
 }
