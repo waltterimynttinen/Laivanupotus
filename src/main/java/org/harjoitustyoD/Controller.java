@@ -58,7 +58,7 @@ public class Controller {
     protected void onStartButtonAction(ActionEvent event) throws IOException {
         String s = "" + boardSizeLabel.getText().charAt(0);
         int laudanKoko = Integer.parseInt(s);
-        
+
         if(true || (areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko))) {
             playerTwo = playerTwoTextField.getText();
             playerOne = playerOneTextField.getText();
@@ -95,13 +95,9 @@ public class Controller {
 
     public void initialize() {
 
-        boardSizeList.getItems().add("5x5");
-        boardSizeList.getItems().add("6x6");
-        boardSizeList.getItems().add("7x7");
-        boardSizeList.getItems().add("8x8");
-        boardSizeList.getItems().add("9x9");
-        boardSizeList.getItems().add("10x10");
-
+        for(int i = 5; i < 11; i++) {
+            boardSizeList.getItems().add(i + "x" + i);
+        }
         boardSizeList.setValue("5x5");
 
         boardSizeLabel.textProperty().bind(boardSizeList.valueProperty());
