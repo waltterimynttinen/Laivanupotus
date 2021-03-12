@@ -11,11 +11,12 @@ import javafx.scene.layout.GridPane;
 public class Controller {
     String playerOne;
     String playerTwo;
-    String bigShipAmount;
-    String midShipAmount;
-    String smallShipAmount;
+    String lentotukialusAmount;
+    String taistelulaivaAmount;
+    String risteilijaAmount;
+    String sukellusveneAmount;
+    String havittajaAmount;
     GameLogic gl = new GameLogic();
-    Boolean valid = true;
 
     @FXML
     private TextField playerOneTextField;
@@ -30,9 +31,6 @@ public class Controller {
     private ChoiceBox<String> boardSizeList;
 
     @FXML
-    protected GridPane grid5x5;
-
-    @FXML
     protected Button startGameButton;
 
     @FXML
@@ -42,23 +40,30 @@ public class Controller {
     protected Button playerSwitchButton;
 
     @FXML
-    private TextField bigShipAmountTextField;
+    private TextField lentotukialusAmountTextField;
 
     @FXML
-    private TextField midShipAmountTextField;
+    private TextField taistelulaivaAmountTextField;
 
     @FXML
-    private TextField smallShipAmountTextField;
+    private TextField risteilijaAmountTextField;
+
+    @FXML
+    private TextField havittajaAmountTextField;
+
+    @FXML
+    private TextField sukellusveneAmountTextField;
 
     @FXML
     protected void onStartButtonAction(ActionEvent event) throws IOException {
         String s = "" + boardSizeLabel.getText().charAt(0);
         int laudanKoko = Integer.parseInt(s);
-        playerTwo = playerTwoTextField.getText();
-        playerOne = playerOneTextField.getText();
-        bigShipAmount = (bigShipAmountTextField.getText());
-
+        
         if(true || (areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko))) {
+            playerTwo = playerTwoTextField.getText();
+            playerOne = playerOneTextField.getText();
+            lentotukialusAmount = (lentotukialusAmountTextField.getText());
+
             System.out.println(playerOne);
             System.out.println(playerTwo);
 

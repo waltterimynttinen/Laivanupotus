@@ -5,11 +5,18 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.harjoitustyoD.Controller">
    <children>
+      <ImageView fitHeight="951.0" fitWidth="1708.0" layoutX="-17.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@battleships.png" />
+         </image>
+      </ImageView>
       <Group />
       <TextField fx:id="playerOneTextField" layoutX="742.0" layoutY="239.0" />
       <TextField fx:id="playerTwoTextField" layoutX="742.0" layoutY="270.0" />
@@ -25,12 +32,12 @@
       <Label layoutX="616.0" layoutY="490.0" text="Lisää pelilaudan koko" />
       <ChoiceBox fx:id="boardSizeList" layoutX="743.0" layoutY="486.0" prefWidth="150.0" />
       <Label fx:id="boardSizeLabel" layoutX="905.0" layoutY="490.0" opacity="0.0" text="5x5" />
-      <TextField fx:id="bigShipAmountTextField" layoutX="742.0" layoutY="332.0" />
-      <Label layoutX="681.0" layoutY="336.0" text="Iso laiva:" />
-      <Label layoutX="620.0" layoutY="373.0" text="Keskikokoinen laiva:" />
-      <TextField fx:id="midShipAmountTextField" layoutX="742.0" layoutY="369.0" />
-      <Label layoutX="673.0" layoutY="407.0" text="Pieni laiva:" />
-      <TextField fx:id="smallShipAmountTextField" layoutX="742.0" layoutY="403.0" />
+      <TextField fx:id="lentotukialusAmountTextField" layoutX="742.0" layoutY="332.0" />
+      <Label layoutX="641.0" layoutY="336.0" text="Lentotukialuksia:" />
+      <Label layoutX="653.0" layoutY="373.0" text="Taistelulaivoja:" />
+      <TextField fx:id="taistelulaivaAmountTextField" layoutX="742.0" layoutY="369.0" />
+      <Label layoutX="677.0" layoutY="407.0" text="Hävittäjiä:" />
+      <TextField fx:id="havittajaAmountTextField" layoutX="742.0" layoutY="403.0" />
 
    </children>
 </AnchorPane>
