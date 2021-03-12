@@ -161,6 +161,4 @@ public class GameLogic {
             return false;
         }
     }
-
-
 }
