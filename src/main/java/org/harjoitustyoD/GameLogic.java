@@ -149,6 +149,18 @@ public class GameLogic {
             }
         });
     }
+    public boolean areShipsAllowed(int area, int lta, int tl, int ris, int sv, int hv){
+        int RA = area * area;
+        int AA = 5*lta + 4*tl + 3*ris + 3*sv + 2*hv;
+        if(RA >= 2*AA){
+            System.out.println("kelpaa");
+            return true;
+        }
+        else{
+            System.out.println("ei kelpaa");
+            return false;
+        }
+    }
 
 
 }

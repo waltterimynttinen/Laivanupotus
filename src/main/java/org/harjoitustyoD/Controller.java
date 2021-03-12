@@ -52,16 +52,15 @@ public class Controller {
 
     @FXML
     protected void onStartButtonAction(ActionEvent event) throws IOException {
+        String s = "" + boardSizeLabel.getText().charAt(0);
+        int laudanKoko = Integer.parseInt(s);
 
-        if(true) {
+        if(isValid(laudanKoko)) {
             playerTwo = playerTwoTextField.getText();
             playerOne = playerOneTextField.getText();
             bigShipAmount = (bigShipAmountTextField.getText());
             System.out.println(playerOne);
             System.out.println(playerTwo);
-
-            String s = "" + boardSizeLabel.getText().charAt(0);
-            int laudanKoko = Integer.parseInt(s);
 
             if (laudanKoko == 1) {
                 gl.createBoard1(10);
@@ -119,5 +118,13 @@ public class Controller {
 
 
 
+    }
+    protected boolean isValid(int koko){
+        if(koko == 1) {
+            return gl.areShipsAllowed(10, 1, 2, 3, 4, 5);
+        }
+        else{
+            return gl.areShipsAllowed(koko, 1, 2, 3, 4, 5);
+        }
     }
 }
