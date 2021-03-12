@@ -58,11 +58,12 @@ public class Controller {
     protected void onStartButtonAction(ActionEvent event) throws IOException {
         String s = "" + boardSizeLabel.getText().charAt(0);
         int laudanKoko = Integer.parseInt(s);
-
-        if(isValid(laudanKoko)) {
+        
+        if(true || (areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko))) {
             playerTwo = playerTwoTextField.getText();
             playerOne = playerOneTextField.getText();
             lentotukialusAmount = (lentotukialusAmountTextField.getText());
+
             System.out.println(playerOne);
             System.out.println(playerTwo);
 
@@ -123,7 +124,7 @@ public class Controller {
 
 
     }
-    protected boolean isValid(int koko){
+    protected boolean isBoardValid(int koko){
         if(koko == 1) {
             return gl.areShipsAllowed(10, 1, 2, 3, 4, 5);
         }
@@ -131,4 +132,14 @@ public class Controller {
             return gl.areShipsAllowed(koko, 1, 2, 3, 4, 5);
         }
     }
+    protected boolean areNamesValid(String p1, String p2){
+        if(p1.isEmpty() || p2.isEmpty()){
+            System.out.println("Valitse nimet pelaajille!!!!!!!");
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
 }
