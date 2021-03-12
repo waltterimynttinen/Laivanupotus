@@ -157,7 +157,7 @@ public class GameLogic {
             return true;
         }
         else{
-            System.out.println("ei kelpaa");
+            System.out.println("ei kelpaa. vähennä alusten määrää =))=)))");
             return false;
         }
     }
