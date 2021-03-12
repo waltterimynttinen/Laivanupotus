@@ -30,12 +30,6 @@ public class Board {
      * @param boardSize
      */
     protected void setBoardSize(int boardSize){
-        /*if(boardSize > 4 && boardSize < 11) {
-            this.boardSize = boardSize;
-        }else{
-           //Tähän alarm-pop-up-ikkuna?
-           System.out.println("Invalid size for the board!");
-        }*/
         this.boardSize = boardSize;
     }
 

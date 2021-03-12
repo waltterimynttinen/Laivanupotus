@@ -5,8 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
 import javafx.event.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
 
 public class Controller {
     String playerOne;
@@ -88,11 +86,6 @@ public class Controller {
         gl.switchScene("switchPlayerScene.fxml");
     }
 
-    @FXML
-    protected void onPlayerSwitchButtonAction(ActionEvent event) throws IOException {
-        gl.switchScene("boardP2.fxml");
-    }
-
     public void initialize() {
 
         for(int i = 5; i < 11; i++) {
@@ -100,32 +93,22 @@ public class Controller {
         }
         boardSizeList.setValue("5x5");
 
+        //Don't touch this :)
         boardSizeLabel.textProperty().bind(boardSizeList.valueProperty());
-
-
-        playerOneTextField.setOnKeyPressed(e -> {
-            if(e.getCode() == KeyCode.ENTER){
-                playerOne = playerOneTextField.getText();
-                System.out.println(playerOne);
-            }
-        });
-
-        playerTwoTextField.setOnKeyPressed(e -> {
-            if(e.getCode() == KeyCode.ENTER){
-                playerTwo = playerTwoTextField.getText();
-                System.out.println(playerTwo);
-            }
-        });
-
-
 
     }
     protected boolean isBoardValid(int koko){
+        int lta = Integer.parseInt(lentotukialusAmountTextField.getText());
+        int tl = Integer.parseInt(taistelulaivaAmountTextField.getText());
+        int ris = Integer.parseInt(risteilijaAmountTextField.getText());
+        int sv = Integer.parseInt(sukellusveneAmountTextField.getText());
+        int hv =  Integer.parseInt(havittajaAmountTextField.getText());
+
         if(koko == 1) {
-            return gl.areShipsAllowed(10, 1, 2, 3, 4, 5);
+            return gl.areShipsAllowed(10, lta, tl, ris, sv, hv);
         }
         else{
-            return gl.areShipsAllowed(koko, 1, 2, 3, 4, 5);
+            return gl.areShipsAllowed(koko, lta, tl, ris, sv, hv);
         }
     }
     protected boolean areNamesValid(String p1, String p2){
