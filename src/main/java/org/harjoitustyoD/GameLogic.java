@@ -20,13 +20,7 @@ public class GameLogic {
     private Board b1 = new Board();
     private Board b2 = new Board();
     private Pane ap = new Pane();
-    Button buttonShip3 = new Button("Lentotukialus");
-    Button buttonShip2 = new Button("Destroyer");
-    Button buttonShip1 = new Button("Tykkivene");
     Button button = new Button("liitävä lautane");
-    Label shipSize3LeftAmountLabel = new Label();
-    Label shipSize2LeftAmountLabel = new Label();
-    Label shipSize1LeftAmountLabel = new Label();
     boolean shipSize3isSelected = false;
     boolean shipSize2isSelected = false;
     boolean shipSize1isSelected = false;
@@ -34,6 +28,15 @@ public class GameLogic {
     public int cordsX2;
     public int cordsY2;
 
+
+    /**
+     * A method used for switching scenes
+     * so that it doesn't have to be done manually
+     *
+     * @param fxmlFile is used for retrieving fxml file, if 'vanilla javafx' is used,
+     *                 this fxml filename is replaced with a String containing --
+     * @throws IOException
+     */
     public void switchScene(String fxmlFile) throws IOException {
         if (fxmlFile.equals("--")) {
             Stage stage = Main.getStage();
@@ -48,20 +51,18 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Creates a new board utilizing the user input
+     * from the TextField in the main menu. This
+     * board belongs to the player 1
+     *
+     * @param size
+     */
     public void createBoard1(int size) {
         b1.setBoardSize(size);
         ap = b1.buildBoard();
-        shipSize3LeftAmountLabel.setText("Jäljellä: 1");
-        shipSize2LeftAmountLabel.setText("Jäljellä: 1");
-        shipSize1LeftAmountLabel.setText("Jäljellä: 1");
         placeShip(button);
-        hb.getChildren().add(button);
-        hb.getChildren().add(buttonShip3);
-        hb.getChildren().add(shipSize3LeftAmountLabel);
-        hb.getChildren().add(buttonShip2);
-        hb.getChildren().add(shipSize2LeftAmountLabel);
-        hb.getChildren().add(buttonShip1);
-        hb.getChildren().add(shipSize1LeftAmountLabel);
+        hb.getChildren().addAll(button);
         hb.setHgap(30);
         hb.setVgap(10);
         ap.getChildren().add(hb);
@@ -69,6 +70,14 @@ public class GameLogic {
         AnchorPane.setRightAnchor(hb, 10d);
 
     }
+
+    /**
+     * Creates a new board utilizing the user input
+     * from the TextField in the main menu. This
+     * board belongs to the player 2
+     *
+     * @param size
+     */
 
     public void createBoard2(int size) {
         b2.setBoardSize(size);
@@ -78,6 +87,10 @@ public class GameLogic {
     public void createShip(int size) {
 
     }
+
+    /**
+     * Places the ship on the board
+     */
 
     public void placeShip(Button button) {
         button.setOnMouseClicked(e -> {
@@ -157,7 +170,7 @@ public class GameLogic {
             return true;
         }
         else{
-            System.out.println("ei kelpaa");
+            System.out.println("ei kelpaa. vähennä alusten määrää =))=)))");
             return false;
         }
     }
