@@ -59,7 +59,7 @@ public class Controller {
         playerTwo = playerTwoTextField.getText();
         playerOne = playerOneTextField.getText();
 
-        if(areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko)) {
+        if(true || areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko)) {
 
             if (laudanKoko == 1) {
                 gl.createBoard1(10);
