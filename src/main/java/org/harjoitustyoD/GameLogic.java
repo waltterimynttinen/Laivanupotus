@@ -25,15 +25,16 @@ public class GameLogic {
     boolean shipSize2isSelected = false;
     boolean shipSize1isSelected = false;
     FlowPane hb = new FlowPane();
-    public int cordsX2;
-    public int cordsY2;
+    public int cordsX;
+    public int cordsY;
+    private Button b = new Button(":DDDD");
 
 
     /**
      * A method used for switching scenes
      * so that it doesn't have to be done manually
      *
-     * @param fxmlFile is used for the fxml file, if 'vanilla javafx' is used,
+     * @param fxmlFile is used for retrieving fxml file, if 'vanilla javafx' is used,
      *                 this fxml filename is replaced with a String containing --
      * @throws IOException
      */
@@ -58,7 +59,6 @@ public class GameLogic {
      *
      * @param size
      */
-
     public void createBoard1(int size) {
         b1.setBoardSize(size);
         ap = b1.buildBoard();
@@ -67,6 +67,7 @@ public class GameLogic {
         hb.setHgap(30);
         hb.setVgap(10);
         ap.getChildren().add(hb);
+        initializeMouseEvent();
 
         AnchorPane.setRightAnchor(hb, 10d);
 
@@ -89,80 +90,76 @@ public class GameLogic {
 
     }
 
+    private void initializeMouseEvent(){
+
+        b.setOnMousePressed(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)){
+                hb.getChildren().remove(b);
+                b1.grid.getChildren().remove(b);
+                ap.getChildren().add(b);
+            }
+            mousePressed(event, b);
+        });
+        b.setOnMouseDragged(event -> dragged(event, b));
+        b.setOnMouseReleased(event -> released(event, b));
+
+        hb.getChildren().add(b);
+    }//initializeMouseEvent()
+
+    private void mousePressed(MouseEvent event, Button b){
+        if (event.getButton().equals(MouseButton.PRIMARY)){
+            return;
+        }
+        else if(event.getButton().equals(MouseButton.SECONDARY)){
+            b1.grid.getChildren().remove(b);
+            hb.getChildren().add(b);
+            return;
+        }
+        else if(event.getButton().equals(MouseButton.MIDDLE)){
+            //todo
+            System.out.println("rotate ship");
+        }
+    }//mousePressed()
+
+    private void dragged(MouseEvent event, Button b){
+        cordsX = (int) (b.getLayoutX() + event.getX());
+        cordsY = (int) (b.getLayoutY() + event.getX());
+        b.setLayoutX(event.getSceneX());
+        b.setLayoutY(event.getSceneY());
+    }//dragged()
+
+    private void released(MouseEvent event, Button b){
+        if (event.getButton().equals(MouseButton.PRIMARY)){
+            int gridx = (int)b.getLayoutX()/ 50;
+            int gridy = (int)b.getLayoutY()/ 50;
+            cordsX = gridx;
+            cordsY = gridy;
+            ap.getChildren().remove(b);
+            b1.grid.add(b, cordsX, cordsY);
+            System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
+            return;
+        }
+        else if(event.getButton().equals(MouseButton.SECONDARY)){
+            //do something
+            return;
+        }
+        else if(event.getButton().equals(MouseButton.MIDDLE)){
+            //do something
+        }
+    }//released()
+
+
     /**
      * Places the ship on the board
      */
-
-    public void placeShip(Button button) {
-        button.setOnMouseClicked(e -> {
-
-            if (e.getButton() == MouseButton.PRIMARY) {
-                hb.getChildren().remove(button);
-                ap.getChildren().remove(button);
-                ap.getChildren().add(button);
-                return;
-            } else if (e.getButton() == MouseButton.SECONDARY) {
-                System.out.println("place here");
-                System.out.println(b1.getCordsX());
-                hb.getChildren().remove(button);
-                ap.getChildren().remove(button);
-                //b1.grid.getChildren().add(button);
-                b1.grid.add(button, b1.getCordsX(), b1.getCordsY());
-            }
+    private void placeShip(Button button) {
+        b1.grid.setOnMouseMoved(e -> {
+            //System.out.println("asdasdsa"+b1.grid.getWidth());
         });
+    }//placeShip
 
-        /*button.setOnMouseReleased(e->{
-            System.out.println("place here");
-            System.out.println(b1.getCordsX());
-            hb.getChildren().remove(button);
-            ap.getChildren().remove(button);
-            //b1.grid.getChildren().add(button);
-            b1.grid.add(button, b1.getCordsX(), b1.getCordsY());
 
-        });*/
 
-        button.setOnMouseDragged(e -> {
-            button.setLayoutX(e.getSceneX());
-            button.setLayoutY(e.getSceneY());
-            System.out.println("dragging button");
-            for (int i = 0; i < b1.getBoardSize(); i++) {
-                ColumnConstraints c = new ColumnConstraints(50);
-                //b1.grid.getColumnConstraints().add(c);
-
-                double xx = (int) e.getX() * 2;
-                double yy = (e.getY() * 2);
-                int y = (int) yy / 100;
-                int x = (int) xx / 100;
-                y++;
-                x++;
-                System.out.println(x + " x " + y);
-                cordsX2 = x;
-                cordsY2 = y;
-                System.out.println("column");
-                System.out.println("CordsX on: " + cordsX2);
-                System.out.println("CordsY on: " + cordsY2);
-
-            }
-            for (int i = 0; i < b1.getBoardSize(); i++) {
-                RowConstraints c = new RowConstraints(50);
-                //b1.grid.getRowConstraints().add(c);
-
-                double xx = (int) e.getX() * 2;
-                double yy = (e.getY() * 2);
-                int y = (int) yy / 100;
-                int x = (int) xx / 100;
-                y++;
-                x++;
-                System.out.println(x + " x " + y);
-                cordsX2 = x;
-                cordsY2 = y;
-                System.out.println("row");
-                System.out.println("CordsX on: " + cordsX2);
-                System.out.println("CordsY on: " + cordsY2);
-
-            }
-        });
-    }
     public boolean areShipsAllowed(int area, int lta, int tl, int ris, int sv, int hv){
         int RA = area * area;
         int AA = 5*lta + 4*tl + 3*ris + 3*sv + 2*hv;

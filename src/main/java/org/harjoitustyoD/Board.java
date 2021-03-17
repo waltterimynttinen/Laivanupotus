@@ -52,12 +52,14 @@ public class Board {
                 y++;
                 x++;
                 System.out.println(x + " x " + y);
-                cordsX = x;
+                // TARVITAAN MAHDOLLISESTI MYÖHEMMIN
+                /*cordsX = x;
                 cordsY = y;
                 System.out.println("CordsX on: "+cordsX);
-                System.out.println("CordsY on: "+cordsY);
+                System.out.println("CordsY on: "+cordsY);*/
             });
-        }
+        }//for1
+        
         for (int i = 0; i < boardSize; i++) {
             RowConstraints c = new RowConstraints(50);
             grid.getRowConstraints().add(c);
@@ -69,12 +71,14 @@ public class Board {
                 y++;
                 x++;
                 System.out.println(x + " x " + y);
-                cordsX = x;
+                // TARVITAAN MAHDOLLISESTI MYÖHEMMIN
+                /*cordsX = x;
                 cordsY = y;
                 System.out.println("CordsX on: "+cordsX);
-                System.out.println("CordsY on: "+cordsY);
+                System.out.println("CordsY on: "+cordsY);*/
             });
-        }
+        }//for2
+
         // Make the lines visible for the board
         grid.setGridLinesVisible(true);
 
@@ -84,15 +88,7 @@ public class Board {
 
         return aPane;
 
-    }
-
-    public int getCordsX(){
-        return cordsX;
-    }
-
-    public int getCordsY(){
-        return cordsY;
-    }
+    }// buildBoard()
 
     public GridPane getGrid(){
         return grid;
@@ -102,6 +98,6 @@ public class Board {
         return boardSize;
     }
 
-}
+} // class Board
 
 
