@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,7 +28,8 @@ public class GameLogic {
     FlowPane hb = new FlowPane();
     public int cordsX;
     public int cordsY;
-    private Button b = new Button(":DDDD");
+    private Rectangle b = new Rectangle();
+
 
 
     /**
@@ -63,11 +65,13 @@ public class GameLogic {
         b1.setBoardSize(size);
         ap = b1.buildBoard();
         placeShip(button);
-        hb.getChildren().addAll(button);
+        //hb.getChildren().addAll(b);
         hb.setHgap(30);
         hb.setVgap(10);
         ap.getChildren().add(hb);
         initializeMouseEvent();
+        b.setHeight(15);
+        b.setWidth(150);
 
         AnchorPane.setRightAnchor(hb, 10d);
 
@@ -106,7 +110,7 @@ public class GameLogic {
         hb.getChildren().add(b);
     }//initializeMouseEvent()
 
-    private void mousePressed(MouseEvent event, Button b){
+    private void mousePressed(MouseEvent event, Rectangle b){
         if (event.getButton().equals(MouseButton.PRIMARY)){
             return;
         }
@@ -121,14 +125,14 @@ public class GameLogic {
         }
     }//mousePressed()
 
-    private void dragged(MouseEvent event, Button b){
+    private void dragged(MouseEvent event, Rectangle b){
         cordsX = (int) (b.getLayoutX() + event.getX());
         cordsY = (int) (b.getLayoutY() + event.getX());
         b.setLayoutX(event.getSceneX());
         b.setLayoutY(event.getSceneY());
     }//dragged()
 
-    private void released(MouseEvent event, Button b){
+    private void released(MouseEvent event, Rectangle b){
         if (event.getButton().equals(MouseButton.PRIMARY)){
             int gridx = (int)b.getLayoutX()/ 50;
             int gridy = (int)b.getLayoutY()/ 50;

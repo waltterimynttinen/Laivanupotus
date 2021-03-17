@@ -59,7 +59,7 @@ public class Board {
                 System.out.println("CordsY on: "+cordsY);*/
             });
         }//for1
-        
+
         for (int i = 0; i < boardSize; i++) {
             RowConstraints c = new RowConstraints(50);
             grid.getRowConstraints().add(c);
