@@ -21,7 +21,6 @@ public class GameLogic {
     private Board b1 = new Board();
     private Board b2 = new Board();
     private Pane ap = new Pane();
-    Button button = new Button("liitävä lautane");
     boolean shipSize3isSelected = false;
     boolean shipSize2isSelected = false;
     boolean shipSize1isSelected = false;
@@ -29,7 +28,7 @@ public class GameLogic {
     public int cordsX;
     public int cordsY;
     private Rectangle b = new Rectangle();
-
+    private Rectangle c = new Rectangle();
 
 
     /**
@@ -64,17 +63,17 @@ public class GameLogic {
     public void createBoard1(int size) {
         b1.setBoardSize(size);
         ap = b1.buildBoard();
-        placeShip(button);
-        //hb.getChildren().addAll(b);
         hb.setHgap(30);
         hb.setVgap(10);
         ap.getChildren().add(hb);
-        initializeMouseEvent();
-        b.setHeight(15);
+        initializeMouseEvent(b);
+        initializeMouseEvent(c);
+        b.setHeight(35);
         b.setWidth(150);
+        c.setHeight(35);
+        c.setWidth(100);
 
         AnchorPane.setRightAnchor(hb, 10d);
-
     }
 
     /**
@@ -90,11 +89,11 @@ public class GameLogic {
         b2.buildBoard();
     }
 
-    public void createShip(int size) {
+    public void createShips(int size) {
 
     }
 
-    private void initializeMouseEvent(){
+    private void initializeMouseEvent(Rectangle b){
 
         b.setOnMousePressed(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)){
@@ -139,6 +138,7 @@ public class GameLogic {
             cordsX = gridx;
             cordsY = gridy;
             ap.getChildren().remove(b);
+            //if(cordsX = olemas, älä pleissaa)
             b1.grid.add(b, cordsX, cordsY);
             System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
             return;
