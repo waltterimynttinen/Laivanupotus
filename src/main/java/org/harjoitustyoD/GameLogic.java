@@ -24,6 +24,10 @@ public class GameLogic {
     private Pane ap = new Pane();
     protected ArrayList<Ship> playerOneShipContainer = new ArrayList<>();
     protected ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
+    protected ArrayList<Rectangle> pOneRectangles = new ArrayList<>();
+    protected ArrayList<Rectangle> pTwoRectangles = new ArrayList<>();
+
+
     FlowPane hb = new FlowPane();
     public int cordsX;
     public int cordsY;
@@ -66,14 +70,27 @@ public class GameLogic {
         hb.setHgap(30);
         hb.setVgap(10);
         ap.getChildren().add(hb);
+        for(int i = 0; i < pOneRectangles.size(); i++){
+            System.out.println("Rectanlesize = "+pOneRectangles.size());
+            hb.getChildren().add(pOneRectangles.get(i));
+            initializeMouseEvent(pOneRectangles.get(i));
+        }
+
+
+
+        AnchorPane.setRightAnchor(hb, 10d);
+
+
+
+        /*
         initializeMouseEvent(b);
         initializeMouseEvent(c);
         b.setHeight(35);
         b.setWidth(150);
         c.setHeight(35);
         c.setWidth(100);
+         */
 
-        AnchorPane.setRightAnchor(hb, 10d);
     }
 
     /**
@@ -86,7 +103,17 @@ public class GameLogic {
 
     public void createBoard2(int size) {
         b2.setBoardSize(size);
-        b2.buildBoard();
+        /*ap2 = b2.buildBoard();
+        hb.setHgap(30);
+        hb.setVgap(10);
+        ap.getChildren().add(hb);
+        initializeMouseEvent(b);
+        initializeMouseEvent(c);
+        b.setHeight(35);
+        b.setWidth(150);
+        c.setHeight(35);
+        c.setWidth(100);
+        AnchorPane.setRightAnchor(hb, 10d);*/
     }
 
     /**
@@ -101,51 +128,93 @@ public class GameLogic {
      */
 
     public void createShips(int lta, int tl, int ris, int sv, int hv) {
+
         //Empty the old one if it exist
         if(!(playerOneShipContainer.size() == 0) && !(playerTwoShipContainer.size() == 0)) {
             playerOneShipContainer.clear();
             playerTwoShipContainer.clear();
         }
+
         // Lentotukialusten luonti
+        int indeksi = 0;
         if(lta != 0) {
-            for (int i = lta; i > 0; i--) {
+            for (int i = 0; i < lta; i++) {
                 playerOneShipContainer.add(new Lentotukialus(i));
+                pOneRectangles.add(new Rectangle());
+                pOneRectangles.get(indeksi).setHeight(30);
+                pOneRectangles.get(indeksi).setWidth(250);
+
                 playerTwoShipContainer.add(new Lentotukialus(i));
+                pTwoRectangles.add(new Rectangle());
+                pTwoRectangles.get(indeksi).setHeight(30);
+                pTwoRectangles.get(indeksi).setWidth(250);
+                indeksi++;
             }
         }
         //Taistelulaivojen luonti
         if(tl != 0) {
-            for (int i = tl; i > 0; i--) {
+            for (int i = 0; i < tl; i++) {
                 playerOneShipContainer.add(new Taistelulaiva(i));
+                pOneRectangles.add(new Rectangle());
+                pOneRectangles.get(indeksi).setHeight(30);
+                pOneRectangles.get(indeksi).setWidth(200);
+
                 playerTwoShipContainer.add(new Taistelulaiva(i));
+                pTwoRectangles.add(new Rectangle());
+                pTwoRectangles.get(indeksi).setHeight(30);
+                pTwoRectangles.get(indeksi).setWidth(200);
+                indeksi++;
             }
         }
 
         //Risteilijöiden luonti
         if(ris != 0) {
-            for (int i = ris; i > 0; i--) {
+            for (int i = 0; i < ris; i++) {
                 playerOneShipContainer.add(new Risteilija(i));
+                pOneRectangles.add(new Rectangle());
+                pOneRectangles.get(indeksi).setHeight(30);
+                pOneRectangles.get(indeksi).setWidth(150);
+
                 playerTwoShipContainer.add(new Risteilija(i));
+                pTwoRectangles.add(new Rectangle());
+                pTwoRectangles.get(indeksi).setHeight(30);
+                pTwoRectangles.get(indeksi).setWidth(150);
+                indeksi++;
             }
         }
 
         //Sukeltajapaattien =) luonti
         if(sv != 0) {
-            for (int i = sv; i > 0; i--) {
+            for (int i = 0; i < sv; i++) {
                 playerOneShipContainer.add(new Sukellusvene(i));
+                pOneRectangles.add(new Rectangle());
+                pOneRectangles.get(indeksi).setHeight(30);
+                pOneRectangles.get(indeksi).setWidth(150);
+
                 playerTwoShipContainer.add(new Sukellusvene(i));
+                pTwoRectangles.add(new Rectangle());
+                pTwoRectangles.get(indeksi).setHeight(30);
+                pTwoRectangles.get(indeksi).setWidth(150);
+                indeksi++;
             }
         }
 
         //Hävittäjien luonti
         if(hv != 0) {
-            for (int i = hv; i > 0; i--) {
+            for (int i = 0; i < hv; i++) {
                 playerOneShipContainer.add(new Havittaja(i));
+                pOneRectangles.add(new Rectangle());
+                pOneRectangles.get(indeksi).setHeight(30);
+                pOneRectangles.get(indeksi).setWidth(100);
+
                 playerTwoShipContainer.add(new Havittaja(i));
+                pTwoRectangles.add(new Rectangle());
+                pTwoRectangles.get(indeksi).setHeight(30);
+                pTwoRectangles.get(indeksi).setWidth(100);
+                indeksi++;
             }
         }
-
-    }
+    }//createShips()
 
     private void initializeMouseEvent(Rectangle b){
 
@@ -160,7 +229,8 @@ public class GameLogic {
         b.setOnMouseDragged(event -> dragged(event, b));
         b.setOnMouseReleased(event -> released(event, b));
 
-        hb.getChildren().add(b);
+        //hb.getChildren().add(b);
+
     }//initializeMouseEvent()
 
     private void mousePressed(MouseEvent event, Rectangle b){

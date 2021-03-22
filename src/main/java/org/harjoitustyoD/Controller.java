@@ -78,7 +78,6 @@ public class Controller {
         int hv =  Integer.parseInt(havittajaAmountTextField.getText());
 
         if(true || areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko)) {
-
             gl.createShips(lta, tl, ris, sv, hv);
             if (laudanKoko == 1) {
                 gl.createBoard1(10);
