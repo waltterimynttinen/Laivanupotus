@@ -102,10 +102,10 @@ public class GameLogic {
 
     public void createShips(int lta, int tl, int ris, int sv, int hv) {
         //Empty the old one if it exist
-        /*if(!(playerOneShipContainer.size() == 0) && !(playerTwoShipContainer.size() == 0)) {
+        if(!(playerOneShipContainer.size() == 0) && !(playerTwoShipContainer.size() == 0)) {
             playerOneShipContainer.clear();
             playerTwoShipContainer.clear();
-        }*/
+        }
         // Lentotukialusten luonti
         if(lta != 0) {
             for (int i = lta; i > 0; i--) {

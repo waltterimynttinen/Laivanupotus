@@ -1,2 +1,5 @@
 TÄNNE KAIKKI TEHTÄVÄT ASIAT:
--teemu tekee gamelogicissa callataan createshipsiä, ja listaa mihin laivat laitetaan
+- ArrayListin verran rectangleja täytyy luoda =)
+
+TEHTY:
+- teemu tekee gamelogicissa callataan createshipsiä, ja listaa mihin laivat laitetaan
