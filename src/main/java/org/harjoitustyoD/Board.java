@@ -51,7 +51,7 @@ public class Board {
                 int x = (int) xx/100;
                 y++;
                 x++;
-                System.out.println(x + " x " + y);
+                //System.out.println(x + " x " + y);
                 // TARVITAAN MAHDOLLISESTI MYÖHEMMIN
                 /*cordsX = x;
                 cordsY = y;
@@ -70,7 +70,7 @@ public class Board {
                 int x = (int) xx/100;
                 y++;
                 x++;
-                System.out.println(x + " x " + y);
+                //System.out.println(x + " x " + y);
                 // TARVITAAN MAHDOLLISESTI MYÖHEMMIN
                 /*cordsX = x;
                 cordsY = y;
