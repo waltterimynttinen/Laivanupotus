@@ -15,15 +15,15 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class GameLogic {
     private Board b1 = new Board();
     private Board b2 = new Board();
     private Pane ap = new Pane();
-    boolean shipSize3isSelected = false;
-    boolean shipSize2isSelected = false;
-    boolean shipSize1isSelected = false;
+    protected ArrayList<Ship> playerOneShipContainer = new ArrayList<>();
+    protected ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
     FlowPane hb = new FlowPane();
     public int cordsX;
     public int cordsY;
@@ -89,7 +89,61 @@ public class GameLogic {
         b2.buildBoard();
     }
 
-    public void createShips(int size) {
+    /**
+     * Luodaan molempien pelaajien listoihin oikea määrä
+     * laivoja, jotka haetaan tekstikentistä peliä aloitettaessa
+     *
+     * @param lta
+     * @param tl
+     * @param ris
+     * @param sv
+     * @param hv
+     */
+
+    public void createShips(int lta, int tl, int ris, int sv, int hv) {
+        //Empty the old one if it exist
+        /*if(!(playerOneShipContainer.size() == 0) && !(playerTwoShipContainer.size() == 0)) {
+            playerOneShipContainer.clear();
+            playerTwoShipContainer.clear();
+        }*/
+        // Lentotukialusten luonti
+        if(lta != 0) {
+            for (int i = lta; i > 0; i--) {
+                playerOneShipContainer.add(new Lentotukialus(i));
+                playerTwoShipContainer.add(new Lentotukialus(i));
+            }
+        }
+        //Taistelulaivojen luonti
+        if(tl != 0) {
+            for (int i = tl; i > 0; i--) {
+                playerOneShipContainer.add(new Taistelulaiva(i));
+                playerTwoShipContainer.add(new Taistelulaiva(i));
+            }
+        }
+
+        //Risteilijöiden luonti
+        if(ris != 0) {
+            for (int i = ris; i > 0; i--) {
+                playerOneShipContainer.add(new Risteilija(i));
+                playerTwoShipContainer.add(new Risteilija(i));
+            }
+        }
+
+        //Sukeltajapaattien =) luonti
+        if(sv != 0) {
+            for (int i = sv; i > 0; i--) {
+                playerOneShipContainer.add(new Sukellusvene(i));
+                playerTwoShipContainer.add(new Sukellusvene(i));
+            }
+        }
+
+        //Hävittäjien luonti
+        if(hv != 0) {
+            for (int i = hv; i > 0; i--) {
+                playerOneShipContainer.add(new Havittaja(i));
+                playerTwoShipContainer.add(new Havittaja(i));
+            }
+        }
 
     }
 
@@ -176,4 +230,12 @@ public class GameLogic {
             return false;
         }
     }
+
+    protected ArrayList<Ship> getPlayerOneShipContainer(){
+        return playerOneShipContainer;
+    }
+    protected ArrayList<Ship> getPlayerTwoShipContainer(){
+        return playerTwoShipContainer;
+    }
+
 }

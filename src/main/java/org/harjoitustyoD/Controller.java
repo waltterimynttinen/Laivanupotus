@@ -16,6 +16,12 @@ public class Controller {
     String havittajaAmount;
     GameLogic gl = new GameLogic();
 
+    /*private int lta;
+    private int tl;
+    private int ris;
+    private int sv;
+    private int hv;*/
+
     @FXML
     private TextField playerOneTextField;
 
@@ -54,23 +60,40 @@ public class Controller {
 
     @FXML
     protected void onStartButtonAction(ActionEvent event) throws IOException {
+        /*
+        When this button action is triggered on the main menu, the game is
+        started and all the needed values are fetched from their preassigned
+        TextFields.
+         */
+
         String s = "" + boardSizeLabel.getText().charAt(0);
         int laudanKoko = Integer.parseInt(s);
         playerTwo = playerTwoTextField.getText();
         playerOne = playerOneTextField.getText();
 
+        int lta = Integer.parseInt(lentotukialusAmountTextField.getText());
+        int tl = Integer.parseInt(taistelulaivaAmountTextField.getText());
+        int ris = Integer.parseInt(risteilijaAmountTextField.getText());
+        int sv = Integer.parseInt(sukellusveneAmountTextField.getText());
+        int hv =  Integer.parseInt(havittajaAmountTextField.getText());
+
         if(true || areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko)) {
 
+            gl.createShips(lta, tl, ris, sv, hv);
             if (laudanKoko == 1) {
                 gl.createBoard1(10);
                 gl.createBoard2(10);
                 System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
                 gl.switchScene("--");
+                System.out.println(gl.getPlayerOneShipContainer());
+                System.out.println(gl.getPlayerTwoShipContainer());
             } else {
                 gl.createBoard1(laudanKoko);
                 gl.createBoard2(laudanKoko);
                 System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
                 gl.switchScene("--");
+                System.out.println(gl.getPlayerOneShipContainer());
+                System.out.println(gl.getPlayerTwoShipContainer());
             }
         }else{
             System.out.println("ei kelpaa >:(");
@@ -118,7 +141,7 @@ public class Controller {
 
     /**
      * Checks whether or not the names are
-     * null input by the user
+     * null that have been input by the user
      * @param p1
      * @param p2
      */
