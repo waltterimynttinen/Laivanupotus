@@ -1,5 +1,7 @@
 TÄNNE KAIKKI TEHTÄVÄT ASIAT:
-- ArrayListin verran rectangleja täytyy luoda =)
+- Kari vois korjata gridin tahattoman laajenemisen :)
+- Waltteri tekee ap:n, hb:n yms b2:lle ja b1:lle erikseen (b1 tehty jo)
 
 TEHTY:
 - teemu tekee gamelogicissa callataan createshipsiä, ja listaa mihin laivat laitetaan
+- ArrayListin verran rectangleja täytyy luoda =)
