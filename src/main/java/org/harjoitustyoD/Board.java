@@ -86,6 +86,7 @@ public class Board {
         aPane.getChildren().add(grid);
         AnchorPane.setLeftAnchor(grid, 10d);
 
+
         return aPane;
     }// buildBoard()
 
