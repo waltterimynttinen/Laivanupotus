@@ -1,2 +1,2 @@
 TÄNNE KAIKKI TEHTÄVÄT ASIAT:
--
+-teemu tekee gamelogicissa callataan createshipsiä, ja listaa mihin laivat laitetaan
