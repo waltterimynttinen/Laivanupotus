@@ -10,13 +10,14 @@ public class Ship {
     private int hp;
     private boolean destroyed;
     private int id;
-    private boolean isSelected;
+    private boolean isHorizontal;
 
     public Ship(int size, int id){
         this.size = size;
         this.hp = size;
         this.destroyed = false;
         this.id = id;
+        this.isHorizontal = true;
     }
 
     public int getId(){

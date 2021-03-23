@@ -1,7 +1,11 @@
 TÄNNE KAIKKI TEHTÄVÄT ASIAT:
-- fxml-tiedostot väliruuduille
-- Laivoille rotate
-- Täytyy fixata ettei laivoja voisi laittaa päällekkäin, ja että laiva pysyisi gridin sisässä. (täytyy soveltaa laivojen size:ä ja ottaa huomioon rotate)
+- fxml-tiedostot väliruuduille || KARI
+- Laivoille rotate, tehty osittain || TEEMU
+- Täytyy fixata ettei laivoja voisi laittaa päällekkäin, ja että laiva pysyisi gridin sisässä. (täytyy soveltaa laivojen size:ä ja ottaa huomioon rotate) || TEEMU
+- Ghostnodejen miinuskoordinaattipuolen korjaus || KARI
+- Ampumisen toteutus || WALTTERI
+
+
 
 TEHTY:
 - teemu tekee gamelogicissa callataan createshipsiä, ja listaa mihin laivat laitetaan

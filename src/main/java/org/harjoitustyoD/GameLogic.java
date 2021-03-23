@@ -11,7 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -59,11 +61,11 @@ public class GameLogic {
         if (fxmlFile.equals("--")) {
             switch(boardNumber){
                 case 1:
-                    stage.setScene(scene2);
+                    stage.setScene(scene1);
                     stage.show();
                     break;
                 case 2:
-                    stage.setScene(scene1);
+                    stage.setScene(scene2);
                     stage.show();
                     break;
             }
@@ -92,7 +94,7 @@ public class GameLogic {
         Button switchb2 = new Button("Switch to board 2");
         switchb2.setOnAction(e->{
             try {
-                setNumber(1);
+                setNumber(2);
                 switchScene("--");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -123,7 +125,7 @@ public class GameLogic {
         Button switchb1 = new Button("Switch back to board 1");
         switchb1.setOnAction(e->{
             try {
-                setNumber(2);
+                setNumber(1);
                 switchScene("--");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -166,11 +168,13 @@ public class GameLogic {
                 pOneRectangles.add(new Rectangle());
                 pOneRectangles.get(indeksi).setHeight(30);
                 pOneRectangles.get(indeksi).setWidth(250);
+                pOneRectangles.get(indeksi).setFill(Color.GREEN);
 
                 playerTwoShipContainer.add(new Lentotukialus(i));
                 pTwoRectangles.add(new Rectangle());
                 pTwoRectangles.get(indeksi).setHeight(30);
                 pTwoRectangles.get(indeksi).setWidth(250);
+                pOneRectangles.get(indeksi).setFill(Color.GREEN);
                 indeksi++;
             }
         }
@@ -291,23 +295,39 @@ public class GameLogic {
                 System.out.println("too far Y and X "+cordsX);
                 ap1.getChildren().remove(b);
                 board.grid.add(b, board.getBoardSize()-1, board.getBoardSize()-1);
-                System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
+                //System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
                 return;
             }
             if(cordsX>board.getBoardSize()-1){
                 System.out.println("too far X: "+cordsX);
                 ap1.getChildren().remove(b);
                 board.grid.add(b, b1.getBoardSize()-1, cordsY);
-                System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
+                //System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
                 return;
             }
             if(cordsY>board.getBoardSize()-1){
                 System.out.println("too far Y: "+cordsX);
                 ap1.getChildren().remove(b);
                 board.grid.add(b, cordsX, board.getBoardSize()-1);
-                System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
+                //System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
                 return;
             }
+            // NOT DONE YET
+            if(true) {
+                int index = getShipIndex(b);
+                if (boardNumber == 1) {
+                    playerOneShipContainer.get(index).setStartX(cordsX);
+                    playerOneShipContainer.get(index).setStartY(cordsY);
+                    System.out.println(playerOneShipContainer.get(index).getStartX() + " homo " + playerOneShipContainer.get(index).getStartY());
+
+                } else if (boardNumber == 2) {
+                    playerTwoShipContainer.get(index).setStartX(cordsX);
+                    playerTwoShipContainer.get(index).setStartY(cordsY);
+
+                }
+            }
+
+
             ap1.getChildren().remove(b);
             board.grid.add(b, cordsX, cordsY);
             return;
@@ -317,21 +337,16 @@ public class GameLogic {
             return;
         }
         else if(event.getButton().equals(MouseButton.MIDDLE)){
-            //do something
+            rotateShip(b);
         }
     }//released()
 
+    protected boolean isSpotTaken(Ship laivuliini){
 
-    /**
-     * Places the ship on the board
-     */
-    private void placeShip(Button button, Board board) {
-        board.grid.setOnMouseMoved(e -> {
-            //System.out.println("asdasdsa"+b1.grid.getWidth());
-        });
-    }//placeShip
+        //if(laivuliini.getStartX())
 
-
+        return true;
+    }
 
     public boolean areShipsAllowed(int area, int lta, int tl, int ris, int sv, int hv){
         int RA = area * area;
@@ -358,4 +373,29 @@ public class GameLogic {
     protected void setNumber(int number){
         this.boardNumber = number;
     }
+
+    protected void rotateShip(Rectangle rectangle){
+        //if(getShipIndex(rectangle) == )
+        //rectangle.getTransforms().add(new Rotate(90, cordsX+30,cordsY-30));
+
+        double uusiLeveys = rectangle.getHeight();
+        double uusiPituus = rectangle.getWidth();
+        rectangle.setHeight(uusiPituus);
+        rectangle.setWidth(uusiLeveys);
+
+    }
+
+    protected int getShipIndex(Rectangle rectangle){
+        int index;
+        if(boardNumber == 1){
+            index = pOneRectangles.indexOf(rectangle);
+            return index;
+        }
+        if(boardNumber == 2){
+            index = pTwoRectangles.indexOf(rectangle);
+            return index;
+        }
+        return 0;
+    }
+
 }
