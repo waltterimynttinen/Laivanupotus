@@ -21,19 +21,31 @@ import java.util.ArrayList;
 public class GameLogic {
     private Board b1 = new Board();
     private Board b2 = new Board();
-    private Pane ap = new Pane();
+    private AnchorPane ap1 = new AnchorPane();
+    private AnchorPane ap2 = new AnchorPane();
     protected ArrayList<Ship> playerOneShipContainer = new ArrayList<>();
     protected ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
     protected ArrayList<Rectangle> pOneRectangles = new ArrayList<>();
     protected ArrayList<Rectangle> pTwoRectangles = new ArrayList<>();
 
 
-    FlowPane hb = new FlowPane();
+    private FlowPane fp1 = new FlowPane();
+    private FlowPane fp2 = new FlowPane();
+    private Button switchb2;
+    private int boardNumber;
+    private Stage stage;
+    private Scene scene1;
+    private Scene scene2;
     public int cordsX;
     public int cordsY;
-    private Rectangle b = new Rectangle();
-    private Rectangle c = new Rectangle();
 
+    public void createScenes(){
+        scene1 = new Scene(ap1, 1600,900);
+        scene2 = new Scene(ap2, 1600, 900);
+        stage = Main.getStage();
+        stage.setScene(scene1);
+        stage.show();
+    }
 
     /**
      * A method used for switching scenes
@@ -45,10 +57,18 @@ public class GameLogic {
      */
     public void switchScene(String fxmlFile) throws IOException {
         if (fxmlFile.equals("--")) {
-            Stage stage = Main.getStage();
-            stage.setScene(new Scene(ap, 1600, 900));
-            stage.show();
-        } else {
+            switch(boardNumber){
+                case 1:
+                    stage.setScene(scene2);
+                    stage.show();
+                    break;
+                case 2:
+                    stage.setScene(scene1);
+                    stage.show();
+                    break;
+            }
+        }
+        else {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
             Scene scene = new Scene(root);
             Stage stage = Main.getStage();
@@ -66,33 +86,27 @@ public class GameLogic {
      */
     public void createBoard1(int size) {
         b1.setBoardSize(size);
-        ap = b1.buildBoard();
-        hb.setHgap(30);
-        hb.setVgap(10);
-        ap.getChildren().add(hb);
+        ap1 = b1.buildBoard();
+        fp1.setHgap(30);
+        fp1.setVgap(10);
+        Button switchb2 = new Button("Switch to board 2");
+        switchb2.setOnAction(e->{
+            try {
+                setNumber(1);
+                switchScene("--");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        ap1.getChildren().addAll(fp1, switchb2);
         for(int i = 0; i < pOneRectangles.size(); i++){
             System.out.println("Rectanlesize = "+pOneRectangles.size());
-            hb.getChildren().add(pOneRectangles.get(i));
-            initializeMouseEvent(pOneRectangles.get(i));
+            fp1.getChildren().add(pOneRectangles.get(i));
+            initializeMouseEvent(pOneRectangles.get(i), b1, ap1, fp1);
         }
-
-
-
-        AnchorPane.setRightAnchor(hb, 10d);
-
-
-
-        /*
-        initializeMouseEvent(b);
-        initializeMouseEvent(c);
-        b.setHeight(35);
-        b.setWidth(150);
-        c.setHeight(35);
-        c.setWidth(100);
-         */
-
+        AnchorPane.setRightAnchor(fp1, 10d);
+        AnchorPane.setBottomAnchor(switchb2, 10d);
     }
-
     /**
      * Creates a new board utilizing the user input
      * from the TextField in the main menu. This
@@ -103,17 +117,26 @@ public class GameLogic {
 
     public void createBoard2(int size) {
         b2.setBoardSize(size);
-        /*ap2 = b2.buildBoard();
-        hb.setHgap(30);
-        hb.setVgap(10);
-        ap.getChildren().add(hb);
-        initializeMouseEvent(b);
-        initializeMouseEvent(c);
-        b.setHeight(35);
-        b.setWidth(150);
-        c.setHeight(35);
-        c.setWidth(100);
-        AnchorPane.setRightAnchor(hb, 10d);*/
+        ap2 = b2.buildBoard();
+        fp2.setHgap(30);
+        fp2.setVgap(10);
+        Button switchb1 = new Button("Switch back to board 1");
+        switchb1.setOnAction(e->{
+            try {
+                setNumber(2);
+                switchScene("--");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        ap2.getChildren().addAll(fp2,switchb1);
+        for(int i = 0; i < pTwoRectangles.size(); i++){
+            System.out.println("Rectanlesize = "+pTwoRectangles.size());
+            fp2.getChildren().add(pTwoRectangles.get(i));
+            initializeMouseEvent(pTwoRectangles.get(i), b2, ap2, fp2);
+        }
+        AnchorPane.setRightAnchor(fp2, 10d);
+        AnchorPane.setBottomAnchor(switchb1, 10d);
     }
 
     /**
@@ -216,30 +239,30 @@ public class GameLogic {
         }
     }//createShips()
 
-    private void initializeMouseEvent(Rectangle b){
+    private void initializeMouseEvent(Rectangle b, Board board, AnchorPane ap, FlowPane fp){
 
         b.setOnMousePressed(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)){
-                hb.getChildren().remove(b);
-                b1.grid.getChildren().remove(b);
+                fp.getChildren().remove(b);
+                board.grid.getChildren().remove(b);
                 ap.getChildren().add(b);
             }
-            mousePressed(event, b);
+            mousePressed(event, board, b, fp);
         });
         b.setOnMouseDragged(event -> dragged(event, b));
-        b.setOnMouseReleased(event -> released(event, b));
+        b.setOnMouseReleased(event -> released(event, board, b, ap));
 
         //hb.getChildren().add(b);
 
     }//initializeMouseEvent()
 
-    private void mousePressed(MouseEvent event, Rectangle b){
+    private void mousePressed(MouseEvent event, Board boardm, Rectangle b, FlowPane fp){
         if (event.getButton().equals(MouseButton.PRIMARY)){
             return;
         }
         else if(event.getButton().equals(MouseButton.SECONDARY)){
             b1.grid.getChildren().remove(b);
-            hb.getChildren().add(b);
+            fp.getChildren().add(b);
             return;
         }
         else if(event.getButton().equals(MouseButton.MIDDLE)){
@@ -256,7 +279,7 @@ public class GameLogic {
         b.setLayoutY(event.getSceneY());
     }//dragged()
 
-    private void released(MouseEvent event, Rectangle b){
+    private void released(MouseEvent event, Board board, Rectangle b, AnchorPane ap1){
         if (event.getButton().equals(MouseButton.PRIMARY)){
             int gridx = (int)b.getLayoutX()/ 50;
             int gridy = (int)b.getLayoutY()/ 50;
@@ -264,27 +287,27 @@ public class GameLogic {
             cordsY = gridy;
             if(cordsY>b1.getBoardSize()-1 && cordsX>b1.getBoardSize()-1){
                 System.out.println("too far Y and X "+cordsX);
-                ap.getChildren().remove(b);
-                b1.grid.add(b, b1.getBoardSize()-1, b1.getBoardSize()-1);
+                ap1.getChildren().remove(b);
+                board.grid.add(b, board.getBoardSize()-1, board.getBoardSize()-1);
                 System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
                 return;
             }
-            if(cordsX>b1.getBoardSize()-1){
+            if(cordsX>board.getBoardSize()-1){
                 System.out.println("too far X: "+cordsX);
-                ap.getChildren().remove(b);
-                b1.grid.add(b, b1.getBoardSize()-1, cordsY);
+                ap1.getChildren().remove(b);
+                board.grid.add(b, b1.getBoardSize()-1, cordsY);
                 System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
                 return;
             }
-            if(cordsY>b1.getBoardSize()-1){
+            if(cordsY>board.getBoardSize()-1){
                 System.out.println("too far Y: "+cordsX);
-                ap.getChildren().remove(b);
-                b1.grid.add(b, cordsX, b1.getBoardSize()-1);
+                ap1.getChildren().remove(b);
+                board.grid.add(b, cordsX, board.getBoardSize()-1);
                 System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
                 return;
             }
-            ap.getChildren().remove(b);
-            b1.grid.add(b, cordsX, cordsY);
+            ap1.getChildren().remove(b);
+            board.grid.add(b, cordsX, cordsY);
             return;
         }
         else if(event.getButton().equals(MouseButton.SECONDARY)){
@@ -300,8 +323,8 @@ public class GameLogic {
     /**
      * Places the ship on the board
      */
-    private void placeShip(Button button) {
-        b1.grid.setOnMouseMoved(e -> {
+    private void placeShip(Button button, Board board) {
+        board.grid.setOnMouseMoved(e -> {
             //System.out.println("asdasdsa"+b1.grid.getWidth());
         });
     }//placeShip
@@ -327,5 +350,10 @@ public class GameLogic {
     protected ArrayList<Ship> getPlayerTwoShipContainer(){
         return playerTwoShipContainer;
     }
-
+    protected Button getSwitchb2(){
+        return switchb2;
+    }
+    protected void setNumber(int number){
+        this.boardNumber = number;
+    }
 }

@@ -79,18 +79,19 @@ public class Controller {
 
         if(true || areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko)) {
             gl.createShips(lta, tl, ris, sv, hv);
+            gl.setNumber(1);
             if (laudanKoko == 1) {
                 gl.createBoard1(10);
                 gl.createBoard2(10);
                 System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
-                gl.switchScene("--");
+                gl.createScenes();
                 System.out.println(gl.getPlayerOneShipContainer());
                 System.out.println(gl.getPlayerTwoShipContainer());
             } else {
                 gl.createBoard1(laudanKoko);
                 gl.createBoard2(laudanKoko);
                 System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
-                gl.switchScene("--");
+                gl.createScenes();
                 System.out.println(gl.getPlayerOneShipContainer());
                 System.out.println(gl.getPlayerTwoShipContainer());
             }
@@ -156,5 +157,4 @@ public class Controller {
         }
 
     }
-
 }
