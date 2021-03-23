@@ -1,5 +1,5 @@
 TÄNNE KAIKKI TEHTÄVÄT ASIAT:
-- Waltteri tekee ap:n, hb:n yms b2:lle ja b1:lle erikseen (b1 tehty jo)
+- fxml-tiedostot väliruuduille
 - Laivoille rotate
 - Täytyy fixata ettei laivoja voisi laittaa päällekkäin, ja että laiva pysyisi gridin sisässä. (täytyy soveltaa laivojen size:ä ja ottaa huomioon rotate)
 
@@ -7,3 +7,4 @@ TEHTY:
 - teemu tekee gamelogicissa callataan createshipsiä, ja listaa mihin laivat laitetaan
 - ArrayListin verran rectangleja täytyy luoda =)
 - Kari vois korjata gridin tahattoman laajenemisen :)
+- Waltteri tekee ap:n, hb:n yms b2:lle ja b1:lle erikseen (b1 tehty jo)

@@ -261,9 +261,11 @@ public class GameLogic {
             return;
         }
         else if(event.getButton().equals(MouseButton.SECONDARY)){
-            b1.grid.getChildren().remove(b);
-            fp.getChildren().add(b);
-            return;
+            if(b1.grid.getChildren().contains(b)){
+                b1.grid.getChildren().remove(b);
+                fp.getChildren().add(b);
+                return;
+            }
         }
         else if(event.getButton().equals(MouseButton.MIDDLE)){
             //todo
