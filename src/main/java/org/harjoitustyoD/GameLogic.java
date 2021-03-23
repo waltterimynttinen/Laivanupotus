@@ -256,7 +256,7 @@ public class GameLogic {
 
     }//initializeMouseEvent()
 
-    private void mousePressed(MouseEvent event, Board boardm, Rectangle b, FlowPane fp){
+    private void mousePressed(MouseEvent event, Board board, Rectangle b, FlowPane fp){
         if (event.getButton().equals(MouseButton.PRIMARY)){
             return;
         }
