@@ -245,6 +245,7 @@ public class GameLogic {
         else if(event.getButton().equals(MouseButton.MIDDLE)){
             //todo
             System.out.println("rotate ship");
+
         }
     }//mousePressed()
 
@@ -261,10 +262,29 @@ public class GameLogic {
             int gridy = (int)b.getLayoutY()/ 50;
             cordsX = gridx;
             cordsY = gridy;
+            if(cordsY>b1.getBoardSize()-1 && cordsX>b1.getBoardSize()-1){
+                System.out.println("too far Y and X "+cordsX);
+                ap.getChildren().remove(b);
+                b1.grid.add(b, b1.getBoardSize()-1, b1.getBoardSize()-1);
+                System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
+                return;
+            }
+            if(cordsX>b1.getBoardSize()-1){
+                System.out.println("too far X: "+cordsX);
+                ap.getChildren().remove(b);
+                b1.grid.add(b, b1.getBoardSize()-1, cordsY);
+                System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
+                return;
+            }
+            if(cordsY>b1.getBoardSize()-1){
+                System.out.println("too far Y: "+cordsX);
+                ap.getChildren().remove(b);
+                b1.grid.add(b, cordsX, b1.getBoardSize()-1);
+                System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
+                return;
+            }
             ap.getChildren().remove(b);
-            //if(cordsX = olemas, älä pleissaa)
             b1.grid.add(b, cordsX, cordsY);
-            System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
             return;
         }
         else if(event.getButton().equals(MouseButton.SECONDARY)){
