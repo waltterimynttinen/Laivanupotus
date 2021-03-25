@@ -23,8 +23,12 @@ import java.util.ArrayList;
 public class GameLogic {
     private Board b1 = new Board();
     private Board b2 = new Board();
+    private Board b3 = new Board();
+    private Board b4 = new Board();
     private AnchorPane ap1 = new AnchorPane();
     private AnchorPane ap2 = new AnchorPane();
+    private AnchorPane ap3 = new AnchorPane();
+    private AnchorPane ap4 = new AnchorPane();
     protected ArrayList<Ship> playerOneShipContainer = new ArrayList<>();
     protected ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
     protected ArrayList<Rectangle> pOneRectangles = new ArrayList<>();
@@ -38,12 +42,16 @@ public class GameLogic {
     private Stage stage;
     private Scene scene1;
     private Scene scene2;
+    private Scene scene3;
+    private Scene scene4;
     public int cordsX;
     public int cordsY;
 
     public void createScenes(){
         scene1 = new Scene(ap1, 1600,900);
         scene2 = new Scene(ap2, 1600, 900);
+        scene3 = new Scene(ap3, 1600, 900);
+        scene4 = new Scene(ap4, 1600, 900);
         stage = Main.getStage();
         stage.setScene(scene1);
         stage.show();
@@ -66,6 +74,14 @@ public class GameLogic {
                     break;
                 case 2:
                     stage.setScene(scene2);
+                    stage.show();
+                    break;
+                case 3:
+                    stage.setScene(scene3);
+                    stage.show();
+                    break;
+                case 4:
+                    stage.setScene(scene4);
                     stage.show();
                     break;
             }
@@ -122,10 +138,10 @@ public class GameLogic {
         ap2 = b2.buildBoard();
         fp2.setHgap(30);
         fp2.setVgap(10);
-        Button switchb1 = new Button("Switch back to board 1");
+        Button switchb1 = new Button("Ready");
         switchb1.setOnAction(e->{
             try {
-                setNumber(1);
+                setNumber(3);
                 switchScene("--");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -139,6 +155,14 @@ public class GameLogic {
         }
         AnchorPane.setRightAnchor(fp2, 10d);
         AnchorPane.setBottomAnchor(switchb1, 10d);
+    }
+
+    public void createGuessBoard1(int size){
+        b3.setBoardSize(size);
+        ap3 = b3.buildBoard();
+        b3.getGrid().setOnMouseClicked(e->{
+            shoot(b3.getCordsX(), b3.getCordsY(), playerOneShipContainer);
+        });
     }
 
     /**
@@ -316,13 +340,13 @@ public class GameLogic {
             if(true) {
                 int index = getShipIndex(b);
                 if (boardNumber == 1) {
-                    playerOneShipContainer.get(index).setStartX(cordsX);
-                    playerOneShipContainer.get(index).setStartY(cordsY);
+                    playerOneShipContainer.get(index).setStartX(cordsX+1);
+                    playerOneShipContainer.get(index).setStartY(cordsY+1);
                     System.out.println(playerOneShipContainer.get(index).getStartX() + " homo " + playerOneShipContainer.get(index).getStartY());
 
                 } else if (boardNumber == 2) {
-                    playerTwoShipContainer.get(index).setStartX(cordsX);
-                    playerTwoShipContainer.get(index).setStartY(cordsY);
+                    playerTwoShipContainer.get(index).setStartX(cordsX+1);
+                    playerTwoShipContainer.get(index).setStartY(cordsY+1);
 
                 }
             }
@@ -384,7 +408,7 @@ public class GameLogic {
         rectangle.setWidth(uusiLeveys);
 
     }
-
+    // needs fixing, huom. boardnumber voi olla nyt myös 3 tai 4
     protected int getShipIndex(Rectangle rectangle){
         int index;
         if(boardNumber == 1){
@@ -398,4 +422,14 @@ public class GameLogic {
         return 0;
     }
 
+    protected boolean shoot(int x, int y, ArrayList<Ship> container){
+        for(int i = 0; i < container.size(); i++){
+            if((container.get(i).getStartX() == x) && (container.get(i).getStartY() == y)){
+                System.out.println("osuit vittu");
+                return true;
+            }
+        }
+        System.out.println("et osunu broh");
+        return false;
+    }
 }

@@ -53,8 +53,9 @@ public class Board {
                 x++;
                 //System.out.println(x + " x " + y);
                 // TARVITAAN MAHDOLLISESTI MYÖHEMMIN
-                /*cordsX = x;
+                cordsX = x;
                 cordsY = y;
+                /*
                 System.out.println("CordsX on: "+cordsX);
                 System.out.println("CordsY on: "+cordsY);*/
             });
@@ -72,8 +73,9 @@ public class Board {
                 x++;
                 //System.out.println(x + " x " + y);
                 // TARVITAAN MAHDOLLISESTI MYÖHEMMIN
-                /*cordsX = x;
+                cordsX = x;
                 cordsY = y;
+                /*
                 System.out.println("CordsX on: "+cordsX);
                 System.out.println("CordsY on: "+cordsY);*/
             });
@@ -96,6 +98,12 @@ public class Board {
 
     public int getBoardSize(){
         return boardSize;
+    }
+    public int getCordsX(){
+        return cordsX;
+    }
+    public int getCordsY(){
+        return cordsY;
     }
 
 } // class Board

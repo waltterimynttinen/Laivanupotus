@@ -83,6 +83,7 @@ public class Controller {
             if (laudanKoko == 1) {
                 gl.createBoard1(10);
                 gl.createBoard2(10);
+                gl.createGuessBoard1(10);
                 System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
                 gl.createScenes();
                 System.out.println(gl.getPlayerOneShipContainer());
@@ -90,6 +91,7 @@ public class Controller {
             } else {
                 gl.createBoard1(laudanKoko);
                 gl.createBoard2(laudanKoko);
+                gl.createGuessBoard1(laudanKoko);
                 System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
                 gl.createScenes();
                 System.out.println(gl.getPlayerOneShipContainer());
