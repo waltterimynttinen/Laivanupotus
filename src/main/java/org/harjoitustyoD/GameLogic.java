@@ -313,11 +313,7 @@ public class GameLogic {
                 return;
             }
         }
-        else if(event.getButton().equals(MouseButton.MIDDLE)){
-            //todo
-            System.out.println("rotate ship");
 
-        }
     }//mousePressed()
 
     private void dragged(MouseEvent event, Rectangle b){
@@ -417,23 +413,43 @@ public class GameLogic {
     }
 
     protected void rotateShip(Rectangle rectangle){
-        //if(getShipIndex(rectangle) == )
-        //rectangle.getTransforms().add(new Rotate(90, cordsX+30,cordsY-30));
+        Rotate r = new Rotate();
+        // 25 = gridin koko / 2
+        r.setPivotX(25);
+        // 15 = laivan leveys / 2
+        r.setPivotY(15);
 
-        double uusiLeveys = rectangle.getHeight();
-        double uusiPituus = rectangle.getWidth();
-        rectangle.setHeight(uusiPituus);
-        rectangle.setWidth(uusiLeveys);
+        if(boardNumber == 1 || boardNumber == 3) {
+            if (playerOneShipContainer.get(getShipIndex(rectangle)).getIsHorizontal()) {
+                r.setAngle(90);
+                rectangle.getTransforms().addAll(r);
+                playerOneShipContainer.get(getShipIndex(rectangle)).setIsHorizontal(false);
+            } else {
+                r.setAngle(-90);
+                rectangle.getTransforms().addAll(r);
+                playerOneShipContainer.get(getShipIndex(rectangle)).setIsHorizontal(true);
+            }
+        }else if(boardNumber == 2 || boardNumber == 4){
+            if (playerTwoShipContainer.get(getShipIndex(rectangle)).getIsHorizontal()) {
+                r.setAngle(90);
+                rectangle.getTransforms().addAll(r);
+                playerTwoShipContainer.get(getShipIndex(rectangle)).setIsHorizontal(false);
+            } else {
+                r.setAngle(-90);
+                rectangle.getTransforms().addAll(r);
+                playerTwoShipContainer.get(getShipIndex(rectangle)).setIsHorizontal(true);
+            }
+        }
 
     }
     // needs fixing, huom. boardnumber voi olla nyt myös 3 tai 4
     protected int getShipIndex(Rectangle rectangle){
         int index;
-        if(boardNumber == 1){
+        if(boardNumber == 1 || boardNumber == 3){
             index = pOneRectangles.indexOf(rectangle);
             return index;
         }
-        if(boardNumber == 2){
+        if(boardNumber == 2 || boardNumber == 4){
             index = pTwoRectangles.indexOf(rectangle);
             return index;
         }

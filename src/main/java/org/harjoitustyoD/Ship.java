@@ -76,6 +76,10 @@ public class Ship {
         return isHorizontal;
     }
 
+    public void setIsHorizontal(boolean h){
+        isHorizontal = h;
+    }
+
     public boolean hit(){
         this.hp--;
         if(this.hp <= 0){
