@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -46,12 +47,37 @@ public class GameLogic {
     private Scene scene4;
     public int cordsX;
     public int cordsY;
+    private Rectangle selectedShip;
 
     public void createScenes(){
         scene1 = new Scene(ap1, 1600,900);
         scene2 = new Scene(ap2, 1600, 900);
         scene3 = new Scene(ap3, 1600, 900);
         scene4 = new Scene(ap4, 1600, 900);
+
+        // TESTATAAN TOIMIIKO, POISTA SEURAAVAAN KOMMENTTIIN ASTI JOS TÄTÄ EI KÄYTETÄ
+        scene1.addEventFilter(KeyEvent.KEY_TYPED, e -> {
+            if(e.getCharacter().equalsIgnoreCase("r")){
+                try{
+                    rotateShip(selectedShip);
+                }catch(Exception exception){
+                    exception.printStackTrace();
+                }
+            }
+        });
+        scene2.addEventFilter(KeyEvent.KEY_TYPED, e -> {
+            if(e.getCharacter().equalsIgnoreCase("r")){
+                try{
+                    rotateShip(selectedShip);
+                }catch(Exception exception){
+                    exception.printStackTrace();
+                }
+            }
+        });
+
+        // POISTA MAHDOLLISESTI TÄHÄN ASTI
+
+
         stage = Main.getStage();
         stage.setScene(scene1);
         stage.show();
@@ -124,6 +150,7 @@ public class GameLogic {
         }
         AnchorPane.setRightAnchor(fp1, 10d);
         AnchorPane.setBottomAnchor(switchb2, 10d);
+
     }
     /**
      * Creates a new board utilizing the user input
@@ -187,8 +214,8 @@ public class GameLogic {
      * Luodaan molempien pelaajien listoihin oikea määrä
      * laivoja, jotka haetaan tekstikentistä peliä aloitettaessa
      *
-     * @param lta
-     * @param tl
+     * @param lta = lentotukialukset
+     * @param tl = taistelulaivat
      * @param ris
      * @param sv
      * @param hv
@@ -236,7 +263,7 @@ public class GameLogic {
             }
         }
 
-        //Risteilijöiden luonti
+        //Risteilijöiden luonti 
         if(ris != 0) {
             for (int i = 0; i < ris; i++) {
                 playerOneShipContainer.add(new Risteilija(i));
@@ -283,6 +310,8 @@ public class GameLogic {
                 indeksi++;
             }
         }
+
+        selectedShip = pOneRectangles.get(0);
     }//createShips()
 
     private void initializeMouseEvent(Rectangle b, Board board, AnchorPane ap, FlowPane fp){
@@ -350,21 +379,21 @@ public class GameLogic {
                 //System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
                 return;
             }
-            // NOT DONE YET
-            if(true) {
-                int index = getShipIndex(b);
-                if (boardNumber == 1) {
-                    playerOneShipContainer.get(index).setStartX(cordsX+1);
-                    playerOneShipContainer.get(index).setStartY(cordsY+1);
-                    System.out.println(playerOneShipContainer.get(index).getStartX() + " homo " + playerOneShipContainer.get(index).getStartY());
 
-                } else if (boardNumber == 2) {
-                    playerTwoShipContainer.get(index).setStartX(cordsX+1);
-                    playerTwoShipContainer.get(index).setStartY(cordsY+1);
+            int index = getShipIndex(b);
+            if (boardNumber == 1) {
+                playerOneShipContainer.get(index).setStartX(cordsX+1);
+                playerOneShipContainer.get(index).setStartY(cordsY+1);
+                System.out.println(playerOneShipContainer.get(index).getStartX() + " homo " + playerOneShipContainer.get(index).getStartY());
 
-                }
+
+            } else if (boardNumber == 2) {
+                playerTwoShipContainer.get(index).setStartX(cordsX+1);
+                playerTwoShipContainer.get(index).setStartY(cordsY+1);
+
+
             }
-
+            selectedShip = b;
 
             ap1.getChildren().remove(b);
             board.grid.add(b, cordsX, cordsY);

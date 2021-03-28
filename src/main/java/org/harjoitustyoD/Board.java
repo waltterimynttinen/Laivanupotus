@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -59,6 +60,7 @@ public class Board {
                 System.out.println("CordsX on: "+cordsX);
                 System.out.println("CordsY on: "+cordsY);*/
             });
+
         }//for1
 
         for (int i = 0; i < boardSize; i++) {
@@ -79,6 +81,8 @@ public class Board {
                 System.out.println("CordsX on: "+cordsX);
                 System.out.println("CordsY on: "+cordsY);*/
             });
+
+
         }//for2
 
         // Make the lines visible for the board
