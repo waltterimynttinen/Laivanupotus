@@ -138,8 +138,8 @@ public class GameLogic {
         ap2 = b2.buildBoard();
         fp2.setHgap(30);
         fp2.setVgap(10);
-        Button switchb1 = new Button("Ready");
-        switchb1.setOnAction(e->{
+        Button switchb3 = new Button("Ready");
+        switchb3.setOnAction(e->{
             try {
                 setNumber(3);
                 switchScene("--");
@@ -147,21 +147,39 @@ public class GameLogic {
                 ioException.printStackTrace();
             }
         });
-        ap2.getChildren().addAll(fp2,switchb1);
+        ap2.getChildren().addAll(fp2,switchb3);
         for(int i = 0; i < pTwoRectangles.size(); i++){
             System.out.println("Rectanlesize = "+pTwoRectangles.size());
             fp2.getChildren().add(pTwoRectangles.get(i));
             initializeMouseEvent(pTwoRectangles.get(i), b2, ap2, fp2);
         }
         AnchorPane.setRightAnchor(fp2, 10d);
-        AnchorPane.setBottomAnchor(switchb1, 10d);
+        AnchorPane.setBottomAnchor(switchb3, 10d);
     }
 
     public void createGuessBoard1(int size){
         b3.setBoardSize(size);
         ap3 = b3.buildBoard();
+        Button switchb4 = new Button("Ready");
+        switchb4.setOnAction(e->{
+            try {
+                setNumber(4);
+                switchScene("--");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        ap3.getChildren().add(switchb4);
         b3.getGrid().setOnMouseClicked(e->{
             shoot(b3.getCordsX(), b3.getCordsY(), playerOneShipContainer);
+        });
+        AnchorPane.setBottomAnchor(switchb4, 10d);
+    }
+    public void createGuessBoard2(int size){
+        b4.setBoardSize(size);
+        ap4 = b4.buildBoard();
+        b4.getGrid().setOnMouseClicked(e->{
+            shoot(b4.getCordsX(), b4.getCordsY(), playerTwoShipContainer);
         });
     }
 
@@ -424,9 +442,21 @@ public class GameLogic {
 
     protected boolean shoot(int x, int y, ArrayList<Ship> container){
         for(int i = 0; i < container.size(); i++){
-            if((container.get(i).getStartX() == x) && (container.get(i).getStartY() == y)){
-                System.out.println("osuit vittu");
-                return true;
+            if(container.get(i).getIsHorizontal() == true) {
+                for (int j = 0; j < container.get(i).getSize(); j++) {
+                    if ((container.get(i).getStartX() + j == x) && (container.get(i).getStartY() == y)) {
+                        System.out.println("osuit vittu");
+                        return true;
+                    }
+                }
+            }
+            else{
+                for(int j = 0; j < container.get(i).getSize(); j++){
+                    if((container.get(i).getStartY() + j == y) && (container.get(i).getStartX() == x)){
+                        System.out.println("osuit käännettyyn vittu");
+                        return true;
+                    }
+                }
             }
         }
         System.out.println("et osunu broh");

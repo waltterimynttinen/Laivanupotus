@@ -72,6 +72,10 @@ public class Ship {
         this.endY = endY;
     }
 
+    public boolean getIsHorizontal(){
+        return isHorizontal;
+    }
+
     public boolean hit(){
         this.hp--;
         if(this.hp <= 0){

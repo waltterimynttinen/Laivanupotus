@@ -3,7 +3,7 @@ TÄNNE KAIKKI TEHTÄVÄT ASIAT:
 - Laivoille rotate, tehty osittain || TEEMU
 - Täytyy fixata ettei laivoja voisi laittaa päällekkäin, ja että laiva pysyisi gridin sisässä. (täytyy soveltaa laivojen size:ä ja ottaa huomioon rotate) || TEEMU
 - Ghostnodejen miinuskoordinaattipuolen korjaus || KARI
-- Ampumisen toteutus || WALTTERI
+
 
 
 
@@ -12,3 +12,4 @@ TEHTY:
 - ArrayListin verran rectangleja täytyy luoda =)
 - Kari vois korjata gridin tahattoman laajenemisen :)
 - Waltteri tekee ap:n, hb:n yms b2:lle ja b1:lle erikseen (b1 tehty jo)
+- Ampumisen toteutus || WALTTERI
