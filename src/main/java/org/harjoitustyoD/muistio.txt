@@ -1,11 +1,7 @@
 TÄNNE KAIKKI TEHTÄVÄT ASIAT:
 - fxml-tiedostot väliruuduille || KARI
-- Laivoille rotate, tehty osittain || TEEMU
-- Täytyy fixata ettei laivoja voisi laittaa päällekkäin, ja että laiva pysyisi gridin sisässä. (täytyy soveltaa laivojen size:ä ja ottaa huomioon rotate) || TEEMU
-- Ghostnodejen miinuskoordinaattipuolen korjaus || KARI
-
-
-
+- Täytyy fixata ettei laivoja voisi laittaa päällekkäin, ja että laiva pysyisi gridin sisässä. (täytyy soveltaa laivojen size:ä ja ottaa huomioon rotate), tehty osittain || TEEMU
+- Arvausten merkkaus lautoihin || WALTTERI
 
 TEHTY:
 - teemu tekee gamelogicissa callataan createshipsiä, ja listaa mihin laivat laitetaan
@@ -13,3 +9,5 @@ TEHTY:
 - Kari vois korjata gridin tahattoman laajenemisen :)
 - Waltteri tekee ap:n, hb:n yms b2:lle ja b1:lle erikseen (b1 tehty jo)
 - Ampumisen toteutus || WALTTERI
+- Laivoille rotate, tehty kokonaan|| TEEMU
+- Ghostnodejen miinuskoordinaattipuolen korjaus || TEEMu

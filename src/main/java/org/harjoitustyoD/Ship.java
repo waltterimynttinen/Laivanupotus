@@ -3,8 +3,8 @@ package org.harjoitustyoD;
 public class Ship {
 
     private int size;
-    private int startX;
-    private int startY;
+    private int startX = -1;
+    private int startY = -1;
     private int endX;
     private int endY;
     private int hp;
