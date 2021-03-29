@@ -83,6 +83,7 @@ public class GameLogic {
         stage.show();
     }
 
+
     /**
      * A method used for switching scenes
      * so that it doesn't have to be done manually
@@ -121,6 +122,7 @@ public class GameLogic {
         }
     }
 
+
     /**
      * Creates a new board utilizing the user input
      * from the TextField in the main menu. This
@@ -153,6 +155,8 @@ public class GameLogic {
         AnchorPane.setBottomAnchor(switchb2, 10d);
 
     }
+
+
     /**
      * Creates a new board utilizing the user input
      * from the TextField in the main menu. This
@@ -186,6 +190,7 @@ public class GameLogic {
         AnchorPane.setBottomAnchor(switchb3, 10d);
     }
 
+
     public void createGuessBoard1(int size){
         b3.setBoardSize(size);
         ap3 = b3.buildBoard();
@@ -211,6 +216,7 @@ public class GameLogic {
             shoot(b4.getCordsX(), b4.getCordsY(), playerTwoShipContainer);
         });
     }
+
 
     /**
      * Luodaan molempien pelaajien listoihin oikea määrä
@@ -316,6 +322,7 @@ public class GameLogic {
         selectedShip = pOneRectangles.get(0);
     }//createShips()
 
+
     private void initializeMouseEvent(Rectangle b, Board board, AnchorPane ap, FlowPane fp,ArrayList<Ship> container){
 
         b.setOnMousePressed(event -> {
@@ -333,6 +340,7 @@ public class GameLogic {
 
     }//initializeMouseEvent()
 
+
     private void mousePressed(MouseEvent event, Board board, Rectangle b, FlowPane fp){
         if (event.getButton().equals(MouseButton.PRIMARY)){
             // settaa viimeisimmän laivan valituksi laivaksi, jotta rotate toimii r:stä
@@ -340,21 +348,26 @@ public class GameLogic {
             return;
         }
         else if(event.getButton().equals(MouseButton.SECONDARY)){
-            if(board.grid.getChildren().contains(b)){
+            //EI TARVITA TÄTÄ OMINAISUUTTA!
+            /*if(board.grid.getChildren().contains(b)){
                 board.grid.getChildren().remove(b);
                 fp.getChildren().add(b);
                 return;
-            }
+            }*/
         }
 
     }//mousePressed()
+
 
     private void dragged(MouseEvent event, Rectangle b){
         cordsX = (int) (b.getLayoutX() + event.getX());
         cordsY = (int) (b.getLayoutY() + event.getX());
         b.setLayoutX(event.getSceneX());
         b.setLayoutY(event.getSceneY());
+        // settaa viimeisimmän laivan valituksi laivaksi, jotta rotate toimii r:stä
+        selectedShip = b;
     }//dragged()
+
 
     private void released(MouseEvent event, Board board, Rectangle b, AnchorPane ap1, ArrayList<Ship> container, FlowPane fp){
         if (event.getButton().equals(MouseButton.PRIMARY)){
@@ -362,41 +375,86 @@ public class GameLogic {
             int gridy = (int)b.getLayoutY()/ 50;
             cordsX = gridx;
             cordsY = gridy;
+            // settaa viimeisimmän laivan valituksi laivaksi, jotta rotate toimii r:stä
+            selectedShip = b;
 
-
+            // kun päästetään irti mouse1:stä, setataan coordit jne
             int index = getShipIndex(b);
             if (boardNumber == 1) {
                 playerOneShipContainer.get(index).setStartX(cordsX);
                 playerOneShipContainer.get(index).setStartY(cordsY);
+                playerOneShipContainer.get(index).setEndX(cordsX + playerOneShipContainer.get(index).getSize());
+                playerOneShipContainer.get(index).setEndY(cordsY + playerOneShipContainer.get(index).getSize());
                 System.out.println(playerOneShipContainer.get(index).getStartX() + " x " + playerOneShipContainer.get(index).getStartY());
             } else if (boardNumber == 2) {
                 playerTwoShipContainer.get(index).setStartX(cordsX);
                 playerTwoShipContainer.get(index).setStartY(cordsY);
+                playerTwoShipContainer.get(index).setEndX(cordsX + playerTwoShipContainer.get(index).getSize());
+                playerTwoShipContainer.get(index).setEndY(cordsY + playerTwoShipContainer.get(index).getSize());
             }
 
-
-
             // Tarkistetaan, onko asettaminen validia =)
-            checkValidPlacement(board, b, container, fp);
+            checkValidPlacement(board, b, container, fp, ap1);
 
-            // VARSINAINEN LAIVAN ASETUS RUUDUKKOON
-            ap1.getChildren().remove(b);
-            board.grid.add(b, cordsX, cordsY);
-            return;
+            if(isSpotTaken(cordsX,cordsY,container, b)){
+                //palautetaan takaisin alkuperäiseen paikkaan oikealle ja käännetään takaisin, jos käännetty
+                ap1.getChildren().remove(b);
+                board.getGrid().getChildren().remove(b);
+                fp.getChildren().add(b);
+                if(container.get(getShipIndex(b)).getIsHorizontal() == false){
+                    rotateShip(b);
+                }
+                container.get(getShipIndex(b)).setStartX(-1);
+                container.get(getShipIndex(b)).setStartY(-1);
+
+            }else {
+                // VARSINAINEN LAIVAN ASETUS RUUDUKKOON
+                ap1.getChildren().remove(b);
+                board.getGrid().add(b, cordsX, cordsY);
+            }
         }
     }//released()
 
+
+    /**
+     * Checks whether the spot is occupied by another ship
+     * when trying to place a ship to specific coordinates
+     *
+     * @param x is the placíng coordinate X
+     * @param y is the placing coordinate Y
+     * @param container is the ArrayList of Ships for the player in question
+     * @param b is the rectangle referring to a certain ship in question
+     * @return
+     */
+
     protected boolean isSpotTaken(int x, int y, ArrayList<Ship> container, Rectangle b) {
         for(int i = 0; i < container.size(); i++){
+
+            // tarkistettavana oleva
             Ship s = container.get(i);
+
+            // rectangleen liitetty
+            Ship ship = container.get(getShipIndex(b));
+
             if(getShipIndex(b) != i && s.getStartX() != -1) {
-                for(int j = 0; j < container.get(getShipIndex(b)).getSize(); j++) {
-                    if (s.getIsHorizontal() == true) {
-                        if (x+j >= s.getStartX() && x+j <= s.getStartX() + s.getSize() - 1 && s.getStartY() == y) {
+                for(int j = 0; j < ship.getSize(); j++) {
+                    if (s.getIsHorizontal() == true && ship.getIsHorizontal() == true) {
+                        if (x + j >= s.getStartX() && x + j <= s.getStartX() + s.getSize() - 1 && s.getStartY() == y) {
                             System.out.println("et voi bro");
                             return true;
                         }
-                    } else {
+                    }else if(s.getIsHorizontal() == false && ship.getIsHorizontal() == true){
+                        if(x <= s.getStartX() && ship.getEndX() > s.getStartX() && y >= s.getStartY() && y < s.getEndY()){
+                            System.out.println("et voi bro");
+                            return true;
+                        }
+                    }else if(s.getIsHorizontal() == true && ship.getIsHorizontal() == false){
+                        if(y <= s.getStartY() && ship.getEndY() < s.getStartY() && x >= s.getStartX() && x < s.getEndX()){
+                            System.out.println("et voi bro");
+                            return true;
+                        }
+
+                    }else if(s.getIsHorizontal() == false && ship.getIsHorizontal() == false){
                         if (y+j >= s.getStartY() && y+j <= s.getStartY() + s.getSize() - 1 && s.getStartX() == x) {
                             System.out.println("et voi bro");
                             return true;
@@ -407,7 +465,8 @@ public class GameLogic {
         }
         System.out.println("laita siihen");
         return false;
-    }
+    }//isSpotTaken()
+
 
     public boolean areShipsAllowed(int area, int lta, int tl, int ris, int sv, int hv){
         int RA = area * area;
@@ -422,20 +481,32 @@ public class GameLogic {
         }
     }
 
+
     protected ArrayList<Ship> getPlayerOneShipContainer(){
         return playerOneShipContainer;
     }
+
+
     protected ArrayList<Ship> getPlayerTwoShipContainer(){
         return playerTwoShipContainer;
     }
+
+
     protected Button getSwitchb2(){
         return switchb2;
     }
+
+
     protected void setNumber(int number){
         this.boardNumber = number;
     }
 
+
     protected void rotateShip(Rectangle rectangle){
+
+        Ship ship = playerOneShipContainer.get(getShipIndex(rectangle));
+        Ship shap = playerTwoShipContainer.get(getShipIndex(rectangle));
+
         Rotate r = new Rotate();
         // 25 = gridin koko / 2
         r.setPivotX(25);
@@ -443,29 +514,30 @@ public class GameLogic {
         r.setPivotY(15);
 
         if(boardNumber == 1 || boardNumber == 3) {
-            if (playerOneShipContainer.get(getShipIndex(rectangle)).getIsHorizontal()) {
+            if (ship.getIsHorizontal() && ship.getEndX() <= b1.getBoardSize() && ship.getStartY() <= b1.getBoardSize()-ship.getSize()) {
                 r.setAngle(90);
                 rectangle.getTransforms().addAll(r);
-                playerOneShipContainer.get(getShipIndex(rectangle)).setIsHorizontal(false);
-            } else {
+                ship.setIsHorizontal(false);
+            } else if(!ship.getIsHorizontal() && ship.getEndY() <= b1.getBoardSize() && ship.getStartX() <= b1.getBoardSize()-ship.getSize()){
                 r.setAngle(-90);
                 rectangle.getTransforms().addAll(r);
-                playerOneShipContainer.get(getShipIndex(rectangle)).setIsHorizontal(true);
+                ship.setIsHorizontal(true);
             }
         }else if(boardNumber == 2 || boardNumber == 4){
-            if (playerTwoShipContainer.get(getShipIndex(rectangle)).getIsHorizontal()) {
+            if (shap.getIsHorizontal()) {
                 r.setAngle(90);
                 rectangle.getTransforms().addAll(r);
-                playerTwoShipContainer.get(getShipIndex(rectangle)).setIsHorizontal(false);
+                shap.setIsHorizontal(false);
             } else {
                 r.setAngle(-90);
                 rectangle.getTransforms().addAll(r);
-                playerTwoShipContainer.get(getShipIndex(rectangle)).setIsHorizontal(true);
+                shap.setIsHorizontal(true);
             }
         }
 
-    }
-    // needs fixing, huom. boardnumber voi olla nyt myös 3 tai 4
+    }//rotateShip()
+
+
     protected int getShipIndex(Rectangle rectangle){
         int index;
         if(boardNumber == 1 || boardNumber == 3){
@@ -478,6 +550,7 @@ public class GameLogic {
         }
         return 0;
     }
+
 
     protected boolean shoot(int x, int y, ArrayList<Ship> container){
         for(int i = 0; i < container.size(); i++){
@@ -505,13 +578,13 @@ public class GameLogic {
 
     /**
      * Method to check whether the place that the user is trying
-     * to set the ship to is valid
+     * to set the ship to is valid or not
      *
      * @param board
      * @param b
      * @param container
      */
-    protected void checkValidPlacement(Board board, Rectangle b, ArrayList<Ship> container, FlowPane fp){
+    protected void checkValidPlacement(Board board, Rectangle b, ArrayList<Ship> container, FlowPane fp, AnchorPane ap){
 
         //Jos x tai y alle 0, sijoitetaan oikein
         if(cordsX < 0){
@@ -556,12 +629,7 @@ public class GameLogic {
             }
 
         }
-        if(isSpotTaken(cordsX,cordsY,container, b)){
-         //palautetaan takaisin alkuperäiseen paikkaan oikealle.
-            board.grid.getChildren().remove(b);
-            fp.getChildren().add(b);
-        }
 
-    }//checkValidPlacement
+    }//checkValidPlacement()
 
-}
+}//class
