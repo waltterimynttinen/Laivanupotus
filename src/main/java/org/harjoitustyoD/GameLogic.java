@@ -146,7 +146,7 @@ public class GameLogic {
         for(int i = 0; i < pOneRectangles.size(); i++){
             System.out.println("Rectanlesize = "+pOneRectangles.size());
             fp1.getChildren().add(pOneRectangles.get(i));
-            initializeMouseEvent(pOneRectangles.get(i), b1, ap1, fp1);
+            initializeMouseEvent(pOneRectangles.get(i), b1, ap1, fp1, playerOneShipContainer);
         }
         AnchorPane.setRightAnchor(fp1, 10d);
         AnchorPane.setBottomAnchor(switchb2, 10d);
@@ -178,7 +178,7 @@ public class GameLogic {
         for(int i = 0; i < pTwoRectangles.size(); i++){
             System.out.println("Rectanlesize = "+pTwoRectangles.size());
             fp2.getChildren().add(pTwoRectangles.get(i));
-            initializeMouseEvent(pTwoRectangles.get(i), b2, ap2, fp2);
+            initializeMouseEvent(pTwoRectangles.get(i), b2, ap2, fp2, playerTwoShipContainer);
         }
         AnchorPane.setRightAnchor(fp2, 10d);
         AnchorPane.setBottomAnchor(switchb3, 10d);
@@ -263,7 +263,7 @@ public class GameLogic {
             }
         }
 
-        //Risteilijöiden luonti 
+        //Risteilijöiden luonti
         if(ris != 0) {
             for (int i = 0; i < ris; i++) {
                 playerOneShipContainer.add(new Risteilija(i));
@@ -314,7 +314,7 @@ public class GameLogic {
         selectedShip = pOneRectangles.get(0);
     }//createShips()
 
-    private void initializeMouseEvent(Rectangle b, Board board, AnchorPane ap, FlowPane fp){
+    private void initializeMouseEvent(Rectangle b, Board board, AnchorPane ap, FlowPane fp,ArrayList<Ship> container){
 
         b.setOnMousePressed(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)){
@@ -325,7 +325,7 @@ public class GameLogic {
             mousePressed(event, board, b, fp);
         });
         b.setOnMouseDragged(event -> dragged(event, b));
-        b.setOnMouseReleased(event -> released(event, board, b, ap));
+        b.setOnMouseReleased(event -> released(event, board, b, ap, container));
 
         //hb.getChildren().add(b);
 
@@ -336,8 +336,8 @@ public class GameLogic {
             return;
         }
         else if(event.getButton().equals(MouseButton.SECONDARY)){
-            if(b1.grid.getChildren().contains(b)){
-                b1.grid.getChildren().remove(b);
+            if(board.grid.getChildren().contains(b)){
+                board.grid.getChildren().remove(b);
                 fp.getChildren().add(b);
                 return;
             }
@@ -352,59 +352,33 @@ public class GameLogic {
         b.setLayoutY(event.getSceneY());
     }//dragged()
 
-    private void released(MouseEvent event, Board board, Rectangle b, AnchorPane ap1){
+    private void released(MouseEvent event, Board board, Rectangle b, AnchorPane ap1, ArrayList<Ship> container){
         if (event.getButton().equals(MouseButton.PRIMARY)){
             int gridx = (int)b.getLayoutX()/ 50;
             int gridy = (int)b.getLayoutY()/ 50;
             cordsX = gridx;
             cordsY = gridy;
-            if(cordsY>b1.getBoardSize()-1 && cordsX>b1.getBoardSize()-1){
-                System.out.println("too far Y and X "+cordsX);
-                ap1.getChildren().remove(b);
-                board.grid.add(b, board.getBoardSize()-1, board.getBoardSize()-1);
-                //System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
-                return;
-            }
-            if(cordsX>board.getBoardSize()-1){
-                System.out.println("too far X: "+cordsX);
-                ap1.getChildren().remove(b);
-                board.grid.add(b, b1.getBoardSize()-1, cordsY);
-                //System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
-                return;
-            }
-            if(cordsY>board.getBoardSize()-1){
-                System.out.println("too far Y: "+cordsX);
-                ap1.getChildren().remove(b);
-                board.grid.add(b, cordsX, board.getBoardSize()-1);
-                //System.out.println("Placing coordinates: x = "+cordsX+" y = "+cordsY);
-                return;
-            }
+
+            // Tarkistetaan, onko asettaminen validia =)
+            checkValidPlacement(board, b, container);
 
             int index = getShipIndex(b);
             if (boardNumber == 1) {
                 playerOneShipContainer.get(index).setStartX(cordsX+1);
                 playerOneShipContainer.get(index).setStartY(cordsY+1);
-                System.out.println(playerOneShipContainer.get(index).getStartX() + " homo " + playerOneShipContainer.get(index).getStartY());
-
-
+                System.out.println(playerOneShipContainer.get(index).getStartX() + " x " + playerOneShipContainer.get(index).getStartY());
             } else if (boardNumber == 2) {
                 playerTwoShipContainer.get(index).setStartX(cordsX+1);
                 playerTwoShipContainer.get(index).setStartY(cordsY+1);
-
-
             }
+
+            // settaa viimeisimmän laivan valituksi laivaksi, jotta rotate toimii r:stä
             selectedShip = b;
 
+            // VARSINAINEN LAIVAN ASETUS RUUDUKKOON
             ap1.getChildren().remove(b);
             board.grid.add(b, cordsX, cordsY);
             return;
-        }
-        else if(event.getButton().equals(MouseButton.SECONDARY)){
-            //do something
-            return;
-        }
-        else if(event.getButton().equals(MouseButton.MIDDLE)){
-            rotateShip(b);
         }
     }//released()
 
@@ -507,4 +481,62 @@ public class GameLogic {
         System.out.println("et osunu broh");
         return false;
     }
+
+
+    /**
+     * Method to check whether the place that the user is trying
+     * to set the ship to is valid
+     *
+     * @param board
+     * @param b
+     * @param container
+     */
+    protected void checkValidPlacement(Board board, Rectangle b, ArrayList<Ship> container){
+
+        //Jos x tai y alle 0, sijoitetaan oikein
+        if(cordsX < 0){
+            cordsX = 0;
+        }
+        if(cordsY < 0){
+            cordsY = 0;
+        }
+
+        if(container.get(getShipIndex(b)).getIsHorizontal()) {
+            // tarkistetaan horisontaalisesti oikeanlainen placeaminen, JOS LAIVA ON HORISONTAALISESTI
+            if (cordsX > board.getBoardSize() - container.get(getShipIndex(b)).getSize()) {
+                //Ei voi placettaa ghost nodejen ulkopuolelle, setataan oikein ruudukon sisälle
+                if (cordsX > board.getBoardSize() - 1) {
+                    System.out.println("too far X: " + cordsX);
+                    cordsX = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
+                } else {
+                    cordsX = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
+                }
+
+            }
+            //Ei voi placettaa ghost nodejen ulkopuolelle, setataan oikein ruudukon sisälle
+            if (cordsY > board.getBoardSize() - 1) {
+                System.out.println("too far Y: " + cordsY);
+                cordsY = board.getBoardSize() - 1;
+            }
+        }else {
+            // Tarkistetaan vertikaalisesti oikeanlainen placeaminen, JOS LAIVA ON KÄÄNNETTY
+            if (cordsY > board.getBoardSize() - container.get(getShipIndex(b)).getSize()) {
+                //Ei voi placettaa ghost nodejen ulkopuolelle, setataan oikein ruudukon sisälle
+                if (cordsY > board.getBoardSize() - 1) {
+                    System.out.println("too far Y: " + cordsY);
+                    cordsY = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
+                } else {
+                    cordsY = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
+                }
+            }
+
+            if (cordsX > board.getBoardSize() - 1) {
+                System.out.println("too far X: " + cordsX);
+                cordsX = board.getBoardSize() - 1;
+            }
+
+        }
+
+    }//checkValidPlacement
+
 }
