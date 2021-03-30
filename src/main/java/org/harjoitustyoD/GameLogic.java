@@ -449,7 +449,7 @@ public class GameLogic {
                             return true;
                         }
                     }else if(s.getIsHorizontal() == true && ship.getIsHorizontal() == false){
-                        if(y <= s.getStartY() && ship.getEndY() < s.getStartY() && x >= s.getStartX() && x < s.getEndX()){
+                        if(y <= s.getStartY() && ship.getEndY() > s.getStartY() && x >= s.getStartX() && x < s.getEndX()){
                             System.out.println("et voi bro");
                             return true;
                         }
