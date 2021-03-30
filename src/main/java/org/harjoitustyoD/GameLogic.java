@@ -244,13 +244,13 @@ public class GameLogic {
                 pOneRectangles.add(new Rectangle());
                 pOneRectangles.get(indeksi).setHeight(30);
                 pOneRectangles.get(indeksi).setWidth(250);
-                pOneRectangles.get(indeksi).setFill(Color.GREEN);
+                pOneRectangles.get(indeksi).setFill(Color.SPRINGGREEN);
 
                 playerTwoShipContainer.add(new Lentotukialus(i));
                 pTwoRectangles.add(new Rectangle());
                 pTwoRectangles.get(indeksi).setHeight(30);
                 pTwoRectangles.get(indeksi).setWidth(250);
-                pOneRectangles.get(indeksi).setFill(Color.GREEN);
+                pTwoRectangles.get(indeksi).setFill(Color.SPRINGGREEN);
                 indeksi++;
             }
         }
@@ -261,11 +261,13 @@ public class GameLogic {
                 pOneRectangles.add(new Rectangle());
                 pOneRectangles.get(indeksi).setHeight(30);
                 pOneRectangles.get(indeksi).setWidth(200);
+                pOneRectangles.get(indeksi).setFill(Color.TOMATO);
 
                 playerTwoShipContainer.add(new Taistelulaiva(i));
                 pTwoRectangles.add(new Rectangle());
                 pTwoRectangles.get(indeksi).setHeight(30);
                 pTwoRectangles.get(indeksi).setWidth(200);
+                pTwoRectangles.get(indeksi).setFill(Color.TOMATO);
                 indeksi++;
             }
         }
@@ -277,11 +279,13 @@ public class GameLogic {
                 pOneRectangles.add(new Rectangle());
                 pOneRectangles.get(indeksi).setHeight(30);
                 pOneRectangles.get(indeksi).setWidth(150);
+                pOneRectangles.get(indeksi).setFill(Color.DARKCYAN);
 
                 playerTwoShipContainer.add(new Risteilija(i));
                 pTwoRectangles.add(new Rectangle());
                 pTwoRectangles.get(indeksi).setHeight(30);
                 pTwoRectangles.get(indeksi).setWidth(150);
+                pTwoRectangles.get(indeksi).setFill(Color.DARKCYAN);
                 indeksi++;
             }
         }
@@ -293,11 +297,13 @@ public class GameLogic {
                 pOneRectangles.add(new Rectangle());
                 pOneRectangles.get(indeksi).setHeight(30);
                 pOneRectangles.get(indeksi).setWidth(150);
+                pOneRectangles.get(indeksi).setFill(Color.BLUE);
 
                 playerTwoShipContainer.add(new Sukellusvene(i));
                 pTwoRectangles.add(new Rectangle());
                 pTwoRectangles.get(indeksi).setHeight(30);
                 pTwoRectangles.get(indeksi).setWidth(150);
+                pTwoRectangles.get(indeksi).setFill(Color.BLUE);
                 indeksi++;
             }
         }
@@ -309,11 +315,13 @@ public class GameLogic {
                 pOneRectangles.add(new Rectangle());
                 pOneRectangles.get(indeksi).setHeight(30);
                 pOneRectangles.get(indeksi).setWidth(100);
+                pOneRectangles.get(indeksi).setFill(Color.ORANGE);
 
                 playerTwoShipContainer.add(new Havittaja(i));
                 pTwoRectangles.add(new Rectangle());
                 pTwoRectangles.get(indeksi).setHeight(30);
                 pTwoRectangles.get(indeksi).setWidth(100);
+                pTwoRectangles.get(indeksi).setFill(Color.ORANGE);
                 indeksi++;
             }
         }
@@ -522,7 +530,7 @@ public class GameLogic {
 
                 //jos rotate ei mahdollinen, cancellataan kääntäminen
                 if(isSpotTaken(ship.getStartX(),ship.getStartY(),playerOneShipContainer,rectangle)){
-                    r.setAngle(180);
+                    r.setAngle(0);
                     rectangle.getTransforms().addAll(r);
                     ship.setIsHorizontal(true);
                     ship.setEndY(ship.getStartY());
@@ -539,7 +547,7 @@ public class GameLogic {
 
                 //jos rotate ei mahdollinen, cancellataan kääntäminen
                 if (isSpotTaken(ship.getStartX(), ship.getStartY(), playerOneShipContainer, rectangle)) {
-                    r.setAngle(-180);
+                    r.setAngle(0);
                     rectangle.getTransforms().addAll(r);
                     ship.setIsHorizontal(false);
                     ship.setEndX(ship.getStartX());
@@ -558,7 +566,7 @@ public class GameLogic {
 
                 //jos rotate ei mahdollinen, cancellataan kääntäminen
                 if (isSpotTaken(shap.getStartX(), shap.getStartY(), playerTwoShipContainer, rectangle)) {
-                    r.setAngle(180);
+                    r.setAngle(0);
                     rectangle.getTransforms().addAll(r);
                     shap.setIsHorizontal(true);
                     shap.setEndY(shap.getStartY());
@@ -574,7 +582,7 @@ public class GameLogic {
                 shap.setEndX(shap.getStartX()+shap.getSize());
 
                 if (isSpotTaken(shap.getStartX(), shap.getStartY(), playerTwoShipContainer, rectangle)) {
-                    r.setAngle(-180);
+                    r.setAngle(0);
                     rectangle.getTransforms().addAll(r);
                     shap.setIsHorizontal(false);
                     shap.setEndX(shap.getStartX());
