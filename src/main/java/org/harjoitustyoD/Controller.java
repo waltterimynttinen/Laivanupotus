@@ -82,6 +82,8 @@ public class Controller {
             gl.setNumber(1);
             if (laudanKoko == 1) {
                 gl.createBoard1(10);
+                gl.createSwitchPLayer1Scene();
+                gl.createSwitchPLayer2Scene();
                 gl.createBoard2(10);
                 gl.createGuessBoard1(10);
                 gl.createGuessBoard2(10);
@@ -92,6 +94,8 @@ public class Controller {
             } else {
                 gl.createBoard1(laudanKoko);
                 gl.createBoard2(laudanKoko);
+                gl.createSwitchPLayer1Scene();
+                gl.createSwitchPLayer2Scene();
                 gl.createGuessBoard1(laudanKoko);
                 gl.createGuessBoard2(laudanKoko);
                 System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
@@ -106,6 +110,7 @@ public class Controller {
 
     @FXML
     protected void onReadyButtonAction(ActionEvent event) throws IOException {
+        System.out.println("onReadyButtonAction pressed");
         gl.switchScene("switchPlayerScene.fxml");
     }
 
