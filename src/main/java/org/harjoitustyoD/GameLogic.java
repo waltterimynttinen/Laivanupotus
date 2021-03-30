@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -178,7 +180,8 @@ public class GameLogic {
         AnchorPane.setBottomAnchor(switchb2, 10d);
     }
 
-    public void createSwitchPLayer2Scene(){
+
+    public void createSwitchPLayerScene(){
         //switches from p1 create board to p2 create board
         HBox hb = new HBox();
         Label lb = new Label("Pelaaja 2: Siirry asettamaan laivasi laudalle");
@@ -197,12 +200,12 @@ public class GameLogic {
                 }
                 else if(counter > 2 && counter % 2 != 0){
                     lb.setText("Pelaajan 1 vuoro");
-                    setNumber(1);
+                    setNumber(2);
                     counter++;
                 }
                 else if(counter > 2 && counter % 2 == 0){
                     lb.setText("Pelaajan 2 vuoro");
-                    setNumber(2);
+                    setNumber(1);
                     counter++;
                 }
                 switchScene("--");
@@ -214,20 +217,6 @@ public class GameLogic {
         hb.setSpacing(10);
         bp.setCenter(hb);
         ap3.getChildren().addAll(bp);
-    }
-
-    public void createSwitchPLayer1Scene(){
-        //switches from p2 create board to p1 guess board
-        Button switchb6 = new Button("Aloita peli");
-        switchb6.setOnAction(e -> {
-            try {
-                setNumber(1);
-                switchScene("--");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-        ap4.getChildren().addAll(switchb6);
     }
 
 
@@ -783,6 +772,16 @@ public class GameLogic {
         switchScene("--");
         board.getGrid().setOnMouseClicked(f->{
             shoot(board.getCordsX(), board.getCordsY(), container);
+            if((shoot(board.getCordsX(), board.getCordsY(), container)) == true){
+                System.out.println("true");
+
+                Image image = new Image(getClass().getResourceAsStream("vihrearasti.png"));
+                board.getGrid().add(new ImageView(image), board.getCordsX()-1, board.getCordsY()-1);
+
+            }else{
+                Image image = new Image(getClass().getResourceAsStream("punainenrasti.png"));
+                board.getGrid().add(new ImageView(image), board.getCordsX()-1, board.getCordsY()-1);
+            };
         });
     }
 }//class
