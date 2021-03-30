@@ -519,13 +519,35 @@ public class GameLogic {
                 ship.setIsHorizontal(false);
                 ship.setEndX(ship.getStartX());
                 ship.setEndY(ship.getStartY()+ship.getSize());
-            } else if(!ship.getIsHorizontal() && ship.getEndY() <= b1.getBoardSize() && ship.getStartX() <= b1.getBoardSize()-ship.getSize()){
+
+                //jos rotate ei mahdollinen, cancellataan kääntäminen
+                if(isSpotTaken(ship.getStartX(),ship.getStartY(),playerOneShipContainer,rectangle)){
+                    r.setAngle(180);
+                    rectangle.getTransforms().addAll(r);
+                    ship.setIsHorizontal(true);
+                    ship.setEndY(ship.getStartY());
+                    ship.setEndX(ship.getStartX()+ship.getSize());
+                    return;
+                }
+
+            } else if(!ship.getIsHorizontal() && ship.getEndY() <= b1.getBoardSize() && ship.getStartX() <= b1.getBoardSize()-ship.getSize()) {
                 r.setAngle(-90);
                 rectangle.getTransforms().addAll(r);
                 ship.setIsHorizontal(true);
                 ship.setEndY(ship.getStartY());
-                ship.setEndX(ship.getStartX()+ship.getSize());
+                ship.setEndX(ship.getStartX() + ship.getSize());
+
+                //jos rotate ei mahdollinen, cancellataan kääntäminen
+                if (isSpotTaken(ship.getStartX(), ship.getStartY(), playerOneShipContainer, rectangle)) {
+                    r.setAngle(-180);
+                    rectangle.getTransforms().addAll(r);
+                    ship.setIsHorizontal(false);
+                    ship.setEndX(ship.getStartX());
+                    ship.setEndY(ship.getStartY()+ship.getSize());
+                    return;
+                }
             }
+        // TÄYTYY VIELÄ MUUTTAA
         }else if(boardNumber == 2 || boardNumber == 4){
             if (shap.getIsHorizontal() && shap.getEndX() <= b2.getBoardSize() && shap.getStartY() <= b2.getBoardSize()-shap.getSize()) {
                 r.setAngle(90);
@@ -533,23 +555,36 @@ public class GameLogic {
                 shap.setIsHorizontal(false);
                 shap.setEndX(shap.getStartX());
                 shap.setEndY(shap.getStartY()+shap.getSize());
+
+                //jos rotate ei mahdollinen, cancellataan kääntäminen
+                if (isSpotTaken(shap.getStartX(), shap.getStartY(), playerTwoShipContainer, rectangle)) {
+                    r.setAngle(180);
+                    rectangle.getTransforms().addAll(r);
+                    shap.setIsHorizontal(true);
+                    shap.setEndY(shap.getStartY());
+                    shap.setEndX(shap.getStartX()+shap.getSize());
+                    return;
+                }
+
             } else if(!shap.getIsHorizontal() && shap.getEndY() <= b2.getBoardSize() && shap.getStartX() <= b2.getBoardSize()-shap.getSize()) {
                 r.setAngle(-90);
                 rectangle.getTransforms().addAll(r);
                 shap.setIsHorizontal(true);
                 shap.setEndY(shap.getStartY());
                 shap.setEndX(shap.getStartX()+shap.getSize());
+
+                if (isSpotTaken(shap.getStartX(), shap.getStartY(), playerTwoShipContainer, rectangle)) {
+                    r.setAngle(-180);
+                    rectangle.getTransforms().addAll(r);
+                    shap.setIsHorizontal(false);
+                    shap.setEndX(shap.getStartX());
+                    shap.setEndY(shap.getStartY()+shap.getSize());
+                    return;
+                }
             }
-        }
+        } // uloin if-elseif
 
     }//rotateShip()
-
-
-    public boolean rotateIsValid(Rectangle b){
-
-        return false;
-    }
-
 
 
     protected int getShipIndex(Rectangle rectangle){
@@ -570,7 +605,7 @@ public class GameLogic {
         for(int i = 0; i < container.size(); i++){
             if(container.get(i).getIsHorizontal() == true) {
                 for (int j = 0; j < container.get(i).getSize(); j++) {
-                    if ((container.get(i).getStartX() + j == x) && (container.get(i).getStartY() == y)) {
+                    if ((container.get(i).getStartX()+1 + j == x) && (container.get(i).getStartY()+1 == y)) {
                         System.out.println("osuit vittu");
                         return true;
                     }
@@ -578,7 +613,7 @@ public class GameLogic {
             }
             else{
                 for(int j = 0; j < container.get(i).getSize(); j++){
-                    if((container.get(i).getStartY() + j == y) && (container.get(i).getStartX() == x)){
+                    if((container.get(i).getStartY()+1 + j == y) && (container.get(i).getStartX()+1 == x)){
                         System.out.println("osuit käännettyyn vittu");
                         return true;
                     }
