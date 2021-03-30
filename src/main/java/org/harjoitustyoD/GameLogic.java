@@ -55,11 +55,12 @@ public class GameLogic {
         scene3 = new Scene(ap3, 1600, 900);
         scene4 = new Scene(ap4, 1600, 900);
 
-        // TESTATAAN TOIMIIKO, POISTA SEURAAVAAN KOMMENTTIIN ASTI JOS TÄTÄ EI KÄYTETÄ
+        // R-näppäimen käyttäminen laivan kääntämiseen
         scene1.addEventFilter(KeyEvent.KEY_TYPED, e -> {
             if(e.getCharacter().equalsIgnoreCase("r")){
                 try{
                     rotateShip(selectedShip);
+
                 }catch(Exception exception){
                     exception.printStackTrace();
                 }
@@ -69,14 +70,12 @@ public class GameLogic {
             if(e.getCharacter().equalsIgnoreCase("r")){
                 try{
                     rotateShip(selectedShip);
+
                 }catch(Exception exception){
                     exception.printStackTrace();
                 }
             }
         });
-
-        // POISTA MAHDOLLISESTI TÄHÄN ASTI
-
 
         stage = Main.getStage();
         stage.setScene(scene1);
@@ -518,24 +517,39 @@ public class GameLogic {
                 r.setAngle(90);
                 rectangle.getTransforms().addAll(r);
                 ship.setIsHorizontal(false);
+                ship.setEndX(ship.getStartX());
+                ship.setEndY(ship.getStartY()+ship.getSize());
             } else if(!ship.getIsHorizontal() && ship.getEndY() <= b1.getBoardSize() && ship.getStartX() <= b1.getBoardSize()-ship.getSize()){
                 r.setAngle(-90);
                 rectangle.getTransforms().addAll(r);
                 ship.setIsHorizontal(true);
+                ship.setEndY(ship.getStartY());
+                ship.setEndX(ship.getStartX()+ship.getSize());
             }
         }else if(boardNumber == 2 || boardNumber == 4){
-            if (shap.getIsHorizontal()) {
+            if (shap.getIsHorizontal() && shap.getEndX() <= b2.getBoardSize() && shap.getStartY() <= b2.getBoardSize()-shap.getSize()) {
                 r.setAngle(90);
                 rectangle.getTransforms().addAll(r);
                 shap.setIsHorizontal(false);
-            } else {
+                shap.setEndX(shap.getStartX());
+                shap.setEndY(shap.getStartY()+shap.getSize());
+            } else if(!shap.getIsHorizontal() && shap.getEndY() <= b2.getBoardSize() && shap.getStartX() <= b2.getBoardSize()-shap.getSize()) {
                 r.setAngle(-90);
                 rectangle.getTransforms().addAll(r);
                 shap.setIsHorizontal(true);
+                shap.setEndY(shap.getStartY());
+                shap.setEndX(shap.getStartX()+shap.getSize());
             }
         }
 
     }//rotateShip()
+
+
+    public boolean rotateIsValid(Rectangle b){
+
+        return false;
+    }
+
 
 
     protected int getShipIndex(Rectangle rectangle){
