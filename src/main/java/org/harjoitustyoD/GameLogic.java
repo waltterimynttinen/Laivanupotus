@@ -159,7 +159,13 @@ public class GameLogic {
             try {
                 lauta1.setDisable(true);
                 if(lauta1.isDisabled()){
-                    startGuessing(3, b4, playerOneShipContainer);
+                    if (counter == 1) {
+                        setNumber(3);
+                        switchScene("--");
+                    }
+                    else{
+                        startGuessing(3, b4, playerOneShipContainer);
+                    }
                 }else{
                     setNumber(3);
                     switchScene("--");
