@@ -31,8 +31,10 @@ public class GameLogic {
     private AnchorPane ap2 = new AnchorPane();
     private AnchorPane ap3 = new AnchorPane();
     private AnchorPane ap4 = new AnchorPane();
-    private AnchorPane ap5 = new AnchorPane();
-    private AnchorPane ap6 = new AnchorPane();
+    private AnchorPane lauta1 = new AnchorPane();
+    private AnchorPane lauta2 = new AnchorPane();
+    private AnchorPane lauta3 = new AnchorPane();
+    private AnchorPane lauta4 = new AnchorPane();
     protected ArrayList<Ship> playerOneShipContainer = new ArrayList<>();
     protected ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
     protected ArrayList<Rectangle> pOneRectangles = new ArrayList<>();
@@ -52,13 +54,13 @@ public class GameLogic {
     public int cordsX;
     public int cordsY;
     private Rectangle selectedShip;
+    private int counter = 1;
 
     public void createScenes(){
         scene1 = new Scene(ap1, 1600,900);
         scene2 = new Scene(ap2, 1600, 900);
         scene3 = new Scene(ap3, 1600, 900);
         scene4 = new Scene(ap4, 1600, 900);
-        scene5 = new Scene(ap5, 1600, 900);
 
         // R-näppäimen käyttäminen laivan kääntämiseen
         scene1.addEventFilter(KeyEvent.KEY_TYPED, e -> {
@@ -145,24 +147,33 @@ public class GameLogic {
     public void createBoard1(int size) {
         //varattujen paikkojen merkitsemiseen
         b1.setBoardSize(size);
-        ap1 = b1.buildBoard();
+        b3.setBoardSize(size);
+        lauta1 = b1.buildBoard();
+        lauta3 = b3.buildBoard();
         fp1.setHgap(30);
         fp1.setVgap(10);
         Button switchb2 = new Button("Switch to player 2");
         switchb2.setOnAction(e->{
             try {
-                setNumber(5);
-                switchScene("--");
+                lauta1.setDisable(true);
+                if(lauta1.isDisabled()){
+                    startGuessing(3, b4, playerOneShipContainer);
+                }else{
+                    setNumber(3);
+                    switchScene("--");
+                }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         });
-        ap1.getChildren().addAll(fp1, switchb2);
         for(int i = 0; i < pOneRectangles.size(); i++){
             System.out.println("Rectanlesize = "+pOneRectangles.size());
             fp1.getChildren().add(pOneRectangles.get(i));
             initializeMouseEvent(pOneRectangles.get(i), b1, ap1, fp1, playerOneShipContainer);
         }
+        ap1.getChildren().addAll(lauta1, lauta3, fp1, switchb2);
+        AnchorPane.setTopAnchor(lauta1, 10d);
+        AnchorPane.setBottomAnchor(lauta3, 100d);
         AnchorPane.setRightAnchor(fp1, 10d);
         AnchorPane.setBottomAnchor(switchb2, 10d);
     }
@@ -170,11 +181,30 @@ public class GameLogic {
     public void createSwitchPLayer2Scene(){
         //switches from p1 create board to p2 create board
         HBox hb = new HBox();
-        Label lb = new Label("Vaihda pelaajan 2 laudan luomiseen");
+        Label lb = new Label("Pelaaja 2: Siirry asettamaan laivasi laudalle");
         Button switchb5 = new Button("Letsgo");
         switchb5.setOnAction(e -> {
             try {
-                setNumber(2);
+                if(counter == 1){
+                    lb.setText("PELI ALKAKOON, pelaajan 1 vuoro");
+                    setNumber(2);
+                    counter++;
+                }
+                else if(counter == 2){
+                    lb.setText("Pelaajan 2 vuoro");
+                    setNumber(1);
+                    counter++;
+                }
+                else if(counter > 2 && counter % 2 != 0){
+                    lb.setText("Pelaajan 1 vuoro");
+                    setNumber(1);
+                    counter++;
+                }
+                else if(counter > 2 && counter % 2 == 0){
+                    lb.setText("Pelaajan 2 vuoro");
+                    setNumber(2);
+                    counter++;
+                }
                 switchScene("--");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -183,7 +213,7 @@ public class GameLogic {
         hb.getChildren().addAll(switchb5, lb);
         hb.setSpacing(10);
         bp.setCenter(hb);
-        ap5.getChildren().addAll(bp);
+        ap3.getChildren().addAll(bp);
     }
 
     public void createSwitchPLayer1Scene(){
@@ -191,13 +221,13 @@ public class GameLogic {
         Button switchb6 = new Button("Aloita peli");
         switchb6.setOnAction(e -> {
             try {
-                setNumber(3);
+                setNumber(1);
                 switchScene("--");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         });
-        ap6.getChildren().addAll(switchb6);
+        ap4.getChildren().addAll(switchb6);
     }
 
 
@@ -212,24 +242,34 @@ public class GameLogic {
     public void createBoard2(int size) {
         //varattujen paikkojen merkitsemiseen
         b2.setBoardSize(size);
-        ap2 = b2.buildBoard();
+        b4.setBoardSize(size);
+        AnchorPane lauta2 = b2.buildBoard();
+        AnchorPane lauta4 = b4.buildBoard();
         fp2.setHgap(30);
         fp2.setVgap(10);
         Button switchb3 = new Button("Ready");
         switchb3.setOnAction(e->{
             try {
-                setNumber(3);
+                lauta2.setDisable(true);
+                startGuessing(3, b3, playerTwoShipContainer);
+                /*
+                setNumber(1);
                 switchScene("--");
+                b3.getGrid().setOnMouseClicked(f->{
+                    shoot(b3.getCordsX(), b3.getCordsY(), playerTwoShipContainer);
+                });*/
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         });
-        ap2.getChildren().addAll(fp2,switchb3);
         for(int i = 0; i < pTwoRectangles.size(); i++){
             System.out.println("Rectanlesize = "+pTwoRectangles.size());
             fp2.getChildren().add(pTwoRectangles.get(i));
             initializeMouseEvent(pTwoRectangles.get(i), b2, ap2, fp2, playerTwoShipContainer);
         }
+        ap2.getChildren().addAll(lauta2, lauta4, fp2, switchb3);
+        AnchorPane.setTopAnchor(lauta2, 10d);
+        AnchorPane.setBottomAnchor(lauta4, 100d);
         AnchorPane.setRightAnchor(fp2, 10d);
         AnchorPane.setBottomAnchor(switchb3, 10d);
     }
@@ -554,7 +594,9 @@ public class GameLogic {
     protected void setNumber(int number){
         this.boardNumber = number;
     }
-
+    protected int getNumber(){
+        return boardNumber;
+    }
 
     protected void rotateShip(Rectangle rectangle){
 
@@ -660,9 +702,7 @@ public class GameLogic {
         for(int i = 0; i < container.size(); i++){
             if(container.get(i).getIsHorizontal() == true) {
                 for (int j = 0; j < container.get(i).getSize(); j++) {
-
                     if ((container.get(i).getStartX()+1 + j == x) && (container.get(i).getStartY()+1 == y)) {
-
                         System.out.println("osuit vittu");
                         return true;
                     }
@@ -670,9 +710,7 @@ public class GameLogic {
             }
             else{
                 for(int j = 0; j < container.get(i).getSize(); j++){
-
                     if((container.get(i).getStartY()+1 + j == y) && (container.get(i).getStartX()+1 == x)){
-
                         System.out.println("osuit käännettyyn vittu");
                         return true;
                     }
@@ -740,4 +778,11 @@ public class GameLogic {
 
     }//checkValidPlacement()
 
+    protected void startGuessing(int number, Board board, ArrayList<Ship> container) throws IOException {
+        setNumber(number);
+        switchScene("--");
+        board.getGrid().setOnMouseClicked(f->{
+            shoot(board.getCordsX(), board.getCordsY(), container);
+        });
+    }
 }//class

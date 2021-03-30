@@ -41,15 +41,15 @@ public class Board {
      */
 
     protected AnchorPane buildBoard(){
-
+        int size = 50;
         for (int i = 0; i < boardSize; i++) {
-            ColumnConstraints c = new ColumnConstraints(50);
+            ColumnConstraints c = new ColumnConstraints(size);
             grid.getColumnConstraints().add(c);
             grid.setOnMouseMoved((MouseEvent t) -> {
                 double xx = (int) t.getX()*2;
                 double yy = ( t.getY()*2);
-                int y = (int) yy/100;
-                int x = (int) xx/100;
+                int y = (int)yy/(size*2);
+                int x = (int)xx/(size*2);
                 y++;
                 x++;
                 //System.out.println(x + " x " + y);
@@ -64,13 +64,13 @@ public class Board {
         }//for1
 
         for (int i = 0; i < boardSize; i++) {
-            RowConstraints c = new RowConstraints(50);
+            RowConstraints c = new RowConstraints(size);
             grid.getRowConstraints().add(c);
             grid.setOnMouseMoved((MouseEvent t) -> {
                 double xx = (int) t.getX()*2;
                 double yy = ( t.getY()*2);
-                int y = (int) yy/100;
-                int x = (int) xx/100;
+                int y = (int) yy/(size*2);
+                int x = (int) xx/(size*2);
                 y++;
                 x++;
                 //System.out.println(x + " x " + y);
