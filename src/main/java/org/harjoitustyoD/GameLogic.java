@@ -1,6 +1,7 @@
 package org.harjoitustyoD;
 
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -48,13 +49,11 @@ public class GameLogic {
     private FlowPane fp2 = new FlowPane();
     private Button switchb2;
     private int boardNumber;
+    private int playerNumber;
     private Stage stage;
     private Scene scene1;
     private Scene scene2;
     private Scene scene3;
-    private Scene scene4;
-    private Scene scene5;
-    private Scene scene6;
     public int cordsX;
     public int cordsY;
     private Rectangle selectedShip;
@@ -64,7 +63,6 @@ public class GameLogic {
         scene1 = new Scene(ap1, 1600,900);
         scene2 = new Scene(ap2, 1600, 900);
         scene3 = new Scene(ap3, 1600, 900);
-        scene4 = new Scene(ap4, 1600, 900);
 
         // R-näppäimen käyttäminen laivan kääntämiseen
         scene1.addEventFilter(KeyEvent.KEY_TYPED, e -> {
@@ -115,18 +113,6 @@ public class GameLogic {
                     stage.setScene(scene3);
                     stage.show();
                     break;
-                case 4: //player2 screen
-                    stage.setScene(scene4);
-                    stage.show();
-                    break;
-                case 5: //switchPlayer1Scene
-                    stage.setScene(scene5);
-                    stage.show();
-                    break;
-                case 6: //switchPlayer2Scene
-                    stage.setScene(scene6);
-                    stage.show();
-                    break;
             }
         }
         else {
@@ -160,14 +146,14 @@ public class GameLogic {
                 lauta1.setDisable(true);
                 if(lauta1.isDisabled()){
                     if (counter == 1) {
-                        setNumber(3);
+                        setBoardNumber(3);
                         switchScene("--");
                     }
                     else{
-                        startGuessing(3, b4, b1, playerOneShipContainer);
+                        startGuessing(3, playerNumber, b4, b1, playerOneShipContainer);
                     }
                 }else{
-                    setNumber(3);
+                    setBoardNumber(3);
                     switchScene("--");
                 }
             } catch (IOException ioException) {
@@ -196,22 +182,24 @@ public class GameLogic {
             try {
                 if(counter == 1){
                     lb.setText("PELI ALKAKOON, pelaajan 1 vuoro");
-                    setNumber(2);
+                    setBoardNumber(2);
                     counter++;
                 }
                 else if(counter == 2){
                     lb.setText("Pelaajan 2 vuoro");
-                    setNumber(1);
+                    setBoardNumber(1);
                     counter++;
                 }
                 else if(counter > 2 && counter % 2 != 0){
                     lb.setText("Pelaajan 1 vuoro");
-                    setNumber(2);
+                    setBoardNumber(2);
+                    setPlayerNumber(1);
                     counter++;
                 }
                 else if(counter > 2 && counter % 2 == 0){
                     lb.setText("Pelaajan 2 vuoro");
-                    setNumber(1);
+                    setBoardNumber(1);
+                    setPlayerNumber(2);
                     counter++;
                 }
                 switchScene("--");
@@ -246,13 +234,7 @@ public class GameLogic {
         switchb3.setOnAction(e->{
             try {
                 lauta2.setDisable(true);
-                startGuessing(3, b3, b2, playerTwoShipContainer);
-                /*
-                setNumber(1);
-                switchScene("--");
-                b3.getGrid().setOnMouseClicked(f->{
-                    shoot(b3.getCordsX(), b3.getCordsY(), playerTwoShipContainer);
-                });*/
+                startGuessing(3, playerNumber, b3, b2, playerTwoShipContainer);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -276,7 +258,7 @@ public class GameLogic {
         Button switchb4 = new Button("Ready");
         switchb4.setOnAction(e->{
             try {
-                setNumber(4);
+                setBoardNumber(4);
                 switchScene("--");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -586,12 +568,19 @@ public class GameLogic {
     }
 
 
-    protected void setNumber(int number){
+    protected void setBoardNumber(int number){
         this.boardNumber = number;
     }
-    protected int getNumber(){
+    protected int getBoardNumber(){
         return boardNumber;
     }
+    protected void setPlayerNumber(int number){
+        this.playerNumber = number;
+    }
+    protected int getPlayerNumber(){
+        return playerNumber;
+    }
+
 
     protected void rotateShip(Rectangle rectangle){
 
@@ -698,14 +687,8 @@ public class GameLogic {
             if(container.get(i).getIsHorizontal() == true) {
                 for (int j = 0; j < container.get(i).getSize(); j++) {
                     if ((container.get(i).getStartX()+1 + j == x) && (container.get(i).getStartY()+1 == y)) {
-                        if(container.get(i).isDestroyed()){
-                            System.out.println("it's already DEAD bro");
-                            return false;
-                        }
-                        else {
-                            container.get(i).hit();
-                            return true;
-                        }
+                        container.get(i).hit();
+                        return true;
                     }
                 }
             }
@@ -773,6 +756,13 @@ public class GameLogic {
         }
     }//checkShipValidPlacement()
 
+    /**
+     * Method to check whether the place that the user is trying
+     * to guess is valid or not
+     *
+     * @param board
+     * @param container
+     */
     protected void checkGuessValidPlacement(Board board, ArrayList<Ship> container){
         if(board.getCordsX() < 0){
             board.setCordsX(0);
@@ -788,13 +778,14 @@ public class GameLogic {
             board.setCordsY(board.getBoardSize());
             System.out.println(cordsY);
         }
-    }
+    }//checkGuessValidPlacement()
 
-    protected void startGuessing(int number, Board board, Board board2, ArrayList<Ship> container) throws IOException {
+
+    protected void startGuessing(int boardNumber, int playerNumber, Board board, Board board2, ArrayList<Ship> container) throws IOException {
         board.getGrid().setDisable(false);
         Image image1 = new Image(getClass().getResourceAsStream("vihrearasti.png"));
         Image image2 = new Image(getClass().getResourceAsStream("punainenrasti.png"));
-        setNumber(number);
+        setBoardNumber(boardNumber);
         switchScene("--");
         board.getGrid().setOnMouseClicked(f->{
             if(getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1) != null && getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1).isDisabled()){
@@ -807,6 +798,9 @@ public class GameLogic {
                 board2.getGrid().add(new ImageView(image1), board.getCordsX()-1, board.getCordsY()-1);
                 getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1).setDisable(true);
                 board.getGrid().setDisable(true);
+                if(removeDeadShip(container)){
+                    winner(playerNumber);
+                }
 
             }
             else if(!(shoot(board.getCordsX(), board.getCordsY(), container))){
@@ -817,8 +811,10 @@ public class GameLogic {
                 board.getGrid().setDisable(true);
             }
         });
-    }
+    }//startGuessing
 
+
+    // metodin avulla saadaan gridistä valittua haluttu solu
     protected Node getNodeFromBoard(Board board, int col, int row) {
         ObservableList<Node> children = board.getGrid().getChildren();
         for (Node node : children) {
@@ -835,5 +831,31 @@ public class GameLogic {
             }
         }
         return null;
+    }
+
+
+    //poistaa laivalistasta kuolleet laivat pois
+    protected boolean removeDeadShip(ArrayList<Ship> container){
+        for(int i = 0; i<container.size(); i++){
+            if(container.get(i).isDestroyed()){
+                container.remove(i);
+                System.out.println("kuollut laiva poistettu");
+                if(container.isEmpty()){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    //valmis toteutus avaisi uuden ikkunan jossa voittaja julkistetaan, sekä myös vaihtoehdon aloittaa pelin alusta
+    protected void winner(int playerNumber){
+        System.out.println("PELIN VOITTI: PELAAJA " + playerNumber);
+        //väliaikainen, sulkee ohjelman
+        Platform.exit();
     }
 }//class
