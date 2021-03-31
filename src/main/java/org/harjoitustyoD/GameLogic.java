@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -57,6 +58,17 @@ public class GameLogic {
     public int cordsY;
     private Rectangle selectedShip;
     private int counter = 1;
+
+    protected String playerOneName;
+    protected String playerTwoName;
+
+    protected void setPlayerOneName(String s){
+        playerOneName = s;
+    }
+
+    protected void setPlayerTwoName(String s){
+        playerOneName = s;
+    }
 
     public void createScenes(){
         scene1 = new Scene(ap1, 1600,900);
@@ -795,11 +807,7 @@ public class GameLogic {
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     if (removeDeadShip(container)) {
-                        try {
-                            winner(playerNumber);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        winner(playerNumber);
                     }
                 }
             }
@@ -854,9 +862,30 @@ public class GameLogic {
 
 
     //valmis toteutus avaisi uuden ikkunan jossa voittaja julkistetaan, sekä myös vaihtoehdon aloittaa pelin alusta
-    protected void winner(int playerNumber) throws IOException {
+    protected void winner(int playerNumber) {
         System.out.println("PELIN VOITTI: PELAAJA " + playerNumber);
-        reset();
+        //väliaikainen, sulkee ohjelman
+        if(playerNumber == 1) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Peli päättyi!");
+            alert.setHeaderText("Voittaja: " + playerOneName);
+            alert.showAndWait();
+            try {
+                reset();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if(playerNumber == 2){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Voittaja: " + playerTwoName);
+            alert.setTitle("Peli päättyi!");
+            alert.showAndWait();
+            try {
+                reset();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected void reset() throws IOException {

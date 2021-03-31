@@ -71,6 +71,9 @@ public class Controller {
         playerTwo = playerTwoTextField.getText();
         playerOne = playerOneTextField.getText();
 
+        gl.setPlayerOneName(playerOneTextField.getText());
+        gl.setPlayerTwoName(playerTwoTextField.getText());
+
         int lta = Integer.parseInt(lentotukialusAmountTextField.getText());
         int tl = Integer.parseInt(taistelulaivaAmountTextField.getText());
         int ris = Integer.parseInt(risteilijaAmountTextField.getText());
