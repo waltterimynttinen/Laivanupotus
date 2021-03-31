@@ -87,8 +87,6 @@ public class Controller {
                 gl.createBoard1(10);
                 gl.createSwitchPLayerScene();
                 gl.createBoard2(10);
-                //gl.createGuessBoard1(10);
-                //gl.createGuessBoard2(10);
                 System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
                 gl.createScenes();
                 System.out.println(gl.getPlayerOneShipContainer());
@@ -97,15 +95,16 @@ public class Controller {
                 gl.createBoard1(laudanKoko);
                 gl.createBoard2(laudanKoko);
                 gl.createSwitchPLayerScene();
-                //gl.createGuessBoard1(laudanKoko);
-                //gl.createGuessBoard2(laudanKoko);
                 System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
                 gl.createScenes();
                 System.out.println(gl.getPlayerOneShipContainer());
                 System.out.println(gl.getPlayerTwoShipContainer());
             }
         }else{
-            System.out.println("ei kelpaa >:(");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Arvot väärin!");
+            alert.setHeaderText("Tarkista, että asettamasi arvot ovat oikein!");
+            alert.showAndWait();
         }
     }
 

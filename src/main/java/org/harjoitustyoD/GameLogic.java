@@ -5,6 +5,9 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,6 +28,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
@@ -260,35 +264,6 @@ public class GameLogic {
         AnchorPane.setBottomAnchor(lauta4, 100d);
         AnchorPane.setRightAnchor(fp2, 10d);
         AnchorPane.setBottomAnchor(switchb3, 10d);
-    }
-
-
-    public void createGuessBoard1(int size){
-        b3.setBoardSize(size);
-        ap3 = b3.buildBoard();
-        Button switchb4 = new Button("Ready");
-        switchb4.setOnAction(e->{
-            try {
-                setBoardNumber(4);
-                switchScene("--");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-        ap3.getChildren().add(switchb4);
-        b3.getGrid().setOnMouseClicked(e->{
-            if((shoot(b3.getCordsX(), b3.getCordsY(), playerOneShipContainer)) == true){
-                System.out.println("true");
-            };
-        });
-        AnchorPane.setBottomAnchor(switchb4, 10d);
-    }
-    public void createGuessBoard2(int size){
-        b4.setBoardSize(size);
-        ap4 = b4.buildBoard();
-        b4.getGrid().setOnMouseClicked(e->{
-            shoot(b4.getCordsX(), b4.getCordsY(), playerTwoShipContainer);
-        });
     }
 
 
@@ -865,27 +840,60 @@ public class GameLogic {
     protected void winner(int playerNumber) {
         System.out.println("PELIN VOITTI: PELAAJA " + playerNumber);
         //väliaikainen, sulkee ohjelman
+        Stage stage = new Stage();
+
+        // Napit
+        Button newGame = new Button("Pelaa uudelleen");
+        Button exitGame = new Button("Poistu pelistä");
+        newGame.setAlignment(Pos.BOTTOM_CENTER);
+        exitGame.setAlignment(Pos.BOTTOM_CENTER);
+
+        exitGame.setOnAction(e -> {
+            Platform.exit();
+        });
+        newGame.setOnAction(e -> {
+            try {
+                reset();
+                stage.close();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        });
+
+        // Lopputekstit
+        Label endingLabel = new Label("koipi");
         if(playerNumber == 1) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Peli päättyi!");
-            alert.setHeaderText("Voittaja: " + playerOneName);
-            alert.showAndWait();
-            try {
-                reset();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            endingLabel.setText("Voittaja: " + playerOneName+ "! \nPelataanko uudelleen?");
         }else if(playerNumber == 2){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Voittaja: " + playerTwoName);
-            alert.setTitle("Peli päättyi!");
-            alert.showAndWait();
-            try {
-                reset();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            endingLabel.setText("Voittaja: " + playerTwoName+ "! \nPelataanko uudelleen?");
         }
+        endingLabel.setTextFill(Color.SPRINGGREEN);
+        endingLabel.setAlignment(Pos.CENTER);
+        endingLabel.setScaleX(3);
+        endingLabel.setScaleY(3);
+
+        //Hbox nappien asettelulle
+        HBox h = new HBox();
+        h.getChildren().addAll(newGame,exitGame);
+        h.setSpacing(10);
+        h.setPadding(new Insets(0,0,15,0));
+        h.setAlignment(Pos.CENTER);
+        HBox.setHgrow(h, Priority.ALWAYS);
+
+        // Taustakuva
+        ImageView kuva = new ImageView(new Image(getClass().getResourceAsStream("battleships.png")));
+        kuva.setX(-700);
+        kuva.setY(-700);
+
+        // Loput
+        BorderPane pane = new BorderPane();
+        pane.getChildren().add(kuva);
+        pane.setCenter(endingLabel);
+        pane.setBottom(h);
+        Scene scene = new Scene(pane, 500, 300);
+        stage.setTitle("Peli päättyi!");
+        stage.setScene(scene);
+        stage.show();
     }
 
     protected void reset() throws IOException {
