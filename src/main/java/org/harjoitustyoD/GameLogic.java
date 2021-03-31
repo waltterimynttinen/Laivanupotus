@@ -47,7 +47,6 @@ public class GameLogic {
     private BorderPane bp = new BorderPane();
     private FlowPane fp1 = new FlowPane();
     private FlowPane fp2 = new FlowPane();
-    private Button switchb2;
     private int boardNumber;
     private int playerNumber;
     private Stage stage;
@@ -563,11 +562,6 @@ public class GameLogic {
     }
 
 
-    protected Button getSwitchb2(){
-        return switchb2;
-    }
-
-
     protected void setBoardNumber(int number){
         this.boardNumber = number;
     }
@@ -801,7 +795,11 @@ public class GameLogic {
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     if (removeDeadShip(container)) {
-                        winner(playerNumber);
+                        try {
+                            winner(playerNumber);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -856,9 +854,35 @@ public class GameLogic {
 
 
     //valmis toteutus avaisi uuden ikkunan jossa voittaja julkistetaan, sekä myös vaihtoehdon aloittaa pelin alusta
-    protected void winner(int playerNumber){
+    protected void winner(int playerNumber) throws IOException {
         System.out.println("PELIN VOITTI: PELAAJA " + playerNumber);
-        //väliaikainen, sulkee ohjelman
-        Platform.exit();
+        reset();
+    }
+
+    protected void reset() throws IOException {
+        Board b1 = new Board();
+        Board b2 = new Board();
+        Board b3 = new Board();
+        Board b4 = new Board();
+        AnchorPane ap1 = new AnchorPane();
+        AnchorPane ap2 = new AnchorPane();
+        AnchorPane ap3 = new AnchorPane();
+        AnchorPane ap4 = new AnchorPane();
+        AnchorPane lauta1 = new AnchorPane();
+        AnchorPane lauta2 = new AnchorPane();
+        AnchorPane lauta3 = new AnchorPane();
+        AnchorPane lauta4 = new AnchorPane();
+        ArrayList<Ship> playerOneShipContainer = new ArrayList<>();
+        ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
+        ArrayList<Rectangle> pOneRectangles = new ArrayList<>();
+        ArrayList<Rectangle> pTwoRectangles = new ArrayList<>();
+        BorderPane bp = new BorderPane();
+        FlowPane fp1 = new FlowPane();
+        FlowPane fp2 = new FlowPane();
+        int boardNumber;
+        int playerNumber;
+        Stage stage;
+        counter = 1;
+        switchScene("mainMenu.fxml");
     }
 }//class

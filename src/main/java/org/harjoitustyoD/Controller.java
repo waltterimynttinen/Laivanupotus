@@ -130,6 +130,7 @@ public class Controller {
         int sv = Integer.parseInt(sukellusveneAmountTextField.getText());
         int hv =  Integer.parseInt(havittajaAmountTextField.getText());
 
+
         System.out.println(lta);
 
         int kok = lta+tl+ris+sv+hv;
