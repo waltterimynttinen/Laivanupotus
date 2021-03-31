@@ -754,6 +754,9 @@ public class GameLogic {
                 cordsX = board.getBoardSize() - 1;
             }
         }
+        System.out.println("lopulliset koordinatit: " + cordsX + " x " + cordsY);
+        container.get(getShipIndex(b)).setStartX(cordsX);
+        container.get(getShipIndex(b)).setStartY(cordsY);
     }//checkShipValidPlacement()
 
     /**
@@ -763,21 +766,20 @@ public class GameLogic {
      * @param board
      * @param container
      */
-    protected void checkGuessValidPlacement(Board board, ArrayList<Ship> container){
+    protected boolean checkGuessValidPlacement(Board board, ArrayList<Ship> container){
         if(board.getCordsX() < 0){
-            board.setCordsX(0);
+            return false;
         }
         if(board.getCordsY() < 0){
-            board.setCordsY(0);
+            return false;
         }
-        if(board.getCordsX() >= board.getBoardSize()){
-            board.setCordsX(board.getBoardSize());
-            System.out.println(cordsX);
+        if(board.getCordsX() > board.getBoardSize()){
+            return false;
         }
-        if(board.getCordsY() >= board.getBoardSize()){
-            board.setCordsY(board.getBoardSize());
-            System.out.println(cordsY);
+        if(board.getCordsY() > board.getBoardSize()){
+            return false;
         }
+        return true;
     }//checkGuessValidPlacement()
 
 
@@ -793,22 +795,23 @@ public class GameLogic {
                 return;
             }
             if((shoot(board.getCordsX(), board.getCordsY(), container))){
-                checkGuessValidPlacement(board, container);
-                board.getGrid().add(new ImageView(image1), board.getCordsX()-1, board.getCordsY()-1);
-                board2.getGrid().add(new ImageView(image1), board.getCordsX()-1, board.getCordsY()-1);
-                getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1).setDisable(true);
-                board.getGrid().setDisable(true);
-                if(removeDeadShip(container)){
-                    winner(playerNumber);
+                if(checkGuessValidPlacement(board, container)) {
+                    board.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
+                    board2.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
+                    getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
+                    board.getGrid().setDisable(true);
+                    if (removeDeadShip(container)) {
+                        winner(playerNumber);
+                    }
                 }
-
             }
             else if(!(shoot(board.getCordsX(), board.getCordsY(), container))){
-                System.out.println("Ammuit ohi!");
-                checkGuessValidPlacement(board, container);
-                board.getGrid().add(new ImageView(image2), board.getCordsX() - 1, board.getCordsY() - 1);
-                getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1).setDisable(true);
-                board.getGrid().setDisable(true);
+                if(checkGuessValidPlacement(board, container)) {
+                    System.out.println("Ammuit ohi!");
+                    board.getGrid().add(new ImageView(image2), board.getCordsX() - 1, board.getCordsY() - 1);
+                    getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
+                    board.getGrid().setDisable(true);
+                }
             }
         });
     }//startGuessing

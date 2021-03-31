@@ -77,7 +77,7 @@ public class Controller {
         int sv = Integer.parseInt(sukellusveneAmountTextField.getText());
         int hv =  Integer.parseInt(havittajaAmountTextField.getText());
 
-        if(areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko)) {
+        if(true || (areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko))) {
             gl.createShips(lta, tl, ris, sv, hv);
             gl.setBoardNumber(1);
             if (laudanKoko == 1) {
