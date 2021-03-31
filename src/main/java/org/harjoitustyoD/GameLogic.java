@@ -1,9 +1,7 @@
 package org.harjoitustyoD;
 
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,7 +22,6 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -48,6 +45,8 @@ public class GameLogic {
     private BorderPane bp = new BorderPane();
     private FlowPane fp1 = new FlowPane();
     private FlowPane fp2 = new FlowPane();
+    private Button button1 = new Button();
+    private Button button2 = new Button();
     private int boardNumber;
     private int playerNumber;
     private Stage stage;
@@ -151,36 +150,39 @@ public class GameLogic {
         lauta3 = b3.buildBoard();
         fp1.setHgap(30);
         fp1.setVgap(10);
-        Button switchb2 = new Button("Switch to player 2");
-        switchb2.setOnAction(e->{
-            try {
-                lauta1.setDisable(true);
-                if(lauta1.isDisabled()){
-                    if (counter == 1) {
-                        setBoardNumber(3);
-                        switchScene("--");
-                    }
-                    else{
-                        startGuessing(3, playerNumber, b4, b1, playerOneShipContainer);
-                    }
-                }else{
-                    setBoardNumber(3);
-                    switchScene("--");
-                }
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
         for(int i = 0; i < pOneRectangles.size(); i++){
             System.out.println("Rectanlesize = "+pOneRectangles.size());
             fp1.getChildren().add(pOneRectangles.get(i));
             initializeMouseEvent(pOneRectangles.get(i), b1, ap1, fp1, playerOneShipContainer);
         }
-        ap1.getChildren().addAll(lauta1, lauta3, fp1, switchb2);
+        System.out.println(fp1.getChildren().size());
+        button1.setText("Switch to player 2");
+        button1.setOnAction(e->{
+            try {
+                if(fp1.getChildren().size() == 0) {
+                    lauta1.setDisable(true);
+                    if (lauta1.isDisabled()) {
+                        if (counter == 1) {
+                            setBoardNumber(3);
+                            switchScene("--");
+                        } else {
+                            startGuessing(3, playerNumber, b4, b1, playerOneShipContainer, button2);
+                        }
+                    } else {
+                        setBoardNumber(3);
+                        switchScene("--");
+                    }
+                    button1.setDisable(true);
+                }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        ap1.getChildren().addAll(lauta1, lauta3, fp1, button1);
         AnchorPane.setTopAnchor(lauta1, 10d);
         AnchorPane.setBottomAnchor(lauta3, 100d);
         AnchorPane.setRightAnchor(fp1, 10d);
-        AnchorPane.setBottomAnchor(switchb2, 10d);
+        AnchorPane.setBottomAnchor(button1, 10d);
     }
 
 
@@ -241,25 +243,29 @@ public class GameLogic {
         AnchorPane lauta4 = b4.buildBoard();
         fp2.setHgap(30);
         fp2.setVgap(10);
-        Button switchb3 = new Button("Ready");
-        switchb3.setOnAction(e->{
-            try {
-                lauta2.setDisable(true);
-                startGuessing(3, playerNumber, b3, b2, playerTwoShipContainer);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
         for(int i = 0; i < pTwoRectangles.size(); i++){
             System.out.println("Rectanlesize = "+pTwoRectangles.size());
             fp2.getChildren().add(pTwoRectangles.get(i));
             initializeMouseEvent(pTwoRectangles.get(i), b2, ap2, fp2, playerTwoShipContainer);
         }
-        ap2.getChildren().addAll(lauta2, lauta4, fp2, switchb3);
+        button2.setText("Ready");
+        button2.setOnAction(e->{
+            try {
+                if(fp2.getChildren().size() == 0) {
+                    lauta2.setDisable(true);
+                    startGuessing(3, playerNumber, b3, b2, playerTwoShipContainer, button1);
+
+                }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            button2.setDisable(true);
+        });
+        ap2.getChildren().addAll(lauta2, lauta4, fp2, button2);
         AnchorPane.setTopAnchor(lauta2, 10d);
         AnchorPane.setBottomAnchor(lauta4, 100d);
         AnchorPane.setRightAnchor(fp2, 10d);
-        AnchorPane.setBottomAnchor(switchb3, 10d);
+        AnchorPane.setBottomAnchor(button2, 10d);
     }
 
 
@@ -410,6 +416,7 @@ public class GameLogic {
         b.setOnMousePressed(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)){
                 fp.getChildren().remove(b);
+                System.out.println(fp.getChildren().size());
                 board.grid.getChildren().remove(b);
                 ap.getChildren().add(b);
             }
@@ -789,7 +796,7 @@ public class GameLogic {
     }//checkGuessValidPlacement()
 
 
-    protected void startGuessing(int boardNumber, int playerNumber, Board board, Board board2, ArrayList<Ship> container) throws IOException {
+    protected void startGuessing(int boardNumber, int playerNumber, Board board, Board board2, ArrayList<Ship> container, Button button) throws IOException {
         board.getGrid().setDisable(false);
         Image image1 = new Image(getClass().getResourceAsStream("vihrearasti.png"));
         Image image2 = new Image(getClass().getResourceAsStream("punainenrasti.png"));
@@ -806,6 +813,7 @@ public class GameLogic {
                     board2.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
+                    button.setDisable(false);
                     if (removeDeadShip(container)) {
                         winner(playerNumber);
                     }
@@ -817,6 +825,7 @@ public class GameLogic {
                     board.getGrid().add(new ImageView(image2), board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
+                    button.setDisable(false);
                 }
             }
         });
@@ -841,7 +850,6 @@ public class GameLogic {
         }
         return null;
     }
-
 
     //poistaa laivalistasta kuolleet laivat pois
     protected boolean removeDeadShip(ArrayList<Ship> container){
