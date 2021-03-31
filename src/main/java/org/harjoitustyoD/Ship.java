@@ -40,6 +40,10 @@ public class Ship {
         return destroyed;
     }
 
+    public void setDestroyed(boolean destroyed){
+        this.destroyed = true;
+    }
+
     public int getStartX() {
         return startX;
     }
@@ -82,10 +86,12 @@ public class Ship {
 
     public boolean hit(){
         this.hp--;
-        if(this.hp <= 0){
-            this.destroyed = true;
+        System.out.println("osuit!");
+        if(this.hp == 0){
+            System.out.println("Laiva tuhoutui");
+            setDestroyed(destroyed);
         }
-        return this.destroyed;
+        return true;
     }
 
 }

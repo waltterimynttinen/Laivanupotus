@@ -106,6 +106,12 @@ public class Board {
     public int getCordsX(){
         return cordsX;
     }
+    public void setCordsX(int x){
+        this.cordsX = x;
+    }
+    public void setCordsY(int y){
+        this.cordsY = y;
+    }
     public int getCordsY(){
         return cordsY;
     }

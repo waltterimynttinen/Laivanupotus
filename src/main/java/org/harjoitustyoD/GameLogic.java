@@ -1,8 +1,10 @@
 package org.harjoitustyoD;
 
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -69,7 +71,6 @@ public class GameLogic {
             if(e.getCharacter().equalsIgnoreCase("r")){
                 try{
                     rotateShip(selectedShip);
-
                 }catch(Exception exception){
                     exception.printStackTrace();
                 }
@@ -79,7 +80,6 @@ public class GameLogic {
             if(e.getCharacter().equalsIgnoreCase("r")){
                 try{
                     rotateShip(selectedShip);
-
                 }catch(Exception exception){
                     exception.printStackTrace();
                 }
@@ -164,7 +164,7 @@ public class GameLogic {
                         switchScene("--");
                     }
                     else{
-                        startGuessing(3, b4, playerOneShipContainer);
+                        startGuessing(3, b4, b1, playerOneShipContainer);
                     }
                 }else{
                     setNumber(3);
@@ -246,7 +246,7 @@ public class GameLogic {
         switchb3.setOnAction(e->{
             try {
                 lauta2.setDisable(true);
-                startGuessing(3, b3, playerTwoShipContainer);
+                startGuessing(3, b3, b2, playerTwoShipContainer);
                 /*
                 setNumber(1);
                 switchScene("--");
@@ -483,7 +483,7 @@ public class GameLogic {
             }
 
             // Tarkistetaan, onko asettaminen validia =)
-            checkValidPlacement(board, b, container, fp, ap1);
+            checkShipValidPlacement(board, b, container);
 
             if(isSpotTaken(cordsX,cordsY,container, b)){
                 //palautetaan takaisin alkuperäiseen paikkaan oikealle ja käännetään takaisin, jos käännetty
@@ -698,21 +698,26 @@ public class GameLogic {
             if(container.get(i).getIsHorizontal() == true) {
                 for (int j = 0; j < container.get(i).getSize(); j++) {
                     if ((container.get(i).getStartX()+1 + j == x) && (container.get(i).getStartY()+1 == y)) {
-                        System.out.println("osuit vittu");
-                        return true;
+                        if(container.get(i).isDestroyed()){
+                            System.out.println("it's already DEAD bro");
+                            return false;
+                        }
+                        else {
+                            container.get(i).hit();
+                            return true;
+                        }
                     }
                 }
             }
             else{
                 for(int j = 0; j < container.get(i).getSize(); j++){
                     if((container.get(i).getStartY()+1 + j == y) && (container.get(i).getStartX()+1 == x)){
-                        System.out.println("osuit käännettyyn vittu");
+                        container.get(i).hit();
                         return true;
                     }
                 }
             }
         }
-        System.out.println("et osunu broh");
         return false;
     }
 
@@ -725,7 +730,7 @@ public class GameLogic {
      * @param b
      * @param container
      */
-    protected void checkValidPlacement(Board board, Rectangle b, ArrayList<Ship> container, FlowPane fp, AnchorPane ap){
+    protected void checkShipValidPlacement(Board board, Rectangle b, ArrayList<Ship> container){
 
         //Jos x tai y alle 0, sijoitetaan oikein
         if(cordsX < 0){
@@ -734,7 +739,6 @@ public class GameLogic {
         if(cordsY < 0){
             cordsY = 0;
         }
-
         if(container.get(getShipIndex(b)).getIsHorizontal()) {
             // tarkistetaan horisontaalisesti oikeanlainen placeaminen, JOS LAIVA ON HORISONTAALISESTI
             if (cordsX > board.getBoardSize() - container.get(getShipIndex(b)).getSize()) {
@@ -745,7 +749,6 @@ public class GameLogic {
                 } else {
                     cordsX = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
                 }
-
             }
             //Ei voi placettaa ghost nodejen ulkopuolelle, setataan oikein ruudukon sisälle
             if (cordsY > board.getBoardSize() - 1) {
@@ -763,31 +766,74 @@ public class GameLogic {
                     cordsY = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
                 }
             }
-
             if (cordsX > board.getBoardSize() - 1) {
                 System.out.println("too far X: " + cordsX);
                 cordsX = board.getBoardSize() - 1;
             }
-
         }
+    }//checkShipValidPlacement()
 
-    }//checkValidPlacement()
+    protected void checkGuessValidPlacement(Board board, ArrayList<Ship> container){
+        if(board.getCordsX() < 0){
+            board.setCordsX(0);
+        }
+        if(board.getCordsY() < 0){
+            board.setCordsY(0);
+        }
+        if(board.getCordsX() >= board.getBoardSize()){
+            board.setCordsX(board.getBoardSize());
+            System.out.println(cordsX);
+        }
+        if(board.getCordsY() >= board.getBoardSize()){
+            board.setCordsY(board.getBoardSize());
+            System.out.println(cordsY);
+        }
+    }
 
-    protected void startGuessing(int number, Board board, ArrayList<Ship> container) throws IOException {
+    protected void startGuessing(int number, Board board, Board board2, ArrayList<Ship> container) throws IOException {
+        board.getGrid().setDisable(false);
+        Image image1 = new Image(getClass().getResourceAsStream("vihrearasti.png"));
+        Image image2 = new Image(getClass().getResourceAsStream("punainenrasti.png"));
         setNumber(number);
         switchScene("--");
         board.getGrid().setOnMouseClicked(f->{
-            shoot(board.getCordsX(), board.getCordsY(), container);
-            if((shoot(board.getCordsX(), board.getCordsY(), container)) == true){
-                System.out.println("true");
+            if(getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1) != null && getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1).isDisabled()){
+                System.out.println("et voi arvata tätä ruutua");
+                return;
+            }
+            if((shoot(board.getCordsX(), board.getCordsY(), container))){
+                checkGuessValidPlacement(board, container);
+                board.getGrid().add(new ImageView(image1), board.getCordsX()-1, board.getCordsY()-1);
+                board2.getGrid().add(new ImageView(image1), board.getCordsX()-1, board.getCordsY()-1);
+                getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1).setDisable(true);
+                board.getGrid().setDisable(true);
 
-                Image image = new Image(getClass().getResourceAsStream("vihrearasti.png"));
-                board.getGrid().add(new ImageView(image), board.getCordsX()-1, board.getCordsY()-1);
-
-            }else{
-                Image image = new Image(getClass().getResourceAsStream("punainenrasti.png"));
-                board.getGrid().add(new ImageView(image), board.getCordsX()-1, board.getCordsY()-1);
-            };
+            }
+            else if(!(shoot(board.getCordsX(), board.getCordsY(), container))){
+                System.out.println("Ammuit ohi!");
+                checkGuessValidPlacement(board, container);
+                board.getGrid().add(new ImageView(image2), board.getCordsX() - 1, board.getCordsY() - 1);
+                getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1).setDisable(true);
+                board.getGrid().setDisable(true);
+            }
         });
+    }
+
+    protected Node getNodeFromBoard(Board board, int col, int row) {
+        ObservableList<Node> children = board.getGrid().getChildren();
+        for (Node node : children) {
+            Integer columnIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            if (columnIndex == null)
+                columnIndex = 0;
+            if (rowIndex == null)
+                rowIndex = 0;
+
+            if (columnIndex == col && rowIndex == row) {
+                return node;
+            }
+        }
+        return null;
     }
 }//class
