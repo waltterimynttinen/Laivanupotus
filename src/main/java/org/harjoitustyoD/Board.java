@@ -4,6 +4,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -84,6 +86,26 @@ public class Board {
 
 
         }//for2
+
+        //adding images to the grid
+        Image ocean = new Image(getClass().getResourceAsStream("ocean.png"));
+        ImageView imageView = new ImageView(ocean);
+        if(getBoardSize() % 2 == 0){
+            //imageView.setRotate(imageView.getRotate() + 180);
+            imageView.setFitHeight(getBoardSize()*50);
+            imageView.setFitWidth(getBoardSize()*50);
+            imageView.setLayoutY(imageView.getY());
+            Pane p = new Pane();
+            p.getChildren().add(imageView);
+            grid.add(p, 0, 0);
+        }
+        else if(getBoardSize() % 2 == 1){
+            imageView.setFitHeight(getBoardSize()*50);
+            imageView.setFitWidth(getBoardSize()*50);
+            grid.add(imageView,0, getBoardSize()/2);
+        }
+        //Image ocean = new Image(getClass().getResourceAsStream("ocean.png"), getBoardSize()*50, getBoardSize()*50, false, false);
+
 
         // Make the lines visible for the board
         grid.setGridLinesVisible(true);

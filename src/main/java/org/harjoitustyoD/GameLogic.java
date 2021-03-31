@@ -71,6 +71,7 @@ public class GameLogic {
     }
 
     public void createScenes(){
+
         scene1 = new Scene(ap1, 1600,900);
         scene2 = new Scene(ap2, 1600, 900);
         scene3 = new Scene(ap3, 1600, 900);
@@ -110,6 +111,7 @@ public class GameLogic {
      * @throws IOException
      */
     public void switchScene(String fxmlFile) throws IOException {
+
         if (fxmlFile.equals("--")) {
             switch(boardNumber){
                 case 1: //set p1 ships
@@ -145,6 +147,9 @@ public class GameLogic {
      */
     public void createBoard1(int size) {
         //varattujen paikkojen merkitsemiseen
+        Image ocean = new Image(getClass().getResourceAsStream("sand.png"));
+        ImageView imageView = new ImageView(ocean);
+        ap1.getChildren().add(imageView);
         b1.setBoardSize(size);
         b3.setBoardSize(size);
         lauta1 = b1.buildBoard();
@@ -235,6 +240,9 @@ public class GameLogic {
 
     public void createBoard2(int size) {
         //varattujen paikkojen merkitsemiseen
+        Image ocean = new Image(getClass().getResourceAsStream("sand.png"));
+        ImageView imageView = new ImageView(ocean);
+        ap2.getChildren().add(imageView);
         b2.setBoardSize(size);
         b4.setBoardSize(size);
         AnchorPane lauta2 = b2.buildBoard();
