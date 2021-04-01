@@ -73,6 +73,7 @@ public class GameLogic {
     }
 
     public void createScenes(){
+
         scene1 = new Scene(ap1, 1600,900);
         scene2 = new Scene(ap2, 1600, 900);
         scene3 = new Scene(ap3, 1600, 900);
@@ -112,6 +113,7 @@ public class GameLogic {
      * @throws IOException
      */
     public void switchScene(String fxmlFile) throws IOException {
+
         if (fxmlFile.equals("--")) {
             switch(boardNumber){
                 case 1: //set p1 ships
@@ -147,10 +149,13 @@ public class GameLogic {
      */
     public void createBoard1(int size) {
         //varattujen paikkojen merkitsemiseen
+        Image ocean = new Image(getClass().getResourceAsStream("sand.png"));
+        ImageView imageView = new ImageView(ocean);
+        ap1.getChildren().add(imageView);
         b1.setBoardSize(size);
         b3.setBoardSize(size);
-        lauta1 = b1.buildBoard();
-        lauta3 = b3.buildBoard();
+        lauta1 = b1.buildBoard(50);
+        lauta3 = b3.buildBoard(30);
         fp1.setHgap(30);
         fp1.setVgap(10);
         for(int i = 0; i < pOneShipImages.size(); i++){
@@ -184,11 +189,53 @@ public class GameLogic {
         });
         ap1.getChildren().addAll(lauta1, lauta3, fp1, button1);
         AnchorPane.setTopAnchor(lauta1, 10d);
-        AnchorPane.setBottomAnchor(lauta3, 100d);
+        AnchorPane.setBottomAnchor(lauta3, 50d);
         AnchorPane.setRightAnchor(fp1, 10d);
         AnchorPane.setBottomAnchor(button1, 10d);
     }
 
+    /**
+     * Creates a new board utilizing the user input
+     * from the TextField in the main menu. This
+     * board belongs to the player 2
+     *
+     * @param size
+     */
+
+    public void createBoard2(int size) {
+        //varattujen paikkojen merkitsemiseen
+        Image ocean = new Image(getClass().getResourceAsStream("sand.png"));
+        ImageView imageView = new ImageView(ocean);
+        ap2.getChildren().add(imageView);
+        b2.setBoardSize(size);
+        b4.setBoardSize(size);
+        AnchorPane lauta2 = b2.buildBoard(50);
+        AnchorPane lauta4 = b4.buildBoard(30);
+        fp2.setHgap(30);
+        fp2.setVgap(10);
+        for(int i = 0; i < pTwoShipImages.size(); i++){
+            System.out.println("Rectanlesize = "+ pTwoShipImages.size());
+            fp2.getChildren().add(pTwoShipImages.get(i));
+            initializeMouseEvent(pTwoShipImages.get(i), b2, ap2, fp2, playerTwoShipContainer);
+        }
+        button2.setText("Ready");
+        button2.setOnAction(e->{
+            try {
+                if(fp2.getChildren().size() == 0) {
+                    lauta2.setDisable(true);
+                    startGuessing(3, playerNumber, b3, b2, playerTwoShipContainer, button1);
+                    button2.setDisable(true);
+                }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        ap2.getChildren().addAll(lauta2, lauta4, fp2, button2);
+        AnchorPane.setTopAnchor(lauta2, 10d);
+        AnchorPane.setBottomAnchor(lauta4, 50d);
+        AnchorPane.setRightAnchor(fp2, 10d);
+        AnchorPane.setBottomAnchor(button2, 10d);
+    }
 
     public void createSwitchPLayerScene(){
         //switches from p1 create board to p2 create board
@@ -228,47 +275,6 @@ public class GameLogic {
         hb.setSpacing(10);
         bp.setCenter(hb);
         ap3.getChildren().addAll(bp);
-    }
-
-
-    /**
-     * Creates a new board utilizing the user input
-     * from the TextField in the main menu. This
-     * board belongs to the player 2
-     *
-     * @param size
-     */
-
-    public void createBoard2(int size) {
-        //varattujen paikkojen merkitsemiseen
-        b2.setBoardSize(size);
-        b4.setBoardSize(size);
-        AnchorPane lauta2 = b2.buildBoard();
-        AnchorPane lauta4 = b4.buildBoard();
-        fp2.setHgap(30);
-        fp2.setVgap(10);
-        for(int i = 0; i < pTwoShipImages.size(); i++){
-            System.out.println("Rectanlesize = "+ pTwoShipImages.size());
-            fp2.getChildren().add(pTwoShipImages.get(i));
-            initializeMouseEvent(pTwoShipImages.get(i), b2, ap2, fp2, playerTwoShipContainer);
-        }
-        button2.setText("Ready");
-        button2.setOnAction(e->{
-            try {
-                if(fp2.getChildren().size() == 0) {
-                    lauta2.setDisable(true);
-                    startGuessing(3, playerNumber, b3, b2, playerTwoShipContainer, button1);
-                    button2.setDisable(true);
-                }
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-        ap2.getChildren().addAll(lauta2, lauta4, fp2, button2);
-        AnchorPane.setTopAnchor(lauta2, 10d);
-        AnchorPane.setBottomAnchor(lauta4, 100d);
-        AnchorPane.setRightAnchor(fp2, 10d);
-        AnchorPane.setBottomAnchor(button2, 10d);
     }
 
 
@@ -752,6 +758,16 @@ public class GameLogic {
         board.getGrid().setDisable(false);
         Image image1 = new Image(getClass().getResourceAsStream("vihrearasti.png"));
         Image image2 = new Image(getClass().getResourceAsStream("punainenrasti.png"));
+        ImageView imgGreen1 = new ImageView(image1);
+        ImageView imgRed2 = new ImageView(image2);
+        ImageView imgGreen3 = new ImageView(image1);
+
+        int fezze = 5;
+        imgGreen1.setFitHeight(30);
+        imgRed2.setFitWidth(30);
+        imgGreen1.setFitWidth(30);
+        imgRed2.setFitHeight(25+fezze);
+
         setBoardNumber(boardNumber);
         switchScene("--");
         board.getGrid().setOnMouseClicked(f->{
@@ -761,8 +777,9 @@ public class GameLogic {
             }
             if((shoot(board.getCordsX(), board.getCordsY(), container))){
                 if(checkGuessValidPlacement(board, container)) {
-                    board.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
-                    board2.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
+
+                    board.getGrid().add(imgGreen1, board.getCordsX() - 1, board.getCordsY() - 1);
+                    board2.getGrid().add(imgGreen3, board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     button.setDisable(false);
@@ -772,7 +789,7 @@ public class GameLogic {
             else if(!(shoot(board.getCordsX(), board.getCordsY(), container))){
                 if(checkGuessValidPlacement(board, container)) {
                     System.out.println("Ammuit ohi!");
-                    board.getGrid().add(new ImageView(image2), board.getCordsX() - 1, board.getCordsY() - 1);
+                    board.getGrid().add(imgRed2, board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     button.setDisable(false);

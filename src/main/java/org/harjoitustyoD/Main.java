@@ -22,10 +22,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         setStage(primaryStage);
         Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+        stage.setResizable(false);
+        stage.setMaxWidth(1600);
+        stage.setMaxHeight(900);
+        stage.setMinWidth(1600);
+        stage.setMinHeight(900);
         stage.setTitle("Laivanupotus");
         stage.setScene(new Scene(root));
         stage.show();
-
     }
 
 
