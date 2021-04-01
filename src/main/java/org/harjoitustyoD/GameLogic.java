@@ -828,7 +828,6 @@ public class GameLogic {
         Image image2 = new Image(getClass().getResourceAsStream("punainenrasti.png"));
         ImageView imgGreen1 = new ImageView(image1);
         ImageView imgRed2 = new ImageView(image2);
-        ImageView imgGreen3 = new ImageView(image1);
 
         imgGreen1.setFitHeight(30);
         imgRed2.setFitWidth(30);
@@ -850,20 +849,21 @@ public class GameLogic {
                     board.getGrid().add(temp, board.getCordsX() - 1, board.getCordsY() - 1);
                     board2.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
-                    button.setDisable(false);
-                    playSound("valmiscrash.wav");
+                    button.setDisable(true);
+                    //playSound("valmiscrash.wav");
                     removeDeadShip(container, playerNumber);
 
                 }
             }
             else if(!(shoot(board.getCordsX(), board.getCordsY(), container))){
                 if(checkGuessValidPlacement(board, container)) {
+                    button.setDisable(false);
                     System.out.println("Ammuit ohi!");
                     board.getGrid().add(imgRed2, board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     button.setDisable(false);
-                    playSound("valmissplash.wav");
+                    //playSound("valmissplash.wav");
                 }
             }
         });
