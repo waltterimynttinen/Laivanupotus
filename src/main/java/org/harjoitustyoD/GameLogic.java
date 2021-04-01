@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -78,7 +79,7 @@ public class GameLogic {
 
         // R-näppäimen käyttäminen laivan kääntämiseen
         scene1.addEventFilter(KeyEvent.KEY_TYPED, e -> {
-            if(e.getCharacter().equalsIgnoreCase("r")){
+            if(e.getCharacter().equalsIgnoreCase("r") && counter == 1){
                 try{
                     rotateShip(selectedShip);
                 }catch(Exception exception){
@@ -87,7 +88,7 @@ public class GameLogic {
             }
         });
         scene2.addEventFilter(KeyEvent.KEY_TYPED, e -> {
-            if(e.getCharacter().equalsIgnoreCase("r")){
+            if(e.getCharacter().equalsIgnoreCase("r") && counter == 2){
                 try{
                     rotateShip(selectedShip);
                 }catch(Exception exception){
@@ -165,6 +166,7 @@ public class GameLogic {
                     lauta1.setDisable(true);
                     if (lauta1.isDisabled()) {
                         if (counter == 1) {
+                            selectedShip = pTwoShipImages.get(0);
                             setBoardNumber(3);
                             switchScene("--");
                         } else {
@@ -764,9 +766,7 @@ public class GameLogic {
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     button.setDisable(false);
-                    if (removeDeadShip(container)) {
-                        winner(playerNumber);
-                    }
+                    removeDeadShip(container, playerNumber);
                 }
             }
             else if(!(shoot(board.getCordsX(), board.getCordsY(), container))){
@@ -802,12 +802,16 @@ public class GameLogic {
     }
 
     //poistaa laivalistasta kuolleet laivat pois
-    protected boolean removeDeadShip(ArrayList<Ship> container){
+    protected boolean removeDeadShip(ArrayList<Ship> container, int playerNumber){
         for(int i = 0; i<container.size(); i++){
             if(container.get(i).isDestroyed()){
                 container.remove(i);
                 System.out.println("kuollut laiva poistettu");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("LAIVA UPPOSI");
+                alert.showAndWait();
                 if(container.isEmpty()){
+                    winner(playerNumber);
                     return true;
                 }
                 else{
@@ -823,6 +827,7 @@ public class GameLogic {
     protected void winner(int playerNumber) {
         System.out.println("PELIN VOITTI: PELAAJA " + playerNumber);
         //väliaikainen, sulkee ohjelman
+        Main.getStage().close();
         Stage stage = new Stage();
 
         // Napit
@@ -880,28 +885,25 @@ public class GameLogic {
     }
 
     protected void reset() throws IOException {
-        Board b1 = new Board();
-        Board b2 = new Board();
-        Board b3 = new Board();
-        Board b4 = new Board();
-        AnchorPane ap1 = new AnchorPane();
-        AnchorPane ap2 = new AnchorPane();
-        AnchorPane ap3 = new AnchorPane();
-        AnchorPane ap4 = new AnchorPane();
-        AnchorPane lauta1 = new AnchorPane();
-        AnchorPane lauta2 = new AnchorPane();
-        AnchorPane lauta3 = new AnchorPane();
-        AnchorPane lauta4 = new AnchorPane();
-        ArrayList<Ship> playerOneShipContainer = new ArrayList<>();
-        ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
-        ArrayList<ImageView> pOneShipImages = new ArrayList<>();
-        ArrayList<ImageView> pTwoShipImages = new ArrayList<>();
-        BorderPane bp = new BorderPane();
-        FlowPane fp1 = new FlowPane();
-        FlowPane fp2 = new FlowPane();
-        int boardNumber;
-        int playerNumber;
-        Stage stage;
+        b1 = new Board();
+        b2 = new Board();
+        b3 = new Board();
+        b4 = new Board();
+        ap1 = new AnchorPane();
+        ap2 = new AnchorPane();
+        ap3 = new AnchorPane();
+        ap4 = new AnchorPane();
+        lauta1 = new AnchorPane();
+        lauta2 = new AnchorPane();
+        lauta3 = new AnchorPane();
+        lauta4 = new AnchorPane();
+        playerOneShipContainer = new ArrayList<>();
+        playerTwoShipContainer = new ArrayList<>();
+        pOneShipImages = new ArrayList<>();
+        pTwoShipImages = new ArrayList<>();
+        bp = new BorderPane();
+        fp1 = new FlowPane();
+        fp2 = new FlowPane();
         counter = 1;
         switchScene("mainMenu.fxml");
     }

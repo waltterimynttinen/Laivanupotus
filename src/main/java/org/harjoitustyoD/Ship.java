@@ -1,5 +1,7 @@
 package org.harjoitustyoD;
 
+import javafx.scene.control.Alert;
+
 public class Ship {
 
     private int size;
@@ -88,7 +90,6 @@ public class Ship {
         this.hp--;
         System.out.println("osuit!");
         if(this.hp == 0){
-            System.out.println("Laiva tuhoutui");
             setDestroyed(destroyed);
         }
         return true;
