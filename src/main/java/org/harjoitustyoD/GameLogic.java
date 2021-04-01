@@ -253,23 +253,25 @@ public class GameLogic {
         switchb5.setOnAction(e -> {
             try {
                 if(counter == 1){
-                    lb.setText("PELI ALKAKOON, pelaajan 1 vuoro");
+                    lb.setText("PELI ALKAKOON, " + playerOneName +"n vuoro");
                     setBoardNumber(2);
+                    setPlayerNumber(1);
                     counter++;
                 }
                 else if(counter == 2){
-                    lb.setText("Pelaajan 2 vuoro");
+                    lb.setText("Pelaajan "+ playerTwoName + " vuoro");
                     setBoardNumber(1);
+                    setPlayerNumber(2);
                     counter++;
                 }
                 else if(counter > 2 && counter % 2 != 0){
-                    lb.setText("Pelaajan 1 vuoro");
+                    lb.setText("Pelaajan "+ playerOneName + " vuoro");
                     setBoardNumber(2);
                     setPlayerNumber(1);
                     counter++;
                 }
                 else if(counter > 2 && counter % 2 == 0){
-                    lb.setText("Pelaajan 2 vuoro");
+                    lb.setText("Pelaajan "+ playerTwoName + " vuoro");
                     setBoardNumber(1);
                     setPlayerNumber(2);
                     counter++;
@@ -828,11 +830,10 @@ public class GameLogic {
         ImageView imgRed2 = new ImageView(image2);
         ImageView imgGreen3 = new ImageView(image1);
 
-        int fezze = 5;
         imgGreen1.setFitHeight(30);
         imgRed2.setFitWidth(30);
         imgGreen1.setFitWidth(30);
-        imgRed2.setFitHeight(25+fezze);
+        imgRed2.setFitHeight(30);
 
         setBoardNumber(boardNumber);
         switchScene("--");
@@ -843,11 +844,12 @@ public class GameLogic {
             }
             if((shoot(board.getCordsX(), board.getCordsY(), container))){
                 if(checkGuessValidPlacement(board, container)) {
-
-                    board.getGrid().add(imgGreen1, board.getCordsX() - 1, board.getCordsY() - 1);
-                    board2.getGrid().add(imgGreen3, board.getCordsX() - 1, board.getCordsY() - 1);
+                    ImageView temp = new ImageView(image1);
+                    temp.setFitHeight(30);
+                    temp.setFitWidth(30);
+                    board.getGrid().add(temp, board.getCordsX() - 1, board.getCordsY() - 1);
+                    board2.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
-                    board.getGrid().setDisable(true);
                     button.setDisable(false);
                     playSound("valmiscrash.wav");
                     removeDeadShip(container, playerNumber);
@@ -970,7 +972,7 @@ public class GameLogic {
         });
 
         // Lopputekstit
-        Label endingLabel = new Label("koipi");
+        Label endingLabel = new Label();
         if(playerNumber == 1) {
             endingLabel.setText("Voittaja: " + playerOneName + "! \nPelataanko uudelleen?");
         }else if(playerNumber == 2){
