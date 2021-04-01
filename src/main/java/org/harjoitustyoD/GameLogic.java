@@ -9,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,8 +23,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import javafx.scene.media.*;
 
 
 public class GameLogic {
@@ -60,6 +61,7 @@ public class GameLogic {
     public int cordsY;
     private ImageView selectedShip;
     private int counter = 1;
+    protected AudioClip audioClip;
 
     protected String playerOneName;
     protected String playerTwoName;
@@ -782,7 +784,9 @@ public class GameLogic {
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     button.setDisable(false);
+                    playSound("valmiscrash.wav");
                     removeDeadShip(container, playerNumber);
+
                 }
             }
             else if(!(shoot(board.getCordsX(), board.getCordsY(), container))){
@@ -792,10 +796,23 @@ public class GameLogic {
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     button.setDisable(false);
+                    playSound("valmissplash.wav");
                 }
             }
         });
     }//startGuessing
+
+
+    /**
+     * A method for playing soundsclips
+     * for example when you hit a ship
+     * @param name is the name of the
+     *             requested audioclip
+     */
+    protected void playSound(String name){
+        AudioClip audioClip = new AudioClip(getClass().getResource(name).toString());
+        audioClip.play();
+    }
 
 
     // metodin avulla saadaan gridistä valittua haluttu solu
