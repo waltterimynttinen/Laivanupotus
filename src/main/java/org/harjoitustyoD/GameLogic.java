@@ -152,8 +152,8 @@ public class GameLogic {
         ap1.getChildren().add(imageView);
         b1.setBoardSize(size);
         b3.setBoardSize(size);
-        lauta1 = b1.buildBoard();
-        lauta3 = b3.buildBoard();
+        lauta1 = b1.buildBoard(50);
+        lauta3 = b3.buildBoard(30);
         fp1.setHgap(30);
         fp1.setVgap(10);
         Button switchb2 = new Button("Switch to player 2");
@@ -245,8 +245,8 @@ public class GameLogic {
         ap2.getChildren().add(imageView);
         b2.setBoardSize(size);
         b4.setBoardSize(size);
-        AnchorPane lauta2 = b2.buildBoard();
-        AnchorPane lauta4 = b4.buildBoard();
+        AnchorPane lauta2 = b2.buildBoard(50);
+        AnchorPane lauta4 = b4.buildBoard(30);
         fp2.setHgap(30);
         fp2.setVgap(10);
         Button switchb3 = new Button("Ready");
@@ -270,34 +270,6 @@ public class GameLogic {
         AnchorPane.setBottomAnchor(switchb3, 10d);
     }
 
-
-    public void createGuessBoard1(int size){
-        b3.setBoardSize(size);
-        ap3 = b3.buildBoard();
-        Button switchb4 = new Button("Ready");
-        switchb4.setOnAction(e->{
-            try {
-                setBoardNumber(4);
-                switchScene("--");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-        ap3.getChildren().add(switchb4);
-        b3.getGrid().setOnMouseClicked(e->{
-            if((shoot(b3.getCordsX(), b3.getCordsY(), playerOneShipContainer)) == true){
-                System.out.println("true");
-            };
-        });
-        AnchorPane.setBottomAnchor(switchb4, 10d);
-    }
-    public void createGuessBoard2(int size){
-        b4.setBoardSize(size);
-        ap4 = b4.buildBoard();
-        b4.getGrid().setOnMouseClicked(e->{
-            shoot(b4.getCordsX(), b4.getCordsY(), playerTwoShipContainer);
-        });
-    }
 
 
     /**
@@ -801,6 +773,16 @@ public class GameLogic {
         board.getGrid().setDisable(false);
         Image image1 = new Image(getClass().getResourceAsStream("vihrearasti.png"));
         Image image2 = new Image(getClass().getResourceAsStream("punainenrasti.png"));
+        ImageView imgGreen1 = new ImageView(image1);
+        ImageView imgRed2 = new ImageView(image2);
+        ImageView imgGreen3 = new ImageView(image1);
+
+        int fezze = 5;
+        imgGreen1.setFitHeight(30);
+        imgRed2.setFitWidth(30);
+        imgGreen1.setFitWidth(30);
+        imgRed2.setFitHeight(25+fezze);
+
         setBoardNumber(boardNumber);
         switchScene("--");
         board.getGrid().setOnMouseClicked(f->{
@@ -810,8 +792,9 @@ public class GameLogic {
             }
             if((shoot(board.getCordsX(), board.getCordsY(), container))){
                 if(checkGuessValidPlacement(board, container)) {
-                    board.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
-                    board2.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
+
+                    board.getGrid().add(imgGreen1, board.getCordsX() - 1, board.getCordsY() - 1);
+                    board2.getGrid().add(imgGreen3, board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     if (removeDeadShip(container)) {
@@ -822,7 +805,7 @@ public class GameLogic {
             else if(!(shoot(board.getCordsX(), board.getCordsY(), container))){
                 if(checkGuessValidPlacement(board, container)) {
                     System.out.println("Ammuit ohi!");
-                    board.getGrid().add(new ImageView(image2), board.getCordsX() - 1, board.getCordsY() - 1);
+                    board.getGrid().add(imgRed2, board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                 }

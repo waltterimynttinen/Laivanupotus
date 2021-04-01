@@ -42,8 +42,8 @@ public class Board {
      * a number from 5 to 10.
      */
 
-    protected AnchorPane buildBoard(){
-        int size = 50;
+    protected AnchorPane buildBoard(int size){
+        //int size = 50;
         for (int i = 0; i < boardSize; i++) {
             ColumnConstraints c = new ColumnConstraints(size);
             grid.getColumnConstraints().add(c);
@@ -92,16 +92,16 @@ public class Board {
         ImageView imageView = new ImageView(ocean);
         if(getBoardSize() % 2 == 0){
             //imageView.setRotate(imageView.getRotate() + 180);
-            imageView.setFitHeight(getBoardSize()*50);
-            imageView.setFitWidth(getBoardSize()*50);
+            imageView.setFitHeight(getBoardSize()*size);
+            imageView.setFitWidth(getBoardSize()*size);
             imageView.setLayoutY(imageView.getY());
             Pane p = new Pane();
             p.getChildren().add(imageView);
             grid.add(p, 0, 0);
         }
         else if(getBoardSize() % 2 == 1){
-            imageView.setFitHeight(getBoardSize()*50);
-            imageView.setFitWidth(getBoardSize()*50);
+            imageView.setFitHeight(getBoardSize()*size);
+            imageView.setFitWidth(getBoardSize()*size);
             grid.add(imageView,0, getBoardSize()/2);
         }
         //Image ocean = new Image(getClass().getResourceAsStream("ocean.png"), getBoardSize()*50, getBoardSize()*50, false, false);
