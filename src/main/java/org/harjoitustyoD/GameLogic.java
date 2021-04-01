@@ -291,6 +291,8 @@ public class GameLogic {
             playerTwoShipContainer.clear();
         }
 
+        //tätä voisi siistiä :)
+
         // Lentotukialusten luonti
         int indeksi = 0;
         if(lta != 0) {
