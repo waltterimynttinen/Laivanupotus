@@ -9,18 +9,8 @@ import javafx.event.*;
 public class Controller {
     String playerOne;
     String playerTwo;
-    String lentotukialusAmount;
-    String taistelulaivaAmount;
-    String risteilijaAmount;
-    String sukellusveneAmount;
-    String havittajaAmount;
     GameLogic gl = new GameLogic();
 
-    /*private int lta;
-    private int tl;
-    private int ris;
-    private int sv;
-    private int hv;*/
 
     @FXML
     private TextField playerOneTextField;
@@ -36,12 +26,6 @@ public class Controller {
 
     @FXML
     protected Button startGameButton;
-
-    @FXML
-    protected Button readyButton;
-
-    @FXML
-    protected Button playerSwitchButton;
 
     @FXML
     private TextField lentotukialusAmountTextField;
@@ -70,9 +54,13 @@ public class Controller {
         int laudanKoko = Integer.parseInt(s);
         playerTwo = playerTwoTextField.getText();
         playerOne = playerOneTextField.getText();
-
+        // ::DD
         gl.setPlayerOneName(playerOneTextField.getText());
         gl.setPlayerTwoName(playerTwoTextField.getText());
+
+
+
+
 
         int lta = Integer.parseInt(lentotukialusAmountTextField.getText());
         int tl = Integer.parseInt(taistelulaivaAmountTextField.getText());
@@ -108,10 +96,12 @@ public class Controller {
         }
     }
 
-    @FXML
-    protected void onReadyButtonAction(ActionEvent event) throws IOException {
-        System.out.println("onReadyButtonAction pressed");
-        gl.switchScene("switchPlayerScene.fxml");
+
+    public String palautaNimi1(){
+        return playerOne;
+    }
+    public String palautaNimi2(){
+        return playerTwo;
     }
 
     public void initialize() {

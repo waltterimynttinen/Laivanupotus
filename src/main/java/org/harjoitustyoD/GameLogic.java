@@ -69,7 +69,7 @@ public class GameLogic {
     }
 
     protected void setPlayerTwoName(String s){
-        playerOneName = s;
+        playerTwoName = s;
     }
 
     public void createScenes(){
@@ -395,12 +395,11 @@ public class GameLogic {
             return;
         }
         else if(event.getButton().equals(MouseButton.SECONDARY)){
-            //EI TARVITA TÄTÄ OMINAISUUTTA!
-            /*if(board.grid.getChildren().contains(b)){
+            if(board.grid.getChildren().contains(b)){
                 board.grid.getChildren().remove(b);
                 fp.getChildren().add(b);
                 return;
-            }*/
+            }
         }
 
     }//mousePressed()
@@ -825,7 +824,8 @@ public class GameLogic {
                 container.remove(i);
                 System.out.println("kuollut laiva poistettu");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("LAIVA UPPOSI");
+                alert.setHeaderText("Upotit vastustajan laivan!");
+                alert.setTitle("Laiva upotettu!");
                 alert.showAndWait();
                 if(container.isEmpty()){
                     winner(playerNumber);
@@ -868,7 +868,7 @@ public class GameLogic {
         // Lopputekstit
         Label endingLabel = new Label("koipi");
         if(playerNumber == 1) {
-            endingLabel.setText("Voittaja: " + playerOneName+ "! \nPelataanko uudelleen?");
+            endingLabel.setText("Voittaja: " + playerOneName + "! \nPelataanko uudelleen?");
         }else if(playerNumber == 2){
             endingLabel.setText("Voittaja: " + playerTwoName+ "! \nPelataanko uudelleen?");
         }
