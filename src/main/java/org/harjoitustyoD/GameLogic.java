@@ -6,12 +6,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -44,8 +42,8 @@ public class GameLogic {
     private AnchorPane lauta4 = new AnchorPane();
     protected ArrayList<Ship> playerOneShipContainer = new ArrayList<>();
     protected ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
-    protected ArrayList<Rectangle> pOneRectangles = new ArrayList<>();
-    protected ArrayList<Rectangle> pTwoRectangles = new ArrayList<>();
+    protected ArrayList<ImageView> pOneShipImages = new ArrayList<>();
+    protected ArrayList<ImageView> pTwoShipImages = new ArrayList<>();
     private BorderPane bp = new BorderPane();
     private FlowPane fp1 = new FlowPane();
     private FlowPane fp2 = new FlowPane();
@@ -59,7 +57,7 @@ public class GameLogic {
     private Scene scene3;
     public int cordsX;
     public int cordsY;
-    private Rectangle selectedShip;
+    private ImageView selectedShip;
     private int counter = 1;
 
     protected String playerOneName;
@@ -154,10 +152,10 @@ public class GameLogic {
         lauta3 = b3.buildBoard();
         fp1.setHgap(30);
         fp1.setVgap(10);
-        for(int i = 0; i < pOneRectangles.size(); i++){
-            System.out.println("Rectanlesize = "+pOneRectangles.size());
-            fp1.getChildren().add(pOneRectangles.get(i));
-            initializeMouseEvent(pOneRectangles.get(i), b1, ap1, fp1, playerOneShipContainer);
+        for(int i = 0; i < pOneShipImages.size(); i++){
+            System.out.println("Rectanlesize = "+ pOneShipImages.size());
+            fp1.getChildren().add(pOneShipImages.get(i));
+            initializeMouseEvent(pOneShipImages.get(i), b1, ap1, fp1, playerOneShipContainer);
         }
         System.out.println(fp1.getChildren().size());
         button1.setText("Switch to player 2");
@@ -247,10 +245,10 @@ public class GameLogic {
         AnchorPane lauta4 = b4.buildBoard();
         fp2.setHgap(30);
         fp2.setVgap(10);
-        for(int i = 0; i < pTwoRectangles.size(); i++){
-            System.out.println("Rectanlesize = "+pTwoRectangles.size());
-            fp2.getChildren().add(pTwoRectangles.get(i));
-            initializeMouseEvent(pTwoRectangles.get(i), b2, ap2, fp2, playerTwoShipContainer);
+        for(int i = 0; i < pTwoShipImages.size(); i++){
+            System.out.println("Rectanlesize = "+ pTwoShipImages.size());
+            fp2.getChildren().add(pTwoShipImages.get(i));
+            initializeMouseEvent(pTwoShipImages.get(i), b2, ap2, fp2, playerTwoShipContainer);
         }
         button2.setText("Ready");
         button2.setOnAction(e->{
@@ -298,16 +296,11 @@ public class GameLogic {
         if(lta != 0) {
             for (int i = 0; i < lta; i++) {
                 playerOneShipContainer.add(new Lentotukialus(i));
-                pOneRectangles.add(new Rectangle());
-                pOneRectangles.get(indeksi).setHeight(30);
-                pOneRectangles.get(indeksi).setWidth(250);
-                pOneRectangles.get(indeksi).setFill(Color.SPRINGGREEN);
+                pOneShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("lentotukialus.png"))));
 
                 playerTwoShipContainer.add(new Lentotukialus(i));
-                pTwoRectangles.add(new Rectangle());
-                pTwoRectangles.get(indeksi).setHeight(30);
-                pTwoRectangles.get(indeksi).setWidth(250);
-                pTwoRectangles.get(indeksi).setFill(Color.SPRINGGREEN);
+                pTwoShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("lentotukialus.png"))));
+
                 indeksi++;
             }
         }
@@ -315,16 +308,11 @@ public class GameLogic {
         if(tl != 0) {
             for (int i = 0; i < tl; i++) {
                 playerOneShipContainer.add(new Taistelulaiva(i));
-                pOneRectangles.add(new Rectangle());
-                pOneRectangles.get(indeksi).setHeight(30);
-                pOneRectangles.get(indeksi).setWidth(200);
-                pOneRectangles.get(indeksi).setFill(Color.TOMATO);
+                pOneShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("taistelulaiva.png"))));
 
                 playerTwoShipContainer.add(new Taistelulaiva(i));
-                pTwoRectangles.add(new Rectangle());
-                pTwoRectangles.get(indeksi).setHeight(30);
-                pTwoRectangles.get(indeksi).setWidth(200);
-                pTwoRectangles.get(indeksi).setFill(Color.TOMATO);
+                pTwoShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("taistelulaiva.png"))));
+
                 indeksi++;
             }
         }
@@ -333,16 +321,12 @@ public class GameLogic {
         if(ris != 0) {
             for (int i = 0; i < ris; i++) {
                 playerOneShipContainer.add(new Risteilija(i));
-                pOneRectangles.add(new Rectangle());
-                pOneRectangles.get(indeksi).setHeight(30);
-                pOneRectangles.get(indeksi).setWidth(150);
-                pOneRectangles.get(indeksi).setFill(Color.DARKCYAN);
+                pOneShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("risteilija.png"))));
+
 
                 playerTwoShipContainer.add(new Risteilija(i));
-                pTwoRectangles.add(new Rectangle());
-                pTwoRectangles.get(indeksi).setHeight(30);
-                pTwoRectangles.get(indeksi).setWidth(150);
-                pTwoRectangles.get(indeksi).setFill(Color.DARKCYAN);
+                pTwoShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("risteilija.png"))));
+
                 indeksi++;
             }
         }
@@ -351,16 +335,10 @@ public class GameLogic {
         if(sv != 0) {
             for (int i = 0; i < sv; i++) {
                 playerOneShipContainer.add(new Sukellusvene(i));
-                pOneRectangles.add(new Rectangle());
-                pOneRectangles.get(indeksi).setHeight(30);
-                pOneRectangles.get(indeksi).setWidth(150);
-                pOneRectangles.get(indeksi).setFill(Color.BLUE);
+                pOneShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("sukellusvene.png"))));
 
                 playerTwoShipContainer.add(new Sukellusvene(i));
-                pTwoRectangles.add(new Rectangle());
-                pTwoRectangles.get(indeksi).setHeight(30);
-                pTwoRectangles.get(indeksi).setWidth(150);
-                pTwoRectangles.get(indeksi).setFill(Color.BLUE);
+                pTwoShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("sukellusvene.png"))));
                 indeksi++;
             }
         }
@@ -369,25 +347,21 @@ public class GameLogic {
         if(hv != 0) {
             for (int i = 0; i < hv; i++) {
                 playerOneShipContainer.add(new Havittaja(i));
-                pOneRectangles.add(new Rectangle());
-                pOneRectangles.get(indeksi).setHeight(30);
-                pOneRectangles.get(indeksi).setWidth(100);
-                pOneRectangles.get(indeksi).setFill(Color.ORANGE);
+                pOneShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("havittaja.png"))));
+
 
                 playerTwoShipContainer.add(new Havittaja(i));
-                pTwoRectangles.add(new Rectangle());
-                pTwoRectangles.get(indeksi).setHeight(30);
-                pTwoRectangles.get(indeksi).setWidth(100);
-                pTwoRectangles.get(indeksi).setFill(Color.ORANGE);
+                pTwoShipImages.add(new ImageView(new Image(getClass().getResourceAsStream("havittaja.png"))));
+
                 indeksi++;
             }
         }
 
-        selectedShip = pOneRectangles.get(0);
+        selectedShip = pOneShipImages.get(0);
     }//createShips()
 
 
-    private void initializeMouseEvent(Rectangle b, Board board, AnchorPane ap, FlowPane fp,ArrayList<Ship> container){
+    private void initializeMouseEvent(ImageView b, Board board, AnchorPane ap, FlowPane fp,ArrayList<Ship> container){
 
         b.setOnMousePressed(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)){
@@ -406,7 +380,7 @@ public class GameLogic {
     }//initializeMouseEvent()
 
 
-    private void mousePressed(MouseEvent event, Board board, Rectangle b, FlowPane fp){
+    private void mousePressed(MouseEvent event, Board board, ImageView b, FlowPane fp){
         if (event.getButton().equals(MouseButton.PRIMARY)){
             // settaa viimeisimmän laivan valituksi laivaksi, jotta rotate toimii r:stä
             selectedShip = b;
@@ -424,7 +398,7 @@ public class GameLogic {
     }//mousePressed()
 
 
-    private void dragged(MouseEvent event, Rectangle b){
+    private void dragged(MouseEvent event, ImageView b){
         cordsX = (int) (b.getLayoutX() + event.getX());
         cordsY = (int) (b.getLayoutY() + event.getX());
         b.setLayoutX(event.getSceneX());
@@ -434,7 +408,7 @@ public class GameLogic {
     }//dragged()
 
 
-    private void released(MouseEvent event, Board board, Rectangle b, AnchorPane ap1, ArrayList<Ship> container, FlowPane fp){
+    private void released(MouseEvent event, Board board, ImageView b, AnchorPane ap1, ArrayList<Ship> container, FlowPane fp){
         if (event.getButton().equals(MouseButton.PRIMARY)){
             int gridx = (int)b.getLayoutX()/ 50;
             int gridy = (int)b.getLayoutY()/ 50;
@@ -492,7 +466,7 @@ public class GameLogic {
      * @return
      */
 
-    protected boolean isSpotTaken(int x, int y, ArrayList<Ship> container, Rectangle b) {
+    protected boolean isSpotTaken(int x, int y, ArrayList<Ship> container, ImageView b) {
         for(int i = 0; i < container.size(); i++){
 
             // tarkistettavana oleva
@@ -571,7 +545,7 @@ public class GameLogic {
     }
 
 
-    protected void rotateShip(Rectangle rectangle){
+    protected void rotateShip(ImageView rectangle){
 
         Ship ship = playerOneShipContainer.get(getShipIndex(rectangle));
         Ship shap = playerTwoShipContainer.get(getShipIndex(rectangle));
@@ -580,7 +554,7 @@ public class GameLogic {
         // 25 = gridin koko / 2
         r.setPivotX(25);
         // 15 = laivan leveys / 2
-        r.setPivotY(15);
+        r.setPivotY(25);
 
         if(boardNumber == 1 || boardNumber == 3) {
             if (ship.getIsHorizontal() && ship.getEndX() <= b1.getBoardSize() && ship.getStartY() <= b1.getBoardSize()-ship.getSize()) {
@@ -657,14 +631,14 @@ public class GameLogic {
     }//rotateShip()
 
 
-    protected int getShipIndex(Rectangle rectangle){
+    protected int getShipIndex(ImageView rectangle){
         int index;
         if(boardNumber == 1 || boardNumber == 3){
-            index = pOneRectangles.indexOf(rectangle);
+            index = pOneShipImages.indexOf(rectangle);
             return index;
         }
         if(boardNumber == 2 || boardNumber == 4){
-            index = pTwoRectangles.indexOf(rectangle);
+            index = pTwoShipImages.indexOf(rectangle);
             return index;
         }
         return 0;
@@ -702,7 +676,7 @@ public class GameLogic {
      * @param b
      * @param container
      */
-    protected void checkShipValidPlacement(Board board, Rectangle b, ArrayList<Ship> container){
+    protected void checkShipValidPlacement(Board board, ImageView b, ArrayList<Ship> container){
 
         //Jos x tai y alle 0, sijoitetaan oikein
         if(cordsX < 0){
@@ -920,8 +894,8 @@ public class GameLogic {
         AnchorPane lauta4 = new AnchorPane();
         ArrayList<Ship> playerOneShipContainer = new ArrayList<>();
         ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
-        ArrayList<Rectangle> pOneRectangles = new ArrayList<>();
-        ArrayList<Rectangle> pTwoRectangles = new ArrayList<>();
+        ArrayList<ImageView> pOneShipImages = new ArrayList<>();
+        ArrayList<ImageView> pTwoShipImages = new ArrayList<>();
         BorderPane bp = new BorderPane();
         FlowPane fp1 = new FlowPane();
         FlowPane fp2 = new FlowPane();
