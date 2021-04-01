@@ -852,6 +852,7 @@ public class GameLogic {
     protected void winner(int playerNumber) {
         System.out.println("PELIN VOITTI: PELAAJA " + playerNumber);
         //väliaikainen, sulkee ohjelman
+        Main.getStage().close();
         Stage stage = new Stage();
 
         // Napit
