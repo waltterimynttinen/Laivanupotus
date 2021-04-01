@@ -9,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,7 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -35,8 +34,7 @@ public class GameLogic {
     private Board b4 = new Board();
     private AnchorPane ap1 = new AnchorPane();
     private AnchorPane ap2 = new AnchorPane();
-    private AnchorPane ap3 = new AnchorPane();
-    private AnchorPane ap4 = new AnchorPane();
+    private BorderPane bp = new BorderPane();
     private AnchorPane lauta1 = new AnchorPane();
     private AnchorPane lauta2 = new AnchorPane();
     private AnchorPane lauta3 = new AnchorPane();
@@ -45,7 +43,6 @@ public class GameLogic {
     protected ArrayList<Ship> playerTwoShipContainer = new ArrayList<>();
     protected ArrayList<ImageView> pOneShipImages = new ArrayList<>();
     protected ArrayList<ImageView> pTwoShipImages = new ArrayList<>();
-    private BorderPane bp = new BorderPane();
     private FlowPane fp1 = new FlowPane();
     private FlowPane fp2 = new FlowPane();
     private Button button1 = new Button();
@@ -72,11 +69,14 @@ public class GameLogic {
         playerTwoName = s;
     }
 
+    /**
+     * Creates the scenes used for the game.
+     */
     public void createScenes(){
 
         scene1 = new Scene(ap1, 1600,900);
         scene2 = new Scene(ap2, 1600, 900);
-        scene3 = new Scene(ap3, 1600, 900);
+        scene3 = new Scene(bp, 1600, 900);
 
         // R-näppäimen käyttäminen laivan kääntämiseen
         scene1.addEventFilter(KeyEvent.KEY_TYPED, e -> {
@@ -124,7 +124,7 @@ public class GameLogic {
                     stage.setScene(scene2);
                     stage.show();
                     break;
-                case 3: //player1 screen
+                case 3: //switch between p1 and p2
                     stage.setScene(scene3);
                     stage.show();
                     break;
@@ -164,7 +164,7 @@ public class GameLogic {
             initializeMouseEvent(pOneShipImages.get(i), b1, ap1, fp1, playerOneShipContainer);
         }
         System.out.println(fp1.getChildren().size());
-        button1.setText("Switch to player 2");
+        button1.setText("Valmis");
         button1.setOnAction(e->{
             try {
                 if(fp1.getChildren().size() == 0) {
@@ -214,11 +214,10 @@ public class GameLogic {
         fp2.setHgap(30);
         fp2.setVgap(10);
         for(int i = 0; i < pTwoShipImages.size(); i++){
-            System.out.println("Rectanlesize = "+ pTwoShipImages.size());
             fp2.getChildren().add(pTwoShipImages.get(i));
             initializeMouseEvent(pTwoShipImages.get(i), b2, ap2, fp2, playerTwoShipContainer);
         }
-        button2.setText("Ready");
+        button2.setText("Valmis");
         button2.setOnAction(e->{
             try {
                 if(fp2.getChildren().size() == 0) {
@@ -237,11 +236,17 @@ public class GameLogic {
         AnchorPane.setBottomAnchor(button2, 10d);
     }
 
-    public void createSwitchPLayerScene(){
+    /**
+     * Creates a scene for switching players.
+     */
+
+    public void createSwitchPlayerScene(){
         //switches from p1 create board to p2 create board
+        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("sand.png")));
         HBox hb = new HBox();
-        Label lb = new Label("Pelaaja 2: Siirry asettamaan laivasi laudalle");
-        Button switchb5 = new Button("Letsgo");
+        Label lb = new Label("Pelaaja 2: Siirry asettamaan laivasi laudalle!");
+        lb.setFont(Font.font(50));
+        Button switchb5 = new Button("Seuraava");
         switchb5.setOnAction(e -> {
             try {
                 if(counter == 1){
@@ -271,26 +276,27 @@ public class GameLogic {
                 ioException.printStackTrace();
             }
         });
-        hb.getChildren().addAll(switchb5, lb);
-        hb.setSpacing(10);
+        hb.getChildren().addAll(lb, switchb5);
+        hb.setSpacing(20);
+        hb.setAlignment(Pos.CENTER);
+        bp.getChildren().addAll(imageView);
         bp.setCenter(hb);
-        ap3.getChildren().addAll(bp);
+
     }
 
 
     /**
-     * Luodaan molempien pelaajien listoihin oikea määrä
-     * laivoja, jotka haetaan tekstikentistä peliä aloitettaessa
+     * Creates the right amount of boats and inserts them to their correct containers.
+     * Gets its parameters from the text fields in the main menu.
      *
      * @param lta = lentotukialukset
      * @param tl = taistelulaivat
-     * @param ris
-     * @param sv
-     * @param hv
+     * @param ris = risteilijät
+     * @param sv = sukellusveneet
+     * @param hv = hävittäjät
      */
 
     public void createShips(int lta, int tl, int ris, int sv, int hv) {
-
         //Empty the old one if it exist
         if(!(playerOneShipContainer.size() == 0) && !(playerTwoShipContainer.size() == 0)) {
             playerOneShipContainer.clear();
@@ -368,6 +374,15 @@ public class GameLogic {
         selectedShip = pOneShipImages.get(0);
     }//createShips()
 
+    /**
+     * Initializes the mouse events used for moving and placing the ships.
+     *
+     * @param b
+     * @param board
+     * @param ap
+     * @param fp
+     * @param container
+     */
 
     private void initializeMouseEvent(ImageView b, Board board, AnchorPane ap, FlowPane fp,ArrayList<Ship> container){
 
@@ -387,6 +402,15 @@ public class GameLogic {
 
     }//initializeMouseEvent()
 
+    /**
+     * Left-click sets the clicked ship as selected, which enables rotating for the ships.
+     * Right-click removes the ship from the grid, placing it back to it's original place.
+     *
+     * @param event
+     * @param board
+     * @param b
+     * @param fp
+     */
 
     private void mousePressed(MouseEvent event, Board board, ImageView b, FlowPane fp){
         if (event.getButton().equals(MouseButton.PRIMARY)){
@@ -404,6 +428,11 @@ public class GameLogic {
 
     }//mousePressed()
 
+    /**
+     * Saves the coordinates for the dragged ship and makes the dragged ship selected.
+     * @param event
+     * @param b
+     */
 
     private void dragged(MouseEvent event, ImageView b){
         cordsX = (int) (b.getLayoutX() + event.getX());
@@ -414,6 +443,16 @@ public class GameLogic {
         selectedShip = b;
     }//dragged()
 
+    /**
+     * Places the ship to the grid when releasing the mouse. Also checks that the place is valid, busing checkValidShipPlacement();
+     * Also checks that the node in the grid isn't already occupied, by using isSpotTaken();
+     * @param event
+     * @param board
+     * @param b
+     * @param ap1
+     * @param container
+     * @param fp
+     */
 
     private void released(MouseEvent event, Board board, ImageView b, AnchorPane ap1, ArrayList<Ship> container, FlowPane fp){
         if (event.getButton().equals(MouseButton.PRIMARY)){
@@ -513,6 +552,17 @@ public class GameLogic {
         return false;
     }//isSpotTaken()
 
+    /**
+     * Calculates the area of ships that are allowed on a specific board size and checks if it's valid.
+     *
+     * @param area
+     * @param lta
+     * @param tl
+     * @param ris
+     * @param sv
+     * @param hv
+     * @return
+     */
 
     public boolean areShipsAllowed(int area, int lta, int tl, int ris, int sv, int hv){
         int RA = area * area;
@@ -541,16 +591,10 @@ public class GameLogic {
     protected void setBoardNumber(int number){
         this.boardNumber = number;
     }
-    protected int getBoardNumber(){
-        return boardNumber;
-    }
+
     protected void setPlayerNumber(int number){
         this.playerNumber = number;
     }
-    protected int getPlayerNumber(){
-        return playerNumber;
-    }
-
 
     protected void rotateShip(ImageView rectangle){
 
@@ -651,6 +695,15 @@ public class GameLogic {
         return 0;
     }
 
+    /**
+     * This method checks if a ship has any of the values given to it. If a match is found,
+     * the ship is hit.
+     *
+     * @param x
+     * @param y
+     * @param container
+     * @return
+     */
 
     protected boolean shoot(int x, int y, ArrayList<Ship> container){
         for(int i = 0; i < container.size(); i++){
@@ -752,6 +805,17 @@ public class GameLogic {
         return true;
     }//checkGuessValidPlacement()
 
+    /**
+     * Starts the game, after the ships have been placed by both players.
+     *
+     * @param boardNumber
+     * @param playerNumber
+     * @param board
+     * @param board2
+     * @param container
+     * @param button
+     * @throws IOException
+     */
 
     protected void startGuessing(int boardNumber, int playerNumber, Board board, Board board2, ArrayList<Ship> container, Button button) throws IOException {
         board.getGrid().setDisable(false);
@@ -798,7 +862,14 @@ public class GameLogic {
     }//startGuessing
 
 
-    // metodin avulla saadaan gridistä valittua haluttu solu
+    /**
+     * Returns a specific node from the grid.
+     *
+     * @param board
+     * @param col
+     * @param row
+     * @return
+     */
     protected Node getNodeFromBoard(Board board, int col, int row) {
         ObservableList<Node> children = board.getGrid().getChildren();
         for (Node node : children) {
@@ -817,7 +888,16 @@ public class GameLogic {
         return null;
     }
 
-    //poistaa laivalistasta kuolleet laivat pois
+    /**
+     * Removes ships from the container, if they've lost all of their HP.
+     * Also checks the container for remaining ships. If none are left, the player with ships left is
+     * announced as winner.
+     *
+     * @param container
+     * @param playerNumber
+     * @return
+     */
+
     protected boolean removeDeadShip(ArrayList<Ship> container, int playerNumber){
         for(int i = 0; i<container.size(); i++){
             if(container.get(i).isDestroyed()){
@@ -839,6 +919,11 @@ public class GameLogic {
         return false;
     }
 
+    /**
+     * Opens up a new window that announces the winner.
+     * Also gives an option to the players to restart the game or leave the game.
+     * @param playerNumber
+     */
 
     //valmis toteutus avaisi uuden ikkunan jossa voittaja julkistetaan, sekä myös vaihtoehdon aloittaa pelin alusta
     protected void winner(int playerNumber) {
@@ -901,6 +986,12 @@ public class GameLogic {
         stage.show();
     }
 
+    /**
+     * Resets the game and switches the scene back to the main menu.
+     *
+     * @throws IOException
+     */
+
     protected void reset() throws IOException {
         b1 = new Board();
         b2 = new Board();
@@ -908,8 +999,7 @@ public class GameLogic {
         b4 = new Board();
         ap1 = new AnchorPane();
         ap2 = new AnchorPane();
-        ap3 = new AnchorPane();
-        ap4 = new AnchorPane();
+        bp = new BorderPane();
         lauta1 = new AnchorPane();
         lauta2 = new AnchorPane();
         lauta3 = new AnchorPane();
@@ -918,7 +1008,6 @@ public class GameLogic {
         playerTwoShipContainer = new ArrayList<>();
         pOneShipImages = new ArrayList<>();
         pTwoShipImages = new ArrayList<>();
-        bp = new BorderPane();
         fp1 = new FlowPane();
         fp2 = new FlowPane();
         counter = 1;
