@@ -60,7 +60,7 @@ public class GameLogic {
     private ImageView selectedShip;
     private int counter = 1;
     protected AudioClip audioClip;
-
+    protected int placeCorrect = 0;
     protected String playerOneName;
     protected String playerTwoName;
 
@@ -151,16 +151,20 @@ public class GameLogic {
      * @param size
      */
     public void createBoard1(int size) {
+
         //varattujen paikkojen merkitsemiseen
         Image ocean = new Image(getClass().getResourceAsStream("sand.png"));
         ImageView imageView = new ImageView(ocean);
         ap1.getChildren().add(imageView);
+
         b1.setBoardSize(size);
+
         b3.setBoardSize(size);
         lauta1 = b1.buildBoard(50);
-        lauta3 = b3.buildBoard(30);
+        lauta3 = b3.buildBoard(50);
         fp1.setHgap(30);
         fp1.setVgap(10);
+
         for(int i = 0; i < pOneShipImages.size(); i++){
             System.out.println("Rectanlesize = "+ pOneShipImages.size());
             fp1.getChildren().add(pOneShipImages.get(i));
@@ -190,8 +194,47 @@ public class GameLogic {
                 ioException.printStackTrace();
             }
         });
-        ap1.getChildren().addAll(lauta1, lauta3, fp1, button1);
-        AnchorPane.setTopAnchor(lauta1, 10d);
+        HBox g = new HBox();
+
+        //tässä setataan placeCorrect, joka vaihtaa nodea johon laiva siirretään
+        //f on näkymättömän gridin siirtäminen
+        int f = 0;
+        if(b1.getBoardSize() == 5){
+            f = 300;
+            placeCorrect = -6;
+            System.out.println("asdasd"+placeCorrect);
+        }
+        else if(b1.getBoardSize() == 6){
+            placeCorrect = -5;
+            f = 250;
+        }
+        else if(b1.getBoardSize() == 7){
+            placeCorrect = -5;
+            f = 250;
+        }
+        else if(b1.getBoardSize() == 8){
+            placeCorrect = -4;
+            f = 200;
+        }
+        else if(b1.getBoardSize() == 9){
+            placeCorrect = -4;
+            f = 200;
+        }
+        else if(b1.getBoardSize() == 10){
+            placeCorrect = -4;
+            f = 195;
+        }
+
+        g.setPadding(new Insets(f, f, f, f));
+        g.getChildren().add(lauta1);
+        ap1.getChildren().addAll(g, lauta3, fp1, button1);
+        //AnchorPane.setRightAnchor(g, 10d);
+        //AnchorPane.setTopAnchor(lauta1, 10d);
+        AnchorPane.setRightAnchor(lauta3, 50d);
+        AnchorPane.setBottomAnchor(lauta3, 50d);
+        AnchorPane.setRightAnchor(fp1, 10d);
+        AnchorPane.setBottomAnchor(button1, 10d);
+
         AnchorPane.setBottomAnchor(lauta3, 50d);
         AnchorPane.setRightAnchor(fp1, 10d);
         AnchorPane.setBottomAnchor(button1, 10d);
@@ -213,7 +256,7 @@ public class GameLogic {
         b2.setBoardSize(size);
         b4.setBoardSize(size);
         AnchorPane lauta2 = b2.buildBoard(50);
-        AnchorPane lauta4 = b4.buildBoard(30);
+        AnchorPane lauta4 = b4.buildBoard(50);
         fp2.setHgap(30);
         fp2.setVgap(10);
         for(int i = 0; i < pTwoShipImages.size(); i++){
@@ -232,8 +275,46 @@ public class GameLogic {
                 ioException.printStackTrace();
             }
         });
-        ap2.getChildren().addAll(lauta2, lauta4, fp2, button2);
-        AnchorPane.setTopAnchor(lauta2, 10d);
+        //tässä setataan placeCorrect, joka vaihtaa nodea johon laiva siirretään
+        //f on näkymättömän gridin siirtäminen
+        int f = 0;
+        if(b1.getBoardSize() == 5){
+            f = 300;
+            placeCorrect = -6;
+            System.out.println("asdasd"+placeCorrect);
+        }
+        else if(b1.getBoardSize() == 6){
+            placeCorrect = -5;
+            f = 250;
+        }
+        else if(b1.getBoardSize() == 7){
+            placeCorrect = -5;
+            f = 250;
+        }
+        else if(b1.getBoardSize() == 8){
+            placeCorrect = -4;
+            f = 200;
+        }
+        else if(b1.getBoardSize() == 9){
+            placeCorrect = -4;
+            f = 200;
+        }
+        else if(b1.getBoardSize() == 10){
+            placeCorrect = -4;
+            f = 195;
+        }
+
+        HBox d = new HBox();
+
+
+
+        //AnchorPane.setBottomAnchor(lauta3, 50d);
+        d.setPadding(new Insets(f, f, f, f));
+        d.getChildren().add(lauta2);
+        ap2.getChildren().addAll(d, lauta4, fp2, button2);
+        //AnchorPane.setRightAnchor(fp1, 10d);
+        //AnchorPane.setTopAnchor(lauta2, 10d);
+        AnchorPane.setRightAnchor(lauta4, 50d);
         AnchorPane.setBottomAnchor(lauta4, 50d);
         AnchorPane.setRightAnchor(fp2, 10d);
         AnchorPane.setBottomAnchor(button2, 10d);
@@ -461,8 +542,11 @@ public class GameLogic {
 
     private void released(MouseEvent event, Board board, ImageView b, AnchorPane ap1, ArrayList<Ship> container, FlowPane fp){
         if (event.getButton().equals(MouseButton.PRIMARY)){
-            int gridx = (int)b.getLayoutX()/ 50;
-            int gridy = (int)b.getLayoutY()/ 50;
+
+            //place correct siirtää nodea sen mukaan minkä kokoinen lauta on
+            int gridx = (int)b.getLayoutX()/ 50+placeCorrect;
+            int gridy = (int)b.getLayoutY()/ 50+placeCorrect;
+
             cordsX = gridx;
             cordsY = gridy;
             // settaa viimeisimmän laivan valituksi laivaksi, jotta rotate toimii r:stä
@@ -829,10 +913,10 @@ public class GameLogic {
         ImageView imgGreen1 = new ImageView(image1);
         ImageView imgRed2 = new ImageView(image2);
 
-        imgGreen1.setFitHeight(30);
-        imgRed2.setFitWidth(30);
-        imgGreen1.setFitWidth(30);
-        imgRed2.setFitHeight(30);
+        imgGreen1.setFitHeight(50);
+        imgRed2.setFitWidth(50);
+        imgGreen1.setFitWidth(50);
+        imgRed2.setFitHeight(50);
 
         setBoardNumber(boardNumber);
         switchScene("--");
@@ -844,12 +928,14 @@ public class GameLogic {
             if((shoot(board.getCordsX(), board.getCordsY(), container))){
                 if(checkGuessValidPlacement(board, container)) {
                     ImageView temp = new ImageView(image1);
-                    temp.setFitHeight(30);
-                    temp.setFitWidth(30);
+                    temp.setFitHeight(50);
+                    temp.setFitWidth(50);
                     board.getGrid().add(temp, board.getCordsX() - 1, board.getCordsY() - 1);
                     board2.getGrid().add(new ImageView(image1), board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
+
                     button.setDisable(true);
+
                     //playSound("valmiscrash.wav");
                     removeDeadShip(container, playerNumber);
 
