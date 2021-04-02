@@ -23,7 +23,6 @@ import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.media.*;
@@ -59,7 +58,7 @@ public class GameLogic {
     public int cordsY;
     private ImageView selectedShip;
     private int counter = 1;
-    protected AudioClip audioClip;
+    protected AudioClip backgroundMusic = new AudioClip(getClass().getResource("rampytysbiisi.wav").toString());
     protected int placeCorrect = 0;
     protected String playerOneName;
     protected String playerTwoName;
@@ -936,7 +935,7 @@ public class GameLogic {
 
                     button.setDisable(true);
 
-                    //playSound("valmiscrash.wav");
+                    playSound("valmiscrash.wav");
                     removeDeadShip(container, playerNumber);
 
                 }
@@ -949,7 +948,7 @@ public class GameLogic {
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
                     button.setDisable(false);
-                    //playSound("valmissplash.wav");
+                    playSound("valmissplash.wav");
                 }
             }
         });
@@ -963,8 +962,25 @@ public class GameLogic {
      *             requested audioclip
      */
     protected void playSound(String name){
-        AudioClip audioClip = new AudioClip(getClass().getResource(name).toString());
-        audioClip.play();
+        AudioClip audio = new AudioClip(getClass().getResource(name).toString());
+        audio.play();
+    }
+
+
+    /**
+     * A method for playing background
+     * music, started from Controller
+     * @param state Whether you want to start or stop
+     */
+
+    protected void playSong(String state){
+        if(state.equalsIgnoreCase("start")){
+            backgroundMusic.setVolume(0.15);
+            backgroundMusic.setCycleCount(10);
+            backgroundMusic.play();
+        }else if(state.equalsIgnoreCase("stop")){
+            backgroundMusic.stop();
+        }
     }
 
 
@@ -1091,6 +1107,8 @@ public class GameLogic {
         stage.setTitle("Peli päättyi!");
         stage.setScene(scene);
         stage.show();
+        //stop the song
+        playSong("stop");
     }
 
     /**

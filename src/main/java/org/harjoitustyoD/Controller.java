@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
 import javafx.event.*;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
 
 public class Controller {
     String playerOne;
@@ -88,6 +90,8 @@ public class Controller {
                 System.out.println(gl.getPlayerOneShipContainer());
                 System.out.println(gl.getPlayerTwoShipContainer());
             }
+            gl.playSong("start");
+
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Arvot väärin!");
