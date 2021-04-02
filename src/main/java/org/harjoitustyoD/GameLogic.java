@@ -45,6 +45,8 @@ public class GameLogic {
     private FlowPane fp2 = new FlowPane();
     private Button button1 = new Button();
     private Button button2 = new Button();
+    private Button exitToMainMenu1 = new Button();
+    private Button exitToMainMenu2 = new Button();
     private int boardNumber;
     private int playerNumber;
     private Stage stage;
@@ -97,7 +99,6 @@ public class GameLogic {
                 }
             }
         });
-
         stage = Main.getStage();
         stage.setScene(scene1);
         stage.show();
@@ -163,7 +164,6 @@ public class GameLogic {
         fp1.setVgap(10);
 
         for(int i = 0; i < pOneShipImages.size(); i++){
-            System.out.println("Rectanlesize = "+ pOneShipImages.size());
             fp1.getChildren().add(pOneShipImages.get(i));
             initializeMouseEvent(pOneShipImages.get(i), b1, ap1, fp1, playerOneShipContainer);
         }
@@ -204,6 +204,16 @@ public class GameLogic {
         button1.setScaleX(2);
         button1.setScaleY(2);
 
+        exitToMainMenu1.setText("Poistu päävalikkoon");
+        exitToMainMenu1.setOnAction(e -> {
+            try {
+                reset();
+                playSong("stop");
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        });
+
         HBox g = new HBox();
 
         // Labelit ruudukoille!
@@ -229,7 +239,6 @@ public class GameLogic {
         if(b1.getBoardSize() == 5){
             f = 300;
             placeCorrect = -6;
-            System.out.println("asdasd"+placeCorrect);
         }
         else if(b1.getBoardSize() == 6){
             placeCorrect = -5;
@@ -254,10 +263,11 @@ public class GameLogic {
 
         g.setPadding(new Insets(f, f, f, f));
         g.getChildren().add(lauta1);
-        ap1.getChildren().addAll(g, lauta3, fp1, button1);
+        ap1.getChildren().addAll(g, lauta3, fp1, button1, exitToMainMenu1);
         AnchorPane.setRightAnchor(lauta3, 50d);
         AnchorPane.setBottomAnchor(lauta3, 50d);
         AnchorPane.setRightAnchor(fp1, 10d);
+        AnchorPane.setLeftAnchor(exitToMainMenu1, 0d);
 
     }
 
@@ -312,7 +322,15 @@ public class GameLogic {
         button2.setScaleX(2);
         button2.setScaleY(2);
 
-
+        exitToMainMenu2.setText("Poistu päävalikkoon");
+        exitToMainMenu2.setOnAction(e -> {
+            try {
+                reset();
+                playSong("stop");
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        });
 
         // Labelit ruudukoille!
         Label pelausRuutu = new Label("Sijoita laivasi tähän ruutuun");
@@ -338,7 +356,6 @@ public class GameLogic {
         if(b1.getBoardSize() == 5){
             f = 300;
             placeCorrect = -6;
-            System.out.println("asdasd"+placeCorrect);
         }
         else if(b1.getBoardSize() == 6){
             placeCorrect = -5;
@@ -365,11 +382,13 @@ public class GameLogic {
 
         d.setPadding(new Insets(f, f, f, f));
         d.getChildren().add(lauta2);
-        ap2.getChildren().addAll(d, lauta4, fp2, button2);
+        ap2.getChildren().addAll(d, lauta4, fp2, button2, exitToMainMenu2);
         AnchorPane.setRightAnchor(lauta4, 50d);
         AnchorPane.setBottomAnchor(lauta4, 50d);
         AnchorPane.setRightAnchor(fp2, 10d);
+        AnchorPane.setLeftAnchor(exitToMainMenu2, 0d);
     }
+
 
     /**
      * Creates a scene for switching players.
@@ -435,7 +454,8 @@ public class GameLogic {
      */
 
     public void createShips(int lta, int tl, int ris, int sv, int hv) {
-        //Empty the old one if it exist
+
+        //Empty the old one if it exist, kind of a redundant feature
         if(!(playerOneShipContainer.size() == 0) && !(playerTwoShipContainer.size() == 0)) {
             playerOneShipContainer.clear();
             playerTwoShipContainer.clear();
@@ -508,7 +528,6 @@ public class GameLogic {
                 indeksi++;
             }
         }
-
         selectedShip = pOneShipImages.get(0);
     }//createShips()
 
@@ -527,7 +546,6 @@ public class GameLogic {
         b.setOnMousePressed(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)){
                 fp.getChildren().remove(b);
-                System.out.println(fp.getChildren().size());
                 board.getGrid().getChildren().remove(b);
                 ap.getChildren().add(b);
             }
@@ -535,8 +553,6 @@ public class GameLogic {
         });
         b.setOnMouseDragged(event -> dragged(event, b));
         b.setOnMouseReleased(event -> released(event, board, b, ap, container, fp));
-
-        //hb.getChildren().add(b);
 
     }//initializeMouseEvent()
 
@@ -612,7 +628,6 @@ public class GameLogic {
                 playerOneShipContainer.get(index).setStartY(cordsY);
                 playerOneShipContainer.get(index).setEndX(cordsX + playerOneShipContainer.get(index).getSize());
                 playerOneShipContainer.get(index).setEndY(cordsY + playerOneShipContainer.get(index).getSize());
-                System.out.println(playerOneShipContainer.get(index).getStartX() + " x " + playerOneShipContainer.get(index).getStartY());
             } else if (boardNumber == 2) {
                 playerTwoShipContainer.get(index).setStartX(cordsX);
                 playerTwoShipContainer.get(index).setStartY(cordsY);
@@ -704,11 +719,9 @@ public class GameLogic {
         int RA = area * area;
         int AA = 5*lta + 4*tl + 3*ris + 3*sv + 2*hv;
         if(RA >= 2*AA){
-            System.out.println("kelpaa");
             return true;
         }
         else{
-            System.out.println("ei kelpaa. vähennä alusten määrää =))=)))");
             return false;
         }
     }
@@ -898,7 +911,6 @@ public class GameLogic {
             if (cordsX > board.getBoardSize() - container.get(getShipIndex(b)).getSize()) {
                 //Ei voi placettaa ghost nodejen ulkopuolelle, setataan oikein ruudukon sisälle
                 if (cordsX > board.getBoardSize() - 1) {
-                    System.out.println("too far X: " + cordsX);
                     cordsX = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
                 } else {
                     cordsX = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
@@ -906,7 +918,6 @@ public class GameLogic {
             }
             //Ei voi placettaa ghost nodejen ulkopuolelle, setataan oikein ruudukon sisälle
             if (cordsY > board.getBoardSize() - 1) {
-                System.out.println("too far Y: " + cordsY);
                 cordsY = board.getBoardSize() - 1;
             }
         }else {
@@ -914,18 +925,15 @@ public class GameLogic {
             if (cordsY > board.getBoardSize() - container.get(getShipIndex(b)).getSize()) {
                 //Ei voi placettaa ghost nodejen ulkopuolelle, setataan oikein ruudukon sisälle
                 if (cordsY > board.getBoardSize() - 1) {
-                    System.out.println("too far Y: " + cordsY);
                     cordsY = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
                 } else {
                     cordsY = board.getBoardSize() - (container.get(getShipIndex(b)).getSize());
                 }
             }
             if (cordsX > board.getBoardSize() - 1) {
-                System.out.println("too far X: " + cordsX);
                 cordsX = board.getBoardSize() - 1;
             }
         }
-        System.out.println("lopulliset koordinatit: " + cordsX + " x " + cordsY);
         container.get(getShipIndex(b)).setStartX(cordsX);
         container.get(getShipIndex(b)).setStartY(cordsY);
     }//checkShipValidPlacement()
@@ -983,7 +991,6 @@ public class GameLogic {
         switchScene("--");
         board.getGrid().setOnMouseClicked(f->{
             if(getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1) != null && getNodeFromBoard(board, board.getCordsX()-1, board.getCordsY()-1).isDisabled()){
-                System.out.println("et voi arvata tätä ruutua");
                 return;
             }
             if((shoot(board.getCordsX(), board.getCordsY(), container))){
@@ -1005,7 +1012,6 @@ public class GameLogic {
             else if(!(shoot(board.getCordsX(), board.getCordsY(), container))){
                 if(checkGuessValidPlacement(board, container)) {
                     button.setDisable(false);
-                    System.out.println("Ammuit ohi!");
                     board.getGrid().add(imgRed2, board.getCordsX() - 1, board.getCordsY() - 1);
                     getNodeFromBoard(board, board.getCordsX() - 1, board.getCordsY() - 1).setDisable(true);
                     board.getGrid().setDisable(true);
@@ -1039,7 +1045,7 @@ public class GameLogic {
     protected void playSong(String state){
         if(state.equalsIgnoreCase("start")){
             backgroundMusic.setVolume(0.15);
-            backgroundMusic.setCycleCount(10);
+            backgroundMusic.setCycleCount(20);
             backgroundMusic.play();
         }else if(state.equalsIgnoreCase("stop")){
             backgroundMusic.stop();
@@ -1088,7 +1094,6 @@ public class GameLogic {
         for(int i = 0; i<container.size(); i++){
             if(container.get(i).isDestroyed()){
                 container.remove(i);
-                System.out.println("kuollut laiva poistettu");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("Upotit vastustajan laivan!");
                 alert.setTitle("Laiva upotettu!");
@@ -1114,7 +1119,6 @@ public class GameLogic {
      * leave the game and close the application.
      * @param playerNumber
      */
-
 
     protected void winner(int playerNumber) {
         Main.getStage().close();

@@ -8,8 +8,6 @@ import java.io.InputStream;
 
 public class Board {
 
-    // This variable requires merely initialization here.
-    // Value set to 10 for testing purposes.
     private int boardSize;
     public int cordsX;
     public int cordsY;
@@ -28,6 +26,7 @@ public class Board {
     protected void setBoardSize(int boardSize){
         this.boardSize = boardSize;
     }
+
 
     /**
      * Builds the board for the battleships game

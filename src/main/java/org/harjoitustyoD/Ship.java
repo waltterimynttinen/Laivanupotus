@@ -20,20 +20,8 @@ public class Ship {
         this.isHorizontal = true;
     }
 
-    public int getId(){
-        return id;
-    }
-
-    public void setSize(int size){
-        this.size = size;
-    }
-
     public int getSize(){
         return size;
-    }
-
-    public int getHp(){
-        return hp;
     }
 
     public boolean isDestroyed(){
@@ -86,7 +74,6 @@ public class Ship {
 
     public boolean hit(){
         this.hp--;
-        System.out.println("osuit!");
         if(this.hp == 0){
             setDestroyed(destroyed);
         }

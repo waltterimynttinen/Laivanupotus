@@ -1,18 +1,14 @@
 package org.harjoitustyoD;
 
-
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
 import javafx.event.*;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
 
 public class Controller {
     String playerOne;
     String playerTwo;
     GameLogic gl = new GameLogic();
-
 
     @FXML
     private TextField playerOneTextField;
@@ -50,26 +46,38 @@ public class Controller {
         When this button action is triggered on the main menu, the game is
         started and all the needed values are fetched from their preassigned
         TextFields.
-         */
+        */
         gl.playSound("buttonclick.wav");
 
         String s = "" + boardSizeLabel.getText().charAt(0);
         int laudanKoko = Integer.parseInt(s);
         playerTwo = playerTwoTextField.getText();
         playerOne = playerOneTextField.getText();
-        // ::DD
         gl.setPlayerOneName(playerOneTextField.getText());
         gl.setPlayerTwoName(playerTwoTextField.getText());
 
+        //setataan epävalidit arvot, try-catchin sisällä ei voida alustaa muuttujia
+        int lta = 100;
+        int tl = 100;
+        int ris = 100;
+        int sv = 100;
+        int hv = 100;
 
-
-
-
-        int lta = Integer.parseInt(lentotukialusAmountTextField.getText());
-        int tl = Integer.parseInt(taistelulaivaAmountTextField.getText());
-        int ris = Integer.parseInt(risteilijaAmountTextField.getText());
-        int sv = Integer.parseInt(sukellusveneAmountTextField.getText());
-        int hv =  Integer.parseInt(havittajaAmountTextField.getText());
+        // jos laitetaan esim. numeroiden sijaan kirjaimia
+        try {
+            lta = Integer.parseInt(lentotukialusAmountTextField.getText());
+            tl = Integer.parseInt(taistelulaivaAmountTextField.getText());
+            ris = Integer.parseInt(risteilijaAmountTextField.getText());
+            sv = Integer.parseInt(sukellusveneAmountTextField.getText());
+            hv = Integer.parseInt(havittajaAmountTextField.getText());
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Arvot väärin!");
+            alert.setHeaderText("Tarkista, että asettamasi arvot ovat oikein!");
+            gl.playSound("error.wav");
+            alert.showAndWait();
+            return;
+        }
 
         if((areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko))) {
             gl.playSound("buttonclick.wav");
@@ -79,18 +87,12 @@ public class Controller {
                 gl.createBoard1(10);
                 gl.createSwitchPlayerScene();
                 gl.createBoard2(10);
-                System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
                 gl.createScenes();
-                System.out.println(gl.getPlayerOneShipContainer());
-                System.out.println(gl.getPlayerTwoShipContainer());
             } else {
                 gl.createBoard1(laudanKoko);
                 gl.createBoard2(laudanKoko);
                 gl.createSwitchPlayerScene();
-                System.out.println("Laudan koko: " + boardSizeLabel.getText() + ", BSL: " + laudanKoko);
                 gl.createScenes();
-                System.out.println(gl.getPlayerOneShipContainer());
-                System.out.println(gl.getPlayerTwoShipContainer());
             }
             gl.playSong("start");
 
@@ -104,8 +106,10 @@ public class Controller {
         }
     }
 
+    /**
+    A method for initializing values for the ChoiceBox and Labels
+     */
     public void initialize() {
-
         for(int i = 5; i < 11; i++) {
             boardSizeList.getItems().add(i + "x" + i);
         }
@@ -129,13 +133,9 @@ public class Controller {
         int sv = Integer.parseInt(sukellusveneAmountTextField.getText());
         int hv =  Integer.parseInt(havittajaAmountTextField.getText());
 
-
-        System.out.println(lta);
-
         int kok = lta+tl+ris+sv+hv;
 
         if(kok == 0){
-            System.out.println("Väärä määrä laivoja");
             return false;
         }else{
             if(koko == 1) {
@@ -146,6 +146,7 @@ public class Controller {
         }
     }
 
+
     /**
      * Checks whether or not the names are
      * null that have been input by the user
@@ -154,14 +155,11 @@ public class Controller {
      */
 
     protected boolean areNamesValid(String p1, String p2){
-
         if(p1.isEmpty() || p2.isEmpty()){
-            System.out.println("seis");
             return false;
         }
         else{
             return true;
         }
-
     }
 }
