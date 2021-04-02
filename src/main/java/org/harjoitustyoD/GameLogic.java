@@ -169,11 +169,12 @@ public class GameLogic {
             fp1.getChildren().add(pOneShipImages.get(i));
             initializeMouseEvent(pOneShipImages.get(i), b1, ap1, fp1, playerOneShipContainer);
         }
-        System.out.println(fp1.getChildren().size());
-        button1.setText("Valmis");
+        //System.out.println(fp1.getChildren().size());
+        button1.setText("Vaihda pelaajaa");
         button1.setOnAction(e->{
             try {
                 if(fp1.getChildren().size() == 0) {
+                    playSound("buttonclick.wav");
                     lauta1.setDisable(true);
                     if (lauta1.isDisabled()) {
                         if (counter == 1) {
@@ -188,13 +189,44 @@ public class GameLogic {
                         switchScene("--");
                     }
                     button1.setDisable(true);
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Lauta ei valmis");
+                    alert.setHeaderText("Aseta kaikki laivasi!");
+                    playSound("error.wav");
+                    alert.showAndWait();
+
                 }
-                playSound("buttonclick.wav");
+
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         });
+        button1.setLayoutX(800);
+        button1.setLayoutY(450);
+        button1.setScaleX(2);
+        button1.setScaleY(2);
+
+
         HBox g = new HBox();
+
+
+        // Labelit ruudukoille!
+        Label pelausRuutu = new Label("Sijoita laivasi tähän ruutuun");
+        pelausRuutu.setScaleY(2);
+        pelausRuutu.setScaleX(2);
+        //pelausRuutu.setAlignment(Pos.BOTTOM_RIGHT);
+        pelausRuutu.setLayoutX(385 - size*5);
+        // Setattu oikein, siirretään gridin koon mukaan
+        pelausRuutu.setLayoutY(395/size * 2);
+
+        Label arvausRuutu = new Label("Arvaa tähän ruutuun");
+        arvausRuutu.setScaleX(2);
+        arvausRuutu.setScaleY(2);
+        // Setattu oikein, siirretään gridin koon mukaan
+        arvausRuutu.setLayoutY(1100/size * 2.5);
+        arvausRuutu.setLayoutX(1375 - size*10);
+        ap1.getChildren().addAll(pelausRuutu,arvausRuutu);
 
         //tässä setataan placeCorrect, joka vaihtaa nodea johon laiva siirretään
         //f on näkymättömän gridin siirtäminen
@@ -233,12 +265,13 @@ public class GameLogic {
         AnchorPane.setRightAnchor(lauta3, 50d);
         AnchorPane.setBottomAnchor(lauta3, 50d);
         AnchorPane.setRightAnchor(fp1, 10d);
-        AnchorPane.setBottomAnchor(button1, 10d);
+        //AnchorPane.setBottomAnchor(button1, 10d);
 
-        AnchorPane.setBottomAnchor(lauta3, 50d);
-        AnchorPane.setRightAnchor(fp1, 10d);
-        AnchorPane.setBottomAnchor(button1, 10d);
+        //AnchorPane.setBottomAnchor(lauta3, 50d);
+        //AnchorPane.setRightAnchor(fp1, 10d);
+        //AnchorPane.setBottomAnchor(button1, 10d);
     }
+
 
     /**
      * Creates a new board utilizing the user input
@@ -259,23 +292,57 @@ public class GameLogic {
         AnchorPane lauta4 = b4.buildBoard(50, getClass().getResourceAsStream("mistocean.png"));
         fp2.setHgap(30);
         fp2.setVgap(10);
+
         for(int i = 0; i < pTwoShipImages.size(); i++){
             fp2.getChildren().add(pTwoShipImages.get(i));
             initializeMouseEvent(pTwoShipImages.get(i), b2, ap2, fp2, playerTwoShipContainer);
         }
-        button2.setText("Valmis");
+        button2.setText("Vaihda pelaajaa");
         button2.setOnAction(e->{
             try {
                 if(fp2.getChildren().size() == 0) {
+                    playSound("buttonclick.wav");
+
                     lauta2.setDisable(true);
                     startGuessing(3, playerNumber, b3, b2, playerTwoShipContainer, button1);
                     button2.setDisable(true);
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Lauta ei valmis!");
+                    alert.setHeaderText("Aseta kaikki laivasi!");
+                    playSound("error.wav");
+                    alert.showAndWait();
                 }
-                playSound("buttonclick.wav");
+
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         });
+        button2.setLayoutX(800);
+        button2.setLayoutY(450);
+        button2.setScaleX(2);
+        button2.setScaleY(2);
+
+
+
+        // Labelit ruudukoille!
+        Label pelausRuutu = new Label("Sijoita laivasi tähän ruutuun");
+        pelausRuutu.setScaleY(2);
+        pelausRuutu.setScaleX(2);
+        //pelausRuutu.setAlignment(Pos.BOTTOM_RIGHT);
+        pelausRuutu.setLayoutX(385 - size*5);
+        // Setattu oikein, siirretään gridin koon mukaan
+        pelausRuutu.setLayoutY(395/size * 2);
+
+        Label arvausRuutu = new Label("Arvaa tähän ruutuun");
+        arvausRuutu.setScaleX(2);
+        arvausRuutu.setScaleY(2);
+        // Setattu oikein, siirretään gridin koon mukaan
+        arvausRuutu.setLayoutY(1100/size * 2.5);
+        arvausRuutu.setLayoutX(1375 - size*10);
+        ap2.getChildren().addAll(pelausRuutu,arvausRuutu);
+
+
         //tässä setataan placeCorrect, joka vaihtaa nodea johon laiva siirretään
         //f on näkymättömän gridin siirtäminen
         int f = 0;
@@ -318,7 +385,7 @@ public class GameLogic {
         AnchorPane.setRightAnchor(lauta4, 50d);
         AnchorPane.setBottomAnchor(lauta4, 50d);
         AnchorPane.setRightAnchor(fp2, 10d);
-        AnchorPane.setBottomAnchor(button2, 10d);
+        //AnchorPane.setBottomAnchor(button2, 10d);
     }
 
     /**
@@ -478,7 +545,7 @@ public class GameLogic {
             if (event.getButton().equals(MouseButton.PRIMARY)){
                 fp.getChildren().remove(b);
                 System.out.println(fp.getChildren().size());
-                board.grid.getChildren().remove(b);
+                board.getGrid().getChildren().remove(b);
                 ap.getChildren().add(b);
             }
             mousePressed(event, board, b, fp);
@@ -546,6 +613,7 @@ public class GameLogic {
         if (event.getButton().equals(MouseButton.PRIMARY)){
 
             //place correct siirtää nodea sen mukaan minkä kokoinen lauta on
+            // ÄLÄ KOSKE !! :D KATSOTTU ETTÄ TOIMII
             int gridx = (int) (b.getLayoutX())/50 + placeCorrect;
             int gridy = (int) (b.getLayoutY()+15)/50 + placeCorrect;
 
@@ -1115,6 +1183,7 @@ public class GameLogic {
         Scene scene = new Scene(pane, 500, 300);
         stage.setTitle("Peli päättyi!");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
         //stop the song
         playSong("stop");

@@ -72,6 +72,7 @@ public class Controller {
         int hv =  Integer.parseInt(havittajaAmountTextField.getText());
 
         if((areNamesValid(playerOne, playerTwo) && isBoardValid(laudanKoko))) {
+            gl.playSound("buttonclick.wav");
             gl.createShips(lta, tl, ris, sv, hv);
             gl.setBoardNumber(1);
             if (laudanKoko == 1) {
@@ -94,11 +95,12 @@ public class Controller {
             gl.playSong("start");
 
         }else{
-            gl.playSound("buttonclick.wav");
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Arvot väärin!");
             alert.setHeaderText("Tarkista, että asettamasi arvot ovat oikein!");
+            gl.playSound("error.wav");
             alert.showAndWait();
+
         }
     }
 
