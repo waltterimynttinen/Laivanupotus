@@ -1,7 +1,5 @@
 package org.harjoitustyoD;
 
-import javafx.scene.control.Alert;
-
 public class Ship {
 
     private int size;

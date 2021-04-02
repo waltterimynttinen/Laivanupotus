@@ -104,14 +104,6 @@ public class Controller {
         }
     }
 
-
-    public String palautaNimi1(){
-        return playerOne;
-    }
-    public String palautaNimi2(){
-        return playerTwo;
-    }
-
     public void initialize() {
 
         for(int i = 5; i < 11; i++) {
@@ -123,6 +115,13 @@ public class Controller {
         boardSizeLabel.textProperty().bind(boardSizeList.valueProperty());
 
     }
+
+
+    /**
+     * A method for checking whether the user-input
+     * values are valid or not
+     */
+
     protected boolean isBoardValid(int koko){
         int lta = Integer.parseInt(lentotukialusAmountTextField.getText());
         int tl = Integer.parseInt(taistelulaivaAmountTextField.getText());

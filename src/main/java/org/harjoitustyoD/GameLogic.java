@@ -1,6 +1,5 @@
 package org.harjoitustyoD;
 
-
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -22,11 +21,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.media.*;
-
 
 public class GameLogic {
     private Board b1 = new Board();
@@ -70,6 +67,7 @@ public class GameLogic {
     protected void setPlayerTwoName(String s){
         playerTwoName = s;
     }
+
 
     /**
      * Creates the scenes used for the game.
@@ -169,7 +167,6 @@ public class GameLogic {
             fp1.getChildren().add(pOneShipImages.get(i));
             initializeMouseEvent(pOneShipImages.get(i), b1, ap1, fp1, playerOneShipContainer);
         }
-        //System.out.println(fp1.getChildren().size());
         button1.setText("Vaihda pelaajaa");
         button1.setOnAction(e->{
             try {
@@ -207,9 +204,7 @@ public class GameLogic {
         button1.setScaleX(2);
         button1.setScaleY(2);
 
-
         HBox g = new HBox();
-
 
         // Labelit ruudukoille!
         Label pelausRuutu = new Label("Sijoita laivasi tähän ruutuun");
@@ -260,16 +255,10 @@ public class GameLogic {
         g.setPadding(new Insets(f, f, f, f));
         g.getChildren().add(lauta1);
         ap1.getChildren().addAll(g, lauta3, fp1, button1);
-        //AnchorPane.setRightAnchor(g, 10d);
-        //AnchorPane.setTopAnchor(lauta1, 10d);
         AnchorPane.setRightAnchor(lauta3, 50d);
         AnchorPane.setBottomAnchor(lauta3, 50d);
         AnchorPane.setRightAnchor(fp1, 10d);
-        //AnchorPane.setBottomAnchor(button1, 10d);
 
-        //AnchorPane.setBottomAnchor(lauta3, 50d);
-        //AnchorPane.setRightAnchor(fp1, 10d);
-        //AnchorPane.setBottomAnchor(button1, 10d);
     }
 
 
@@ -374,18 +363,12 @@ public class GameLogic {
 
         HBox d = new HBox();
 
-
-
-        //AnchorPane.setBottomAnchor(lauta3, 50d);
         d.setPadding(new Insets(f, f, f, f));
         d.getChildren().add(lauta2);
         ap2.getChildren().addAll(d, lauta4, fp2, button2);
-        //AnchorPane.setRightAnchor(fp1, 10d);
-        //AnchorPane.setTopAnchor(lauta2, 10d);
         AnchorPane.setRightAnchor(lauta4, 50d);
         AnchorPane.setBottomAnchor(lauta4, 50d);
         AnchorPane.setRightAnchor(fp2, 10d);
-        //AnchorPane.setBottomAnchor(button2, 10d);
     }
 
     /**
@@ -617,15 +600,12 @@ public class GameLogic {
             int gridx = (int) (b.getLayoutX())/50 + placeCorrect;
             int gridy = (int) (b.getLayoutY()+15)/50 + placeCorrect;
 
-            //board.getGrid().
-
-
             cordsX = gridx;
             cordsY = gridy;
             // settaa viimeisimmän laivan valituksi laivaksi, jotta rotate toimii r:stä
             selectedShip = b;
 
-            // kun päästetään irti mouse1:stä, setataan coordit jne
+            // kun päästetään irti mouse1:stä, setataan coordit
             int index = getShipIndex(b);
             if (boardNumber == 1) {
                 playerOneShipContainer.get(index).setStartX(cordsX);
@@ -676,10 +656,8 @@ public class GameLogic {
 
     protected boolean isSpotTaken(int x, int y, ArrayList<Ship> container, ImageView b) {
         for(int i = 0; i < container.size(); i++){
-
             // tarkistettavana oleva
             Ship s = container.get(i);
-
             // rectangleen liitetty
             Ship ship = container.get(getShipIndex(b));
 
@@ -687,32 +665,28 @@ public class GameLogic {
                 for(int j = 0; j < ship.getSize(); j++) {
                     if (s.getIsHorizontal() == true && ship.getIsHorizontal() == true) {
                         if (x + j >= s.getStartX() && x + j <= s.getStartX() + s.getSize() - 1 && s.getStartY() == y) {
-                            System.out.println("et voi bro");
                             return true;
                         }
                     }else if(s.getIsHorizontal() == false && ship.getIsHorizontal() == true){
                         if(x <= s.getStartX() && ship.getEndX() > s.getStartX() && y >= s.getStartY() && y < s.getEndY()){
-                            System.out.println("et voi bro");
                             return true;
                         }
                     }else if(s.getIsHorizontal() == true && ship.getIsHorizontal() == false){
                         if(y <= s.getStartY() && ship.getEndY() > s.getStartY() && x >= s.getStartX() && x < s.getEndX()){
-                            System.out.println("et voi bro");
                             return true;
                         }
 
                     }else if(s.getIsHorizontal() == false && ship.getIsHorizontal() == false){
                         if (y+j >= s.getStartY() && y+j <= s.getStartY() + s.getSize() - 1 && s.getStartX() == x) {
-                            System.out.println("et voi bro");
                             return true;
                         }
                     }
                 }
             }
         }
-        System.out.println("laita siihen");
         return false;
     }//isSpotTaken()
+
 
     /**
      * Calculates the area of ships that are allowed on a specific board size and checks if it's valid.
@@ -757,6 +731,12 @@ public class GameLogic {
     protected void setPlayerNumber(int number){
         this.playerNumber = number;
     }
+
+
+    /**
+     * A method used for rotating the ship that has been clicked last
+     * @param rectangle is an old name but means the ship image
+     */
 
     protected void rotateShip(ImageView rectangle){
 
@@ -804,7 +784,6 @@ public class GameLogic {
                     return;
                 }
             }
-        // TÄYTYY VIELÄ MUUTTAA
         }else if(boardNumber == 2 || boardNumber == 4){
             if (shap.getIsHorizontal() && shap.getEndX() <= b2.getBoardSize() && shap.getStartY() <= b2.getBoardSize()-shap.getSize()) {
                 r.setAngle(90);
@@ -844,6 +823,12 @@ public class GameLogic {
     }//rotateShip()
 
 
+    /**
+     * Easier way of getting the index of the corresponding ship
+     * in their lists
+     * @param rectangle
+     * @return
+     */
     protected int getShipIndex(ImageView rectangle){
         int index;
         if(boardNumber == 1 || boardNumber == 3){
@@ -856,6 +841,7 @@ public class GameLogic {
         }
         return 0;
     }
+
 
     /**
      * This method checks if a ship has any of the values given to it. If a match is found,
@@ -944,6 +930,7 @@ public class GameLogic {
         container.get(getShipIndex(b)).setStartY(cordsY);
     }//checkShipValidPlacement()
 
+
     /**
      * Method to check whether the place that the user is trying
      * to guess is valid or not
@@ -966,6 +953,7 @@ public class GameLogic {
         }
         return true;
     }//checkGuessValidPlacement()
+
 
     /**
      * Starts the game, after the ships have been placed by both players.
@@ -1030,8 +1018,9 @@ public class GameLogic {
 
 
     /**
-     * A method for playing soundsclips
-     * for example when you hit a ship
+     * A method for playing soundclips,
+     * for example when you hit a ship,
+     * a hitting sound should be played
      * @param name is the name of the
      *             requested audioclip
      */
@@ -1056,7 +1045,6 @@ public class GameLogic {
             backgroundMusic.stop();
         }
     }
-
 
 
      /**
@@ -1084,6 +1072,7 @@ public class GameLogic {
         }
         return null;
     }
+
 
     /**
      * Removes ships from the container, if they've lost all of their HP.
@@ -1116,16 +1105,18 @@ public class GameLogic {
         return false;
     }
 
+
     /**
-     * Opens up a new window that announces the winner.
-     * Also gives an option to the players to restart the game or leave the game.
+     * Opens up a new window that announces the winner and closes
+     * the actual game window.
+     *
+     * Also gives an option to the players to restart the game or
+     * leave the game and close the application.
      * @param playerNumber
      */
 
-    //valmis toteutus avaisi uuden ikkunan jossa voittaja julkistetaan, sekä myös vaihtoehdon aloittaa pelin alusta
+
     protected void winner(int playerNumber) {
-        System.out.println("PELIN VOITTI: PELAAJA " + playerNumber);
-        //väliaikainen, sulkee ohjelman
         Main.getStage().close();
         Stage stage = new Stage();
 
@@ -1185,9 +1176,11 @@ public class GameLogic {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
         //stop the song
         playSong("stop");
     }
+
 
     /**
      * Resets the game and switches the scene back to the main menu.

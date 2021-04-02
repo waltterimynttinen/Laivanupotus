@@ -1,18 +1,10 @@
 package org.harjoitustyoD;
 
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
-
 import java.io.InputStream;
-
 
 public class Board {
 
@@ -44,7 +36,7 @@ public class Board {
      */
 
     protected AnchorPane buildBoard(int size, InputStream name){
-        //int size = 50;
+        //AWFUL IMPLEMENTATION WHICH WORKS ALL THE SAME, HENCE NOT CLEANED UP
         for (int i = 0; i < boardSize; i++) {
             ColumnConstraints c = new ColumnConstraints(size);
             grid.getColumnConstraints().add(c);
@@ -55,8 +47,7 @@ public class Board {
                 int x = (int)xx/(size*2);
                 y++;
                 x++;
-                //System.out.println(x + " x " + y);
-                // TARVITAAN MAHDOLLISESTI MYÖHEMMIN
+
                 cordsX = x;
                 cordsY = y;
 
@@ -76,13 +67,10 @@ public class Board {
                 int x = (int) xx/(size*2);
                 y++;
                 x++;
-                //System.out.println(x + " x " + y);
-                // TARVITAAN MAHDOLLISESTI MYÖHEMMIN
+
                 cordsX = x;
                 cordsY = y;
-                /*
-                System.out.println("CordsX on: "+cordsX);
-                System.out.println("CordsY on: "+cordsY);*/
+
             });
 
 
@@ -92,7 +80,6 @@ public class Board {
         Image ocean = new Image(name);
         ImageView imageView = new ImageView(ocean);
         if(getBoardSize() % 2 == 0){
-            //imageView.setRotate(imageView.getRotate() + 180);
             imageView.setFitHeight(getBoardSize()*size);
             imageView.setFitWidth(getBoardSize()*size);
             imageView.setLayoutY(imageView.getY());
@@ -105,8 +92,6 @@ public class Board {
             imageView.setFitWidth(getBoardSize()*size);
             grid.add(imageView,0, getBoardSize()/2);
         }
-        //Image ocean = new Image(getClass().getResourceAsStream("ocean.png"), getBoardSize()*50, getBoardSize()*50, false, false);
-
 
         // Make the lines visible for the board
         grid.setGridLinesVisible(true);
@@ -122,18 +107,11 @@ public class Board {
     public GridPane getGrid(){
         return grid;
     }
-
     public int getBoardSize(){
         return boardSize;
     }
     public int getCordsX(){
         return cordsX;
-    }
-    public void setCordsX(int x){
-        this.cordsX = x;
-    }
-    public void setCordsY(int y){
-        this.cordsY = y;
     }
     public int getCordsY(){
         return cordsY;
