@@ -546,7 +546,7 @@ public class GameLogic {
         if (event.getButton().equals(MouseButton.PRIMARY)){
 
             //place correct siirtää nodea sen mukaan minkä kokoinen lauta on
-            int gridx = (int) (b.getLayoutX()+15)/50 + placeCorrect;
+            int gridx = (int) (b.getLayoutX())/50 + placeCorrect;
             int gridy = (int) (b.getLayoutY()+15)/50 + placeCorrect;
 
             //board.getGrid().
