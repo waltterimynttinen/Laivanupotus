@@ -1,4 +1,5 @@
-module org.example {
+
+module org.harjoitustyoD {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.media;
