@@ -51,6 +51,7 @@ public class Controller {
         started and all the needed values are fetched from their preassigned
         TextFields.
          */
+        gl.playSound("buttonclick.wav");
 
         String s = "" + boardSizeLabel.getText().charAt(0);
         int laudanKoko = Integer.parseInt(s);
@@ -90,7 +91,6 @@ public class Controller {
                 System.out.println(gl.getPlayerOneShipContainer());
                 System.out.println(gl.getPlayerTwoShipContainer());
             }
-            gl.playSound("buttonclick.wav");
             gl.playSong("start");
 
         }else{

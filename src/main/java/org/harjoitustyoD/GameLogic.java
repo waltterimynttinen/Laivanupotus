@@ -159,8 +159,8 @@ public class GameLogic {
         b1.setBoardSize(size);
 
         b3.setBoardSize(size);
-        lauta1 = b1.buildBoard(50);
-        lauta3 = b3.buildBoard(50);
+        lauta1 = b1.buildBoard(50, getClass().getResourceAsStream("ocean.png"));
+        lauta3 = b3.buildBoard(50, getClass().getResourceAsStream("mistocean.png"));
         fp1.setHgap(30);
         fp1.setVgap(10);
 
@@ -255,8 +255,8 @@ public class GameLogic {
         ap2.getChildren().add(imageView);
         b2.setBoardSize(size);
         b4.setBoardSize(size);
-        AnchorPane lauta2 = b2.buildBoard(50);
-        AnchorPane lauta4 = b4.buildBoard(50);
+        AnchorPane lauta2 = b2.buildBoard(50, getClass().getResourceAsStream("ocean.png"));
+        AnchorPane lauta4 = b4.buildBoard(50, getClass().getResourceAsStream("mistocean.png"));
         fp2.setHgap(30);
         fp2.setVgap(10);
         for(int i = 0; i < pTwoShipImages.size(); i++){
@@ -507,8 +507,8 @@ public class GameLogic {
             return;
         }
         else if(event.getButton().equals(MouseButton.SECONDARY)){
-            if(board.grid.getChildren().contains(b)){
-                board.grid.getChildren().remove(b);
+            if(board.getGrid().getChildren().contains(b)){
+                board.getGrid().getChildren().remove(b);
                 fp.getChildren().add(b);
                 return;
             }
@@ -525,8 +525,8 @@ public class GameLogic {
     private void dragged(MouseEvent event, ImageView b){
         cordsX = (int) (b.getLayoutX() + event.getX());
         cordsY = (int) (b.getLayoutY() + event.getX());
-        b.setLayoutX(event.getSceneX());
-        b.setLayoutY(event.getSceneY());
+        b.setLayoutX(event.getSceneX()-15);
+        b.setLayoutY(event.getSceneY()-15);
         // settaa viimeisimmän laivan valituksi laivaksi, jotta rotate toimii r:stä
         selectedShip = b;
     }//dragged()
@@ -546,8 +546,11 @@ public class GameLogic {
         if (event.getButton().equals(MouseButton.PRIMARY)){
 
             //place correct siirtää nodea sen mukaan minkä kokoinen lauta on
-            int gridx = (int)b.getLayoutX()/ 50+placeCorrect;
-            int gridy = (int)b.getLayoutY()/ 50+placeCorrect;
+            int gridx = (int) (b.getLayoutX()+15)/50 + placeCorrect;
+            int gridy = (int) (b.getLayoutY()+15)/50 + placeCorrect;
+
+            //board.getGrid().
+
 
             cordsX = gridx;
             cordsY = gridy;

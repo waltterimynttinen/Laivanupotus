@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.InputStream;
 
 
 public class Board {
@@ -42,12 +43,12 @@ public class Board {
      * a number from 5 to 10.
      */
 
-    protected AnchorPane buildBoard(int size){
+    protected AnchorPane buildBoard(int size, InputStream name){
         //int size = 50;
         for (int i = 0; i < boardSize; i++) {
             ColumnConstraints c = new ColumnConstraints(size);
             grid.getColumnConstraints().add(c);
-            grid.setOnMouseMoved((MouseEvent t) -> {
+            grid.setOnMouseReleased((MouseEvent t) -> {
                 double xx = (int) t.getX()*2;
                 double yy = ( t.getY()*2);
                 int y = (int)yy/(size*2);
@@ -58,9 +59,9 @@ public class Board {
                 // TARVITAAN MAHDOLLISESTI MYÖHEMMIN
                 cordsX = x;
                 cordsY = y;
-                /*
+
                 System.out.println("CordsX on: "+cordsX);
-                System.out.println("CordsY on: "+cordsY);*/
+                System.out.println("CordsY on: "+cordsY);
             });
 
         }//for1
@@ -68,7 +69,7 @@ public class Board {
         for (int i = 0; i < boardSize; i++) {
             RowConstraints c = new RowConstraints(size);
             grid.getRowConstraints().add(c);
-            grid.setOnMouseMoved((MouseEvent t) -> {
+            grid.setOnMouseReleased((MouseEvent t) -> {
                 double xx = (int) t.getX()*2;
                 double yy = ( t.getY()*2);
                 int y = (int) yy/(size*2);
@@ -88,7 +89,7 @@ public class Board {
         }//for2
 
         //adding images to the grid
-        Image ocean = new Image(getClass().getResourceAsStream("ocean.png"));
+        Image ocean = new Image(name);
         ImageView imageView = new ImageView(ocean);
         if(getBoardSize() % 2 == 0){
             //imageView.setRotate(imageView.getRotate() + 180);
