@@ -398,14 +398,14 @@ public class GameLogic {
         //switches from p1 create board to p2 create board
         ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("sand.png")));
         HBox hb = new HBox();
-        Label lb = new Label("Pelaaja 2: Siirry asettamaan laivasi laudalle!");
+        Label lb = new Label(playerTwoName + ": siirry asettamaan laivasi laudalle!");
         lb.setFont(Font.font(50));
         Button switchb5 = new Button("Seuraava");
         switchb5.setOnAction(e -> {
             try {
                 playSound("buttonclick.wav");
                 if(counter == 1){
-                    lb.setText("PELI ALKAKOON, " + playerOneName +"n vuoro");
+                    lb.setText("Peli alkakoon! Pelaajan " + playerOneName +" vuoro");
                     setBoardNumber(2);
                     setPlayerNumber(1);
                     counter++;
