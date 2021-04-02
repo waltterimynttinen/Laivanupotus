@@ -90,9 +90,11 @@ public class Controller {
                 System.out.println(gl.getPlayerOneShipContainer());
                 System.out.println(gl.getPlayerTwoShipContainer());
             }
+            gl.playSound("buttonclick.wav");
             gl.playSong("start");
 
         }else{
+            gl.playSound("buttonclick.wav");
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Arvot väärin!");
             alert.setHeaderText("Tarkista, että asettamasi arvot ovat oikein!");

@@ -189,6 +189,7 @@ public class GameLogic {
                     }
                     button1.setDisable(true);
                 }
+                playSound("buttonclick.wav");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -270,6 +271,7 @@ public class GameLogic {
                     startGuessing(3, playerNumber, b3, b2, playerTwoShipContainer, button1);
                     button2.setDisable(true);
                 }
+                playSound("buttonclick.wav");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -332,6 +334,7 @@ public class GameLogic {
         Button switchb5 = new Button("Seuraava");
         switchb5.setOnAction(e -> {
             try {
+                playSound("buttonclick.wav");
                 if(counter == 1){
                     lb.setText("PELI ALKAKOON, " + playerOneName +"n vuoro");
                     setBoardNumber(2);
@@ -1062,12 +1065,15 @@ public class GameLogic {
         exitGame.setAlignment(Pos.BOTTOM_CENTER);
 
         exitGame.setOnAction(e -> {
+            playSound("buttonclick.wav");
             Platform.exit();
         });
         newGame.setOnAction(e -> {
             try {
+                playSound("buttonclick.wav");
                 reset();
                 stage.close();
+
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
