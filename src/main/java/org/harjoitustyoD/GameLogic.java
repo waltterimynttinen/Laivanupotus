@@ -1045,7 +1045,7 @@ public class GameLogic {
     protected void playSong(String state){
         if(state.equalsIgnoreCase("start")){
             backgroundMusic.setVolume(0.15);
-            backgroundMusic.setCycleCount(20);
+            backgroundMusic.setCycleCount(Integer.MAX_VALUE);
             backgroundMusic.play();
         }else if(state.equalsIgnoreCase("stop")){
             backgroundMusic.stop();
